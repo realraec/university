@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>UMS - Login</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="mx-auto col-6">
+            <div class="card my-4">
+                <img class="card-img-top " src="https://www.liverpool.ac.uk/media/vod-ug-homepage-banner.jpg"
+                    alt="University image" style="height: 200px; object-fit: cover; object-position: center;">
+                <div class="card-body">
+                    <h5 class="card-title">Login screen</h5>
+                    <h6 class="card-subtitle text-muted mb-2">Administrative portal</h6>
+                    <p class="card-text">You have chosen the administrative portal, which means that you are a member of
+                        the university's administration. Please provide the necessary information to login.</p>
+                    <form>
+                        <div class="mb-3">
+                            <label for="formId" class="form-label">Uni-ID&trade;</label>
+                            <input type="text" class="form-control" id="formId" aria-describedby="formIdHelp"
+                                value="1-22-1-1234"> <!-- Type of account, year of enrollment, sex, random number -->
+                            <div id="formIdHelp" class="form-text d-flex justify-content-between">
+                                <div>Your Uni-ID&trade; is to be found on your contract.</div>
+                                <div><a class="card-link" data-bs-toggle="modal" href="#emailModal" role="button"
+                                        aria-expanded="false" aria-controls="emailModal">I forgot my Uni-ID&trade;</a>
+                                </div>
+
+                                <!-- Modal -->
+                                <div class="modal fade" id="emailModal" tabindex="-1" aria-labelledby="emailModalLabel"
+                                    aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="emailModalLabel">I forgot my Uni-ID&trade;
+                                                </h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Your Uni-ID&trade; should be on your contract, but it is possible to
+                                                retrieve it online. In order to receive an e-mail with your
+                                                Uni-ID&trade;, please provide your e-mail address:
+                                                <input type="text" class="form-control my-3" id="formId"
+                                                    aria-describedby="formIdHelp"
+                                                    value="timothy.smithingston@gmail.com"> If your e-mail address is
+                                                correct and present in our database, you will receive
+                                                your Uni-ID&trade; shortly. Make sure to check your spam folder.
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Cancel</button>
+                                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Request my
+                                                    Uni-ID&trade;</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="formPw" class="form-label">Password</label>
+                            <input type="password" class="form-control d-flex justify-content-between" id="formPw"
+                                value="123456789abcd">
+                            <div id="formPwHelp" class="form-text d-flex justify-content-between">
+                                <div>We recommend you change your password often.</div>
+                                <div><a class="card-link" data-bs-toggle="modal" href="#passwordModal" role="button"
+                                        aria-expanded="false" aria-controls="passwordModal">I forgot my password</a>
+                                </div>
+                                <!-- Modal -->
+                                <div class="modal fade" id="passwordModal" tabindex="-1"
+                                    aria-labelledby="passwordModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="passwordModalLabel">I forgot my password
+                                                </h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Your password is the one you chose during your first connection, but it
+                                                is possible to request a new one. In order to receive an e-mail with a
+                                                link to reset your password, please provide the following information:
+                                                <label for="formId" class="form-label mt-3">E-mail address</label>
+                                                <input type="text" class="form-control mb-2"
+                                                    value="timothy.smithingston@gmail.com">
+
+                                                <label for="formId" class="form-label ">Uni-ID&trade;</label>
+                                                <input type="text" class="form-control mb-2" value="1-22-1-1234">
+
+                                                <label for="formId" class="form-label ">Date of birth</label>
+                                                <input type="text" class="form-control mb-3" value="15/06/1995">
+
+                                                If your information are correct and present in our database, you will
+                                                receive a link to reset your password shortly. Make sure to check your
+                                                spam
+                                                folder.
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Cancel</button>
+                                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Request a new
+                                                    password</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="formCheck">
+                            <label class="form-check-label" for="formCheck">Keep me logged in</label>
+                        </div>
+                        <a href="dashboard.html" class="btn btn-primary">Log in</a>
+                        <a href="welcome.html" class="btn btn-secondary">Go back</a>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- JQuery script -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Bootstrap 5 script -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+
+
+    <script>
+    </script>
+
+
+</body>
+
+
+
+</html>

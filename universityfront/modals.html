@@ -1,0 +1,124 @@
+<div>
+    
+    <!-- Code input -->
+    <div class="modal fade" id="codeModal" tabindex="-1" aria-labelledby="codeModalLabel" aria-hidden="true"
+        data-bs-backdrop='static' data-bs-keyboard='false'>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="codeModalLabel">Further information needed
+                    </h5>
+                    <button id="codeModalCloseButton" type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Further information is needed to perform this action. Please type in or select the necessary
+                    information
+                    below.<br />
+                    <label id="codeModalInputLabel" for="codeModalInput" class="form-label mt-3">Code of the
+                        entity</label>
+                    <input id="codeModalInput" type="text" class="form-control mb-2" value="">
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <div>
+                        <div id="codeModalSpinner" class="spinner-grow spinner-grow-sm ms-2" role="status" hidden>
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-secondary" id="codeModalCancelButton"
+                            data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary" id="codeModalConfirmButton">Confirm</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Radio input -->
+    <div class="modal fade" id="radioModal" tabindex="-1" aria-labelledby="radioModalLabel" aria-hidden="true"
+        data-bs-backdrop='static' data-bs-keyboard='false'>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="radioModalLabel">Further information needed
+                    </h5>
+                    <button id="radioModalCloseButton" type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Further information is needed to perform this action. Please type in or select the necessary
+                    information
+                    below.<br />
+                    <label id="radioModalInputLabel" for="radioModalInput" class="form-label mt-3">State of the
+                        entity<br /></label>
+                    <div id="radioModalInput" class="form-check">
+                        <input class="form-check-input" type="radio" name="radioModalInputRadio"
+                            id="radioModalInputRadio1" checked>
+                        <label class="form-check-label" for="radioModalInputRadio1" id="radioModalInputRadio1Label">
+                            <i class="bi bi-check-circle ms-1 me-2"></i>Yes
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="radioModalInputRadio"
+                            id="radioModalInputRadio2">
+                        <label class="form-check-label" for="radioModalInputRadio2" id="radioModalInputRadio2Label">
+                            <i class="bi bi-x-circle-fill ms-1 me-2"></i>No
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <div>
+                        <div id="radioModalSpinner" class="spinner-grow spinner-grow-sm ms-2" role="status" hidden>
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-secondary" id="radioModalCancelButton"
+                            data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary" id="radioModalConfirmButton">Confirm</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Select input -->
+    <div class="modal fade" id="selectModal" tabindex="-1" aria-labelledby="selectModalLabel" aria-hidden="true"
+        data-bs-backdrop='static' data-bs-keyboard='false'>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="selectModalLabel">Further information needed
+                    </h5>
+                    <button id="selectModalCloseButton" type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Further information is needed to perform this action. Please type in or select the necessary
+                    information
+                    below.<br />
+                    <label id="selectModalInputLabel" for="selectModalInput" class="form-label mt-3">Item for the
+                        entity</label>
+                    <select id="selectModalInput" class="form-select" aria-label="Select item for the entity">
+                        <option id="selectModalInputOption" selected>Select an item</option>
+                    </select>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <div>
+                        <div id="selectModalSpinner" class="spinner-grow spinner-grow-sm ms-2" role="status" hidden>
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-secondary" id="selectModalCancelButton"
+                            data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary" id="selectModalConfirmButton">Confirm</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

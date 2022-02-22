@@ -1,0 +1,121 @@
+<div id="buttons" class="invisible row mb-3 gy-2">
+
+    <div id="contactButtons" class="col-xxl-2 col-lg-3 col-md-4 col-6 d-grid">
+        <label class="form-label ">Contact</label>
+        <button type="button" class="btn btn-primary"><i class="bi bi-envelope"></i>
+            <span class="ms-2">Send email</span></button>
+        <button type="button" class="btn btn-primary"><i class="bi bi-shuffle"></i>
+            <span class="ms-2">Load extra info</span>
+        </button>
+    </div>
+
+    <div id="degreesButtons" class="col-xxl-2 col-lg-3 col-md-4 col-6 d-grid">
+        <label class="form-label">Degrees</label>
+        <button type="button" class="btn btn-info"><i class="bi bi-record-circle"></i>
+            <span class="ms-2">Change majors</span></button>
+        <button type="button" class="btn btn-info"><i class="bi bi-record2"></i>
+            <span class="ms-2">Change minors</span></button>
+    </div>
+
+    <div id="levelButtons" class="col-xxl-2 col-lg-3 col-md-4 col-6 d-grid">
+        <label class="form-label ">Level</label>
+        <button id="promoteButton" type="button" class="btn btn-secondary"><i class="bi bi-chevron-double-up"></i>
+            <span class="ms-2">Promote</span></button>
+        <button type="button" class="btn btn-secondary"><i class="bi bi-chevron-double-down"></i>
+            <span class="ms-2">Demote</span></button>
+    </div>
+
+    <div id="sanctionButtons" class="col-xxl-2 col-lg-3 col-md-4 col-6 d-grid">
+        <label class="form-label">Sanction</label>
+        <button type="button" class="btn btn-danger"><i class="bi bi-exclamation-diamond"></i>
+            <span class="ms-2">Give warning</span></button>
+        <button type="button" class="btn btn-danger"><i class="bi bi-x-octagon"></i>
+            <span class="ms-2">Kick out</span></button>
+    </div>
+
+    <div id="rewardButtons" class="col-xxl-2 col-lg-3 col-md-4 col-6 d-grid">
+        <label class="form-label">Reward</label>
+        <button type="button" class="btn btn-success"><i class="bi bi-award"></i>
+            <span class="ms-2">Give credits</span></button>
+        <button type="button" class="btn btn-success"><i class="bi bi-mortarboard"></i>
+            <span class="ms-2">Give diploma</span></button>
+    </div>
+
+
+    <div id="TBDButtons" class="col-xxl-2 col-lg-3 col-md-4 col-6 d-grid">
+        <label class="form-label">TBD</label>
+        <button type="button" class="btn btn-info"><i class="bi bi-patch-question"></i>
+            <span class="ms-2">TBD 1</span></button>
+        <button type="button" class="btn btn-info"><i class="bi bi-patch-question"></i>
+            <span class="ms-2">TBD 2</span></button>
+
+    </div>
+
+
+    <div id="extraButtons" class="col-xxl-2 col-lg-3 col-md-4 col-6 d-grid">
+        <label class="form-label">Extra</label>
+        <button id="setNewProfessorButton" type="button" class="btn btn-info" data-bs-toggle="modal"
+            data-bs-target="#codeModal" aria-expanded="false" aria-controls="codeModal">
+            <i class="bi bi-asterisk"></i>
+            <span class="ms-2">Set new Professor</span></button>
+        <button id="testButtonABC" type="button" class="btn btn-info">
+            <i class="bi bi-record2"></i>
+            <span class="ms-2">Change something</span></button>
+    </div>
+
+    <div id="examsButtons" class="col-xxl-2 col-lg-3 col-md-4 col-6 d-grid">
+        <label class="form-label ">Exam state</label>
+        <button id='toggleIsExamMadeButton' type="button" class="btn btn-secondary" data-bs-toggle="modal"
+            data-bs-target="#radioModal" aria-expanded="false" aria-controls="radioModal"><i
+                class="bi bi-toggle2-on"></i>
+            <span class="ms-2">Toggle exam made</span></button>
+        <button id='toggleIsExamTakenButton' type="button" class="btn btn-secondary" data-bs-toggle="modal"
+            data-bs-target="#radioModal" aria-expanded="false" aria-controls="radioModal"><i
+                class="bi bi-toggle2-off"></i>
+            <span class="ms-2">Toggle exam taken</span></button>
+    </div>
+
+    <div id="studentsButtons" class="col-xxl-2 col-lg-3 col-md-4 col-6 d-grid">
+        <label class="form-label ">Students</label>
+        <button id="addStudentButton" type="button" class="btn btn-secondary" data-bs-toggle="modal"
+            data-bs-target="#codeModal" aria-expanded="false" aria-controls="codeModal"><i class="bi bi-node-plus"></i>
+            <span class="ms-2">Add student</span></button>
+        <button id="removeStudentButton" type="button" class="btn btn-secondary" data-bs-toggle="modal"
+            data-bs-target="#codeModal" aria-expanded="false" aria-controls="codeModal"><i class="bi bi-node-minus"></i>
+            <span class="ms-2">Remove student</span></button>
+    </div>
+
+
+    <div id="coursesButtons" class="col-xxl-2 col-lg-3 col-md-4 col-6 d-grid">
+        <label class="form-label ">Courses</label>
+        <button id="addCourseButton" type="button" class="btn btn-secondary" data-bs-toggle="modal"
+            data-bs-target="#codeModal" aria-expanded="false" aria-controls="codeModal"><i class="bi bi-node-plus"></i>
+            <span class="ms-2">Add course</span></button>
+        <button id="removeCourseButton" type="button" class="btn btn-secondary" data-bs-toggle="modal"
+            data-bs-target="#codeModal" aria-expanded="false" aria-controls="codeModal"><i class="bi bi-node-minus"></i>
+            <span class="ms-2">Remove course</span></button>
+    </div>
+
+
+    <div id="misc1Buttons" class="col-xxl-2 col-lg-3 col-md-4 col-6 d-grid">
+        <label class="form-label">Misc.</label>
+        <button id="newEntryButton" type="button" class="btn btn-dark">
+            <i class="bi bi-plus-square"></i>
+            <span class="ms-2">New entry</span></button>
+        <button id="deleteButton" type="button" class="btn btn-dark">
+            <i class="bi bi-x-square"></i>
+            <span class="ms-2">Delete entry</span></button>
+    </div>
+
+
+    <div id="misc2Buttons" class="col-xxl-2 col-lg-3 col-md-4 col-6 d-grid">
+        <label class="form-label">Misc.</label>
+        <button type="button" class="btn btn-dark">
+            <i class="bi bi-pencil-square"></i>
+            <span class="ms-2">Edit entry</span></button>
+        <button type="button" class="btn btn-dark">
+            <i class="bi bi-check-square"></i>
+            <span class="ms-2">Apply changes</span></button>
+    </div>
+
+</div>

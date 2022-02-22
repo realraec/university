@@ -1,0 +1,77 @@
+<nav id="navbar" class="navbar navbar-expand-lg navbar-light bg-light">
+
+    <div class="container-fluid">
+        <a class="navbar-brand" href="dashboard.html"><strong>UMS</strong></a>
+
+
+        <small class="d-block d-lg-none">
+            <span id="user-fullname-below-large">SMITHINGSTON Timothy</span> (<span
+                id="user-type-below-large">Admin</span>)
+        </small>
+
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+            <ul class="navbar-nav me-auto mb-0 mb-lg-0 list-group-horizontal gap-4 gap-lg-0 d-flex justify-content-center">
+                <li class="nav-item">
+                    <a class="nav-link" href="lookup_students.html">Students</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="lookup_professors.html">Professors</a>
+                </li>
+                <!-- <li class="nav-item">
+                    <a class="nav-link" href="lookup_employees.html">Employees</a>
+                </li> -->
+                <li class="nav-item">
+                    <a class="nav-link" href="lookup_courses.html">Courses</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="lookup_degrees.html">Degrees</a>
+                </li>
+            </ul>
+
+            <small class="d-none d-lg-block me-3">
+                <span id=user-fullname>SMITHINGSTON Timothy</span> (<span id="user-type">Admin</span>)
+            </small>
+
+
+            <div class="d-flex justify-content-center gap-3 gap-lg-0">
+                <button class="btn btn-outline-secondary" type="button" onclick="location.href='account.html'">
+                    <i class="bi bi-person-circle"></i> <small class="d-inline d-lg-none ms-1">Account</small>
+                </button>
+                <button class="btn btn-outline-secondary" type="button" onclick="location.href='settings.html'">
+                    <i class="bi bi-gear-fill"></i> <small class="d-inline d-lg-none ms-1">Settings</small>
+                </button>
+                <button class="btn btn-outline-dark" type="button" data-bs-toggle="modal" data-bs-target="#logoutModal" aria-expanded="false" aria-controls="logoutModal">
+                    <i class="bi bi-power"></i> <small class="d-inline d-lg-none ms-1">Log out</small>
+                </button>
+                <!-- Modal -->
+                <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="logoutModalLabel">Log out confirmation prompt
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                If you log out now, all your unsaved changes will be lost, and you will no longer be able to use the UMS fully.<br />Are you sure you want to log out?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-primary" onclick="location.href='welcome.html'">Log
+                                    out</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</nav>
