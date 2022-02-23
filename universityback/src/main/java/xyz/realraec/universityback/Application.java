@@ -30,6 +30,7 @@ public class Application {
         return args -> {
 
             Course courseAlgebra100 = new Course("Algebra 100");
+            courseAlgebra100.setCode("C1");
             courseRepository.save(courseAlgebra100);
             Course courseAlgebra200 = new Course("Algebra 200");
             courseRepository.save(courseAlgebra200);
@@ -52,6 +53,7 @@ public class Application {
 
 
             Course courseEnglish100 = new Course("English 100");
+            courseEnglish100.setCode("C2");
             courseRepository.save(courseEnglish100);
             Course courseEnglish200 = new Course("English 200");
             courseRepository.save(courseEnglish200);
@@ -117,6 +119,7 @@ public class Application {
             Degree degreeHistory300 = new Degree("History 300");
 
 
+            degreeMaths100.setCode("D1");
             degreeMaths100.setCourses(new HashSet<>() {{
                 add(courseAlgebra100);
                 add(courseGeometry100);
@@ -159,6 +162,7 @@ public class Application {
             }});
             degreeRepository.save(degreeLanguages300);
 
+            degreeHistory100.setCode("D2");
             degreeHistory100.setCourses(new HashSet<>() {{
                 add(courseUSHistory100);
                 add(courseUKHistory100);
@@ -194,9 +198,10 @@ public class Application {
 
 
             Professor professor1 = new Professor("Fleming", "Adam", Gender.GENDER_MALE);
+            professor1.setCode("P1");
             professorRepository.save(professor1);
             Professor professor2 = new Professor("Veal", "Ann", Gender.GENDER_FEMALE);
-            professor2.setCode("X100");
+            professor2.setCode("P2");
             professorRepository.save(professor2);
             Professor professor3 = new Professor("Sugar", "Barry", Gender.GENDER_MALE);
             professorRepository.save(professor3);
@@ -383,14 +388,14 @@ public class Application {
             Student student49 = new Student("Philip", "Bradley", Gender.GENDER_MALE);
 
 
-            student1.setCode("Y100");
+            student1.setCode("S1");
             student1.setMajorDegree(degreeMaths100);
             student1.setMinorDegree(degreeLanguages100);
             studentRepository.save(student1);
             student2.setMajorDegree(degreeMaths100);
             student2.setMinorDegree(degreeHistory100);
             studentRepository.save(student2);
-            student3.setCode("Z200");
+            student3.setCode("S2");
             student3.setMajorDegree(degreeHistory200);
             student3.setMinorDegree(degreeMaths200);
             studentRepository.save(student3);

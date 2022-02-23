@@ -14,6 +14,7 @@ import xyz.realraec.universityback.service.implementation.StudentServiceImplemen
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Map;
 
 @RestController
@@ -129,6 +130,57 @@ public class StudentController {
                         // Either true or false key
                         .data(Map.of("deleted", studentService.delete(id)))
                         .message("Student deleted")
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build()
+        );
+    }
+
+
+    @GetMapping("/getCourses/{id}")
+    public ResponseEntity<Response> getStudentsForCourses(
+            @PathVariable("id") Long[] studentsIdList
+    ) throws Exception {
+        return ResponseEntity.ok(
+                Response.builder()
+                        // All the information to be passed
+                        .timestamp(LocalDateTime.now())
+                        // Where the service (implementation) method is to be found
+                        .data(Map.of("courses", studentService.getCourses(studentsIdList)))
+                        .message("Courses retrieved for students with id " + Arrays.toString(studentsIdList))
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build()
+        );
+    }
+
+
+    @PutMapping("/setNewMinorDegree")
+    public ResponseEntity<Response> setNewMinorDegreeForStudents(
+            @RequestParam Long[] studentsIdList,
+            @RequestParam String degreeCode
+    ) throws Exception {
+        return ResponseEntity.ok(
+                Response.builder()
+                        .timestamp(LocalDateTime.now())
+                        .data(Map.of("degree", studentService.setNewMinorDegree(studentsIdList, degreeCode)))
+                        .message("Students with id " + Arrays.toString(studentsIdList) + " set with new minor degree with code " + degreeCode)
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build()
+        );
+    }
+
+    @PutMapping("/setNewMajorDegree")
+    public ResponseEntity<Response> setNewMajorDegreeForStudents(
+            @RequestParam Long[] studentsIdList,
+            @RequestParam String degreeCode
+    ) throws Exception {
+        return ResponseEntity.ok(
+                Response.builder()
+                        .timestamp(LocalDateTime.now())
+                        .data(Map.of("degree", studentService.setNewMajorDegree(studentsIdList, degreeCode)))
+                        .message("Students with id " + Arrays.toString(studentsIdList) + " set with new major degree with code " + degreeCode)
                         .status(HttpStatus.OK)
                         .statusCode(HttpStatus.OK.value())
                         .build()

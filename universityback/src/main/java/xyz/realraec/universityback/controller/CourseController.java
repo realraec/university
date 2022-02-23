@@ -10,7 +10,6 @@ import xyz.realraec.universityback.service.implementation.CourseServiceImplement
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
@@ -141,7 +140,7 @@ public class CourseController {
     }*/
 
 
-    @PutMapping("/setNewProfessorMultiple")
+    @PutMapping("/setNewProfessor")
     public ResponseEntity<Response> setNewProfessorForCourses(
             @RequestParam Long[] coursesIdList,
             @RequestParam String professorCode
@@ -149,7 +148,7 @@ public class CourseController {
         return ResponseEntity.ok(
                 Response.builder()
                         .timestamp(LocalDateTime.now())
-                        .data(Map.of("professor", courseService.setNewProfessorMultiple(coursesIdList, professorCode)))
+                        .data(Map.of("professor", courseService.setNewProfessor(coursesIdList, professorCode)))
                         .message("Courses with id " + Arrays.toString(coursesIdList) + " set with new professor with code " + professorCode)
                         .status(HttpStatus.OK)
                         .statusCode(HttpStatus.OK.value())
@@ -160,15 +159,15 @@ public class CourseController {
 
     @GetMapping("/getStudents/{id}")
     public ResponseEntity<Response> getStudentsForCourses(
-            @PathVariable("id") Long[] courseId
+            @PathVariable("id") Long[] coursesIdList
     ) throws Exception {
         return ResponseEntity.ok(
                 Response.builder()
                         // All the information to be passed
                         .timestamp(LocalDateTime.now())
                         // Where the service (implementation) method is to be found
-                        .data(Map.of("students", courseService.getStudents(courseId)))
-                        .message("Students retrieved for course with id " + Arrays.toString(courseId))
+                        .data(Map.of("students", courseService.getStudents(coursesIdList)))
+                        .message("Students retrieved for course with id " + Arrays.toString(coursesIdList))
                         .status(HttpStatus.OK)
                         .statusCode(HttpStatus.OK.value())
                         .build()
@@ -208,7 +207,7 @@ public class CourseController {
     }
 
     @PutMapping("/setIsExamMadeByProfessorMultiple")
-    public ResponseEntity<Response> setIsExamMadeByProfessorMultiple(
+    public ResponseEntity<Response> setIsExamMadeByProfessorForCourses(
             @RequestParam Long[] coursesIdList,
             @RequestParam Boolean isExamMadeByProfessor
     ) throws Exception {
@@ -224,7 +223,7 @@ public class CourseController {
     }
 
     @PutMapping("/setIsExamTakenByStudentsMultiple")
-    public ResponseEntity<Response> setIsExamTakenByStudentsMultiple(
+    public ResponseEntity<Response> setIsExamTakenByStudentsForCourses(
             @RequestParam Long[] coursesIdList,
             @RequestParam Boolean isExamTakenByStudents
     ) throws Exception {

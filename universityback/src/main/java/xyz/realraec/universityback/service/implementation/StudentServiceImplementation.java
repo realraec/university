@@ -1,20 +1,23 @@
 package xyz.realraec.universityback.service.implementation;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import xyz.realraec.universityback.enumeration.Diploma;
 import xyz.realraec.universityback.enumeration.Gender;
+import xyz.realraec.universityback.model.Course;
 import xyz.realraec.universityback.model.Degree;
+import xyz.realraec.universityback.model.Professor;
 import xyz.realraec.universityback.model.Student;
+import xyz.realraec.universityback.repository.DegreeRepository;
 import xyz.realraec.universityback.repository.StudentRepository;
 import xyz.realraec.universityback.service.StudentService;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.Objects;
+import java.util.*;
 
 
 // Creates a constructor using the one attribute as argument
@@ -26,6 +29,7 @@ import java.util.Objects;
 public class StudentServiceImplementation implements StudentService {
 
     private final StudentRepository studentRepository;
+    private final DegreeRepository degreeRepository;
 
 
     @Override
@@ -235,5 +239,79 @@ public class StudentServiceImplementation implements StudentService {
         studentRepository.deleteById(id);
         return Boolean.TRUE;
     }
+
+
+    @Override
+    public ArrayList<Set> getCourses(Long[] studentsIdList) throws Exception {
+        log.info("Getting courses for students with id: {}", Arrays.toString(studentsIdList));
+
+        ArrayList<Set> studentsCoursesList = new ArrayList<>();
+
+        for (int i = 0; i < studentsIdList.length; i++) {
+            Student student = get(studentsIdList[i]);
+            studentsCoursesList.add(student.getCourses());
+        }
+
+        return studentsCoursesList;
+    }
+
+    @Override
+    @Transactional
+    public Degree setNewMinorDegree(Long[] studentsIdList, String degreeCode) throws Exception {
+        log.info("Setting new minor degree for students with id: {}", Arrays.toString(studentsIdList));
+
+        Degree degree = degreeRepository.findByCode(degreeCode);
+        if (degree == null) {
+            throw new Exception("No degree could be found with this code.");
+        }
+
+        ArrayList<Student> studentsList = new ArrayList<>();
+
+        for (int i = 0; i < studentsIdList.length; i++) {
+            Student student = get(studentsIdList[i]);
+            studentsList.add(student);
+            if (student.getMinorDegree().getId() == degree.getId()) {
+                throw new Exception("The code of the new minor degree is the same as the old one" + (studentsIdList.length == 1 ? "" : " for at least one of the students") + ".");
+            } else if (student.getMajorDegree().getId() == degree.getId()) {
+                throw new Exception("The code of the new minor degree is the same as the code of the current major degree" + (studentsIdList.length == 1 ? "" : " for at least one of the students") + ".");
+            }
+        }
+
+        for (int i = 0; i < studentsList.size(); i++) {
+            studentsList.get(i).setMinorDegree(degree);
+        }
+        return degree;
+    }
+
+
+    @Override
+    @Transactional
+    public Degree setNewMajorDegree(Long[] studentsIdList, String degreeCode) throws Exception {
+        log.info("Setting new major degree for students with id: {}", Arrays.toString(studentsIdList));
+
+        Degree degree = degreeRepository.findByCode(degreeCode);
+        if (degree == null) {
+            throw new Exception("No degree could be found with this code.");
+        }
+
+        ArrayList<Student> studentsList = new ArrayList<>();
+
+        for (int i = 0; i < studentsIdList.length; i++) {
+            Student student = get(studentsIdList[i]);
+            studentsList.add(student);
+            if (student.getMajorDegree().getId() == degree.getId()) {
+                throw new Exception("The code of the new major degree is the same as the old one" + (studentsIdList.length == 1 ? "" : " for at least one of the students") + ".");
+            } else if (student.getMinorDegree().getId() == degree.getId()) {
+                throw new Exception("The code of the new major degree is the same as the code of the current minor degree" + (studentsIdList.length == 1 ? "" : " for at least one of the students") + ".");
+            }
+        }
+
+        for (int i = 0; i < studentsList.size(); i++) {
+            studentsList.get(i).setMajorDegree(degree);
+        }
+        return degree;
+    }
+
+
 }
 

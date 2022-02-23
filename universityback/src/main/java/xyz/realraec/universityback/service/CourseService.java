@@ -27,7 +27,7 @@ public interface CourseService {
 
     //Professor setNewProfessor(Long id, String professorCode) throws Exception;
 
-    Professor setNewProfessorMultiple(Long[] coursesIdList, String professorCode) throws Exception;
+    Professor setNewProfessor(Long[] coursesIdList, String professorCode) throws Exception;
 
     ArrayList<Set> getStudents(Long[] coursesIdList) throws Exception;
 

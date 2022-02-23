@@ -7,14 +7,13 @@ import org.springframework.stereotype.Service;
 import xyz.realraec.universityback.enumeration.Department;
 import xyz.realraec.universityback.model.Course;
 import xyz.realraec.universityback.model.Degree;
+import xyz.realraec.universityback.model.Student;
+import xyz.realraec.universityback.repository.CourseRepository;
 import xyz.realraec.universityback.repository.DegreeRepository;
 import xyz.realraec.universityback.service.DegreeService;
 
 import javax.transaction.Transactional;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 
 // Creates a constructor using the one attribute as argument
@@ -26,6 +25,7 @@ import java.util.Set;
 public class DegreeServiceImplementation implements DegreeService {
 
     private final DegreeRepository degreeRepository;
+    private final CourseRepository courseRepository;
 
 
     @Override
@@ -122,6 +122,71 @@ public class DegreeServiceImplementation implements DegreeService {
         log.info("Deleting degree with id: {}", id);
         degreeRepository.deleteById(id);
         return Boolean.TRUE;
+    }
+
+
+    @Override
+    @Transactional
+    public Course addCourse(Long[] degreesIdList, String courseCode) throws Exception {
+        log.info("Adding course for degrees with id: {}", Arrays.toString(degreesIdList));
+
+        Course course = courseRepository.findByCode(courseCode);
+        if (course == null) {
+            throw new Exception("No course could be found with this code.");
+        }
+
+        ArrayList<Degree> degreeList = new ArrayList<>();
+
+        for (int i = 0; i < degreesIdList.length; i++) {
+            Degree degree = get(degreesIdList[i]);
+            degreeList.add(degree);
+
+            Set<Course> coursesSet = degree.getCourses();
+            for (Course value : coursesSet) {
+                if (value.getId() == course.getId()) {
+                    throw new Exception("The course is already included" + (degreesIdList.length == 1 ? "" : " in at least one of the degrees") + ".");
+                }
+            }
+        }
+
+        for (int i = 0; i < degreeList.size(); i++) {
+            degreeList.get(i).addCourse(course);
+        }
+        return course;
+    }
+
+    @Override
+    @Transactional
+    public Course removeCourse(Long[] degreesIdList, String courseCode) throws Exception {
+        log.info("Removing course for degrees with id: {}", Arrays.toString(degreesIdList));
+
+        Course course = courseRepository.findByCode(courseCode);
+        if (course == null) {
+            throw new Exception("No course could be found with this code.");
+        }
+
+        ArrayList<Degree> degreeList = new ArrayList<>();
+
+        for (int i = 0; i < degreesIdList.length; i++) {
+            Degree degree = get(degreesIdList[i]);
+            degreeList.add(degree);
+
+            Set<Course> coursesSet = degree.getCourses();
+            boolean coursePresent = false;
+            for (Course value : coursesSet) {
+                if (value.getId() == course.getId()) {
+                    coursePresent = true;
+                }
+            }
+            if (!coursePresent) {
+                throw new Exception("The course is not included" + (degreesIdList.length == 1 ? "" : " in at least one of the degrees") + ".");
+            }
+        }
+
+        for (int i = 0; i < degreeList.size(); i++) {
+            degreeList.get(i).removeCourse(course);
+        }
+        return course;
     }
 
 }

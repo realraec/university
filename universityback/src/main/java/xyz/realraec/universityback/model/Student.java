@@ -195,9 +195,9 @@ public class Student extends Person {
     }
 
 
-    //@JsonIgnore
-    @JsonIgnoreProperties(
-            {"department", "isExamMadeByProfessor", "isExamTakenByStudents", "professor", "students"})
+    @JsonIgnore
+    //@JsonIgnoreProperties(
+    //        {"department", "isExamMadeByProfessor", "isExamTakenByStudents", "professor", "students"})
     @ManyToMany(
             //fetch = FetchType.EAGER,
             mappedBy = "students"

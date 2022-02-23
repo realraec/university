@@ -17,14 +17,27 @@ $('#buttons-placeholder').load('buttons.html', function () {
   const examsButtons = document.getElementById('examsButtons');
   const coursesButtons = document.getElementById('coursesButtons');
 
+  // PERSONS
   const promoteButton = document.getElementById('promoteButton');
+
+  // STUDENTS
+  const setNewMinorDegreeButton = document.getElementById('setNewMinorDegreeButton');
+  const setNewMajorDegreeButton = document.getElementById('setNewMajorDegreeButton');
+
+
+
+  // ALL
   const newEntryButton = document.getElementById('newEntryButton');
   const deleteButton = document.getElementById('deleteButton');
+
+  // COURSES
   const setNewProfessorButton = document.getElementById('setNewProfessorButton');
-  const testButtonABC = document.getElementById('testButtonABC');
-  //testButtonABC.addEventListener('click', getStudents)
   const toggleIsExamMadeButton = document.getElementById('toggleIsExamMadeButton');
   const toggleIsExamTakenButton = document.getElementById('toggleIsExamTakenButton');
+  
+  const testButtonABC = document.getElementById('testButtonABC');
+  //testButtonABC.addEventListener('click', getStudents)
+  
 
 });
 
@@ -183,6 +196,128 @@ async function removeStudentFunction() {
 };
 
 
+async function addCourseFunction() {
+
+  // Getting the ids of the current rows
+  let currentRows = $table.bootstrapTable('getData');
+  var currentRowsId = [];
+  for (let i = 0; i < currentRows.length; i++) {
+    currentRowsId.push(currentRows[i].id)
+  }
+
+  // To force the user to wait for the response
+  disableButtonsInModal();
+
+  // Performing the operation
+  const response = await fetch('http://localhost:8080/degrees/addCourse', {
+    method: 'put',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    body: new URLSearchParams({
+      "degreesIdList": currentRowsId,
+      "courseCode": codeModalInput.value
+    })
+  }).then(response => response.json())
+    .then(data => {
+      console.log(data);
+
+      // To let the user perform other actions afterward
+      enableButtonsInModal();
+
+      // If the Java method throws an exception
+      if (checkIfErrorOccurred(data)) {
+        return;
+      }
+
+      // Extracting the new value from the response
+      let temp = data.data.course;
+      let courseReturned = {
+        id: temp.id,
+        code: temp.code,
+        heading: temp.heading
+      }
+
+      // Update the current table adding the student to the array
+      for (let index = 0; index < currentRows.length; index++) {
+        let coursesSet = [...currentRows[index].courses];
+        coursesSet.push(courseReturned);
+
+        $table.bootstrapTable('updateCell', {
+          index: index,
+          field: 'courses',
+          value: coursesSet
+        })
+      }
+
+      // Update history with the changes made
+      updateHistoryWithChanges($table)
+    })
+};
+
+async function removeCourseFunction() {
+
+  // Getting the ids of the current rows
+  let currentRows = $table.bootstrapTable('getData');
+  var currentRowsId = [];
+  for (let i = 0; i < currentRows.length; i++) {
+    currentRowsId.push(currentRows[i].id)
+  }
+
+  // To force the user to wait for the response
+  disableButtonsInModal();
+
+  // Performing the operation
+  const response = await fetch('http://localhost:8080/degrees/removeCourse', {
+    method: 'put',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    body: new URLSearchParams({
+      "degreesIdList": currentRowsId,
+      "courseCode": codeModalInput.value
+    })
+  }).then(response => response.json())
+    .then(data => {
+      console.log(data);
+
+      // To let the user perform other actions afterward
+      enableButtonsInModal();
+
+      // If the Java method throws an exception
+      if (checkIfErrorOccurred(data)) {
+        return;
+      }
+
+      // Extracting the new value from the response
+      let temp = data.data.course;
+      let courseReturned = {
+        id: temp.id,
+        code: temp.code,
+        heading: temp.heading
+      }
+
+      // Update the current table removing the course from the array
+      for (let index = 0; index < currentRows.length; index++) {
+        let coursesSet = [...currentRows[index].courses];
+        coursesSet = coursesSet.filter(function (object) {
+          return object.id !== courseReturned.id;
+        });
+
+        $table.bootstrapTable('updateCell', {
+          index: index,
+          field: 'courses',
+          value: coursesSet
+        })
+      }
+
+      // Update history with the changes made
+      updateHistoryWithChanges($table)
+    })
+};
+
+
+
 async function setNewProfessorFunction() {
 
   // Getting the ids of the current rows
@@ -197,7 +332,7 @@ async function setNewProfessorFunction() {
   disableButtonsInModal();
 
   // Performing the operation
-  const response = await fetch('http://localhost:8080/courses/setNewProfessorMultiple', {
+  const response = await fetch('http://localhost:8080/courses/setNewProfessor', {
     method: 'put',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
@@ -240,6 +375,123 @@ async function setNewProfessorFunction() {
       updateHistoryWithChanges($table)
     })
 };
+
+
+async function setNewMajorDegreeFunction() {
+
+  // Getting the ids of the current rows
+  let currentRows = $table.bootstrapTable('getData');
+  var currentRowsId = [];
+  for (let i = 0; i < currentRows.length; i++) {
+    currentRowsId.push(currentRows[i].id)
+  }
+
+
+  // To force the user to wait for the response
+  disableButtonsInModal();
+
+  // Performing the operation
+  const response = await fetch('http://localhost:8080/students/setNewMajorDegree', {
+    method: 'put',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    body: new URLSearchParams({
+      "studentsIdList": currentRowsId,
+      "degreeCode": codeModalInput.value
+    })
+  }).then(response => response.json())
+    .then(data => {
+      console.log(data);
+
+      // To let the user perform other actions afterward
+      enableButtonsInModal();
+
+      // If the Java method throws an exception
+      if (checkIfErrorOccurred(data)) {
+        return;
+      }
+
+      // Extracting the new value from the response
+      let temp = data.data.degree;
+      let degreeReturned = {
+        id: temp.id,
+        code: temp.code,
+        heading: temp.heading,
+      }
+
+      // Update the current table with the changed value returned
+      for (let index = 0; index < currentRows.length; index++) {
+        $table.bootstrapTable('updateCell', {
+          index: index,
+          field: 'majorDegree',
+          value: degreeReturned
+        })
+      }
+
+      // Update history with the changes made
+      updateHistoryWithChanges($table)
+    })
+};
+
+async function setNewMinorDegreeFunction() {
+
+  // Getting the ids of the current rows
+  let currentRows = $table.bootstrapTable('getData');
+  var currentRowsId = [];
+  for (let i = 0; i < currentRows.length; i++) {
+    currentRowsId.push(currentRows[i].id)
+  }
+
+
+  // To force the user to wait for the response
+  disableButtonsInModal();
+
+  // Performing the operation
+  const response = await fetch('http://localhost:8080/students/setNewMinorDegree', {
+    method: 'put',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    body: new URLSearchParams({
+      "studentsIdList": currentRowsId,
+      "degreeCode": codeModalInput.value
+    })
+  }).then(response => response.json())
+    .then(data => {
+      console.log(data);
+
+      // To let the user perform other actions afterward
+      enableButtonsInModal();
+
+      // If the Java method throws an exception
+      if (checkIfErrorOccurred(data)) {
+        return;
+      }
+
+      // Extracting the new value from the response
+      let temp = data.data.degree;
+      let degreeReturned = {
+        id: temp.id,
+        code: temp.code,
+        heading: temp.heading,
+      }
+
+      // Update the current table with the changed value returned
+      for (let index = 0; index < currentRows.length; index++) {
+        $table.bootstrapTable('updateCell', {
+          index: index,
+          field: 'minorDegree',
+          value: degreeReturned
+        })
+      }
+
+      // Update history with the changes made
+      updateHistoryWithChanges($table)
+    })
+};
+
+
 
 
 async function getStudents() {

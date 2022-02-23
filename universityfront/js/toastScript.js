@@ -33,7 +33,7 @@ $('#toast-placeholder').load('toast.html', function () {
         buttonsArray[index].addEventListener("click", lastActionButtonClicked)
     }
 
-    
+
     var buttonClickedId;
 
     function lastActionButtonClicked(e) {
@@ -42,7 +42,12 @@ $('#toast-placeholder').load('toast.html', function () {
 
         codeModalConfirmButton.removeEventListener('click', addStudentFunction, false)
         codeModalConfirmButton.removeEventListener('click', removeStudentFunction, false)
+        codeModalConfirmButton.removeEventListener('click', addCourseFunction, false)
+        codeModalConfirmButton.removeEventListener('click', removeCourseFunction, false)
         codeModalConfirmButton.removeEventListener('click', setNewProfessorFunction, false)
+        codeModalConfirmButton.removeEventListener('click', setNewMajorDegreeFunction, false)
+        codeModalConfirmButton.removeEventListener('click', setNewMinorDegreeFunction, false)
+
         //codeModalConfirmButton.removeEventListener('click', testFunction, false)
 
         radioModalConfirmButton.removeEventListener('click', toggleIsExamMadeFunction, false)
@@ -52,9 +57,19 @@ $('#toast-placeholder').load('toast.html', function () {
 
         switch (buttonClickedId) {
             case "setNewProfessorButton":
-                codeModalInput.value = "X100"
+                codeModalInput.value = "P1"
                 codeModalInputLabel.textContent = "Code of the new professor"
                 codeModalConfirmButton.addEventListener('click', setNewProfessorFunction);
+                break;
+            case "setNewMajorDegreeButton":
+                codeModalInput.value = "D1"
+                codeModalInputLabel.textContent = "Code of the new major degree"
+                codeModalConfirmButton.addEventListener('click', setNewMajorDegreeFunction);
+                break;
+            case "setNewMinorDegreeButton":
+                codeModalInput.value = "D2"
+                codeModalInputLabel.textContent = "Code of the new minor degree"
+                codeModalConfirmButton.addEventListener('click', setNewMinorDegreeFunction);
                 break;
             case "testButtonABC":
                 selectModalInputOption.textContent = "testtt"
@@ -68,21 +83,32 @@ $('#toast-placeholder').load('toast.html', function () {
                 radioModalConfirmButton.addEventListener('click', toggleIsExamMadeFunction);
                 break;
             case "toggleIsExamTakenButton":
-                radioModalInputLabel.textContent = "State of the exam"
+                radioModalInputLabel.textContent = "State of the exam (taken)"
                 radioModalInputRadio1Label.innerHTML = "<i class='bi bi-check-circle ms-1 me-2'></i>Taken"
                 radioModalInputRadio2Label.innerHTML = "<i class='bi bi-x-circle-fill ms-1 me-2'></i>Not taken"
                 radioModalConfirmButton.addEventListener('click', toggleIsExamTakenFunction);
                 break;
             case "addStudentButton":
-                codeModalInput.value = "Y100"
+                codeModalInput.value = "S1"
                 codeModalInputLabel.textContent = "Code of the student to add"
                 codeModalConfirmButton.addEventListener('click', addStudentFunction);
                 break;
             case "removeStudentButton":
-                codeModalInput.value = "Y100"
+                codeModalInput.value = "S1"
                 codeModalInputLabel.textContent = "Code of the student to remove"
                 codeModalConfirmButton.addEventListener('click', removeStudentFunction);
                 break;
+            case "addCourseButton":
+                codeModalInput.value = "C1"
+                codeModalInputLabel.textContent = "Code of the course to add"
+                codeModalConfirmButton.addEventListener('click', addCourseFunction);
+                break;
+            case "removeCourseButton":
+                codeModalInput.value = "C1"
+                codeModalInputLabel.textContent = "Code of the course to remove"
+                codeModalConfirmButton.addEventListener('click', removeCourseFunction);
+                break;
+
         }
 
 
@@ -98,6 +124,14 @@ $('#toast-placeholder').load('toast.html', function () {
             case "setNewProfessorButton":
                 operationHeader = "New professor"
                 operationBody = "professor changed";
+                break;
+            case "setNewMajorDegreeButton":
+                operationHeader = "New major degree"
+                operationBody = "majors changed";
+                break;
+            case "setNewMinorDegreeButton":
+                operationHeader = "New minor degree"
+                operationBody = "minors changed";
                 break;
             case "testButtonABC":
                 operationHeader = "Button test"
@@ -119,6 +153,14 @@ $('#toast-placeholder').load('toast.html', function () {
                 operationHeader = "Remove student"
                 operationBody = "student removed";
                 break;
+            case "addCourseButton":
+                operationHeader = "Add course"
+                operationBody = "course added";
+                break;
+            case "removeCourseButton":
+                operationHeader = "Remove course"
+                operationBody = "course removed";
+                break;
         }
 
         toastHeaderText.textContent = operationHeader + " notification";
@@ -136,20 +178,20 @@ $('#toast-placeholder').load('toast.html', function () {
 function checkIfErrorOccurred(data) {
     // If the Java method throws an exception
     if (data.status == 500) {
-      toastBodyText.textContent = "Operation failed: " + data.message;
-      toastHeaderIcon.classList.remove("text-success");
-      toastHeaderIcon.classList.add("text-danger");
-      //console.log(data)
-      $('#codeModal').modal('hide');
-      $('#radioModal').modal('hide');
-      $('#selectModal').modal('hide');
-      toast.show();
-      return true;
+        toastBodyText.textContent = "Operation failed: " + data.message;
+        toastHeaderIcon.classList.remove("text-success");
+        toastHeaderIcon.classList.add("text-danger");
+        //console.log(data)
+        $('#codeModal').modal('hide');
+        $('#radioModal').modal('hide');
+        $('#selectModal').modal('hide');
+        toast.show();
+        return true;
     } else {
-      $('#codeModal').modal('hide');
-      $('#radioModal').modal('hide');
-      $('#selectModal').modal('hide');
-      toast.show();
-      return false;
+        $('#codeModal').modal('hide');
+        $('#radioModal').modal('hide');
+        $('#selectModal').modal('hide');
+        toast.show();
+        return false;
     }
-  }
+}

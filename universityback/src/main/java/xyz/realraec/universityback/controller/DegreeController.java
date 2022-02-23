@@ -12,6 +12,7 @@ import xyz.realraec.universityback.service.implementation.DegreeServiceImplement
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
 
@@ -114,6 +115,39 @@ public class DegreeController {
                         // Either true or false key
                         .data(Map.of("deleted", degreeService.delete(id)))
                         .message("Degree deleted")
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build()
+        );
+    }
+
+
+    @PutMapping("/addCourse")
+    public ResponseEntity<Response> addCourseForDegrees(
+            @RequestParam Long[] degreesIdList,
+            @RequestParam String courseCode
+    ) throws Exception {
+        return ResponseEntity.ok(
+                Response.builder()
+                        .timestamp(LocalDateTime.now())
+                        .data(Map.of("course", degreeService.addCourse(degreesIdList, courseCode)))
+                        .message("Degrees with id " + Arrays.toString(degreesIdList) + " had course with code " + courseCode + " added")
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build()
+        );
+    }
+
+    @PutMapping("/removeCourse")
+    public ResponseEntity<Response> removeCourseForDegrees(
+            @RequestParam Long[] degreesIdList,
+            @RequestParam String courseCode
+    ) throws Exception {
+        return ResponseEntity.ok(
+                Response.builder()
+                        .timestamp(LocalDateTime.now())
+                        .data(Map.of("course", degreeService.removeCourse(degreesIdList, courseCode)))
+                        .message("Degrees with id " + Arrays.toString(degreesIdList) + " had course with code " + courseCode + " added")
                         .status(HttpStatus.OK)
                         .statusCode(HttpStatus.OK.value())
                         .build()

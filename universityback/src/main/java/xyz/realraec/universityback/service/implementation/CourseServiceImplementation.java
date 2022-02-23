@@ -184,7 +184,7 @@ public class CourseServiceImplementation implements CourseService {
 
     @Override
     @Transactional
-    public Professor setNewProfessorMultiple(Long[] coursesIdList, String professorCode) throws Exception {
+    public Professor setNewProfessor(Long[] coursesIdList, String professorCode) throws Exception {
         log.info("Setting new professor for courses with id: {}", Arrays.toString(coursesIdList));
 
         //Thread.sleep(2000);
@@ -216,6 +216,7 @@ public class CourseServiceImplementation implements CourseService {
         return course.getStudents();
     }*/
 
+    @Override
     public ArrayList<Set> getStudents(Long[] coursesIdList) throws Exception {
         log.info("Getting students for courses with id: {}", Arrays.toString(coursesIdList));
 
