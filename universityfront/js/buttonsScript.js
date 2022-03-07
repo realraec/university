@@ -2,7 +2,7 @@ $('#buttons-placeholder').load('buttons.html', function () {
   $(this).children(':first').unwrap();
 
 
-  const buttons = document.getElementById('buttons');
+  /* const buttons = document.getElementById('buttons');
 
   const contactButtons = document.getElementById('contactButtons');
   const degreesButtons = document.getElementById('degreesButtons');
@@ -35,8 +35,7 @@ $('#buttons-placeholder').load('buttons.html', function () {
   const toggleIsExamMadeButton = document.getElementById('toggleIsExamMadeButton');
   const toggleIsExamTakenButton = document.getElementById('toggleIsExamTakenButton');
   
-  const testButtonABC = document.getElementById('testButtonABC');
-  //testButtonABC.addEventListener('click', getStudents)
+  const setNewDegreeButton = document.getElementById('setNewDegreeButton'); */
   
 
 });
@@ -525,6 +524,46 @@ async function getStudents() {
     });
 };
 
+
+async function getGenders() {
+
+  // Performing the operation
+  const response = await fetch('http://localhost:8080/misc/getGenders', {
+    method: 'get',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    }
+  }).then(response => response.json())
+    .then(data => {
+      console.log(data);
+
+      // If the Java method throws an exception
+      if (data.status == 500) {
+        return;
+      }
+
+      // Extracting the new value from the response
+      let temp = data.data.genders;
+      console.log(temp)
+
+      // Removing the possibly previously-fetched values
+      $('#selectModalInput').find('option').not(':first').remove();
+      $('#newOrEditPersonModalGenderSelectInput').find('option').not(':first').remove();
+
+      // Adding the newly-fetched values
+      for (let i = 0; i < temp.length; i++) {
+        var option = temp[i];
+        var element = document.createElement("option");
+        element.textContent = option;
+        element.value = option;
+        selectModalInput.appendChild(element);
+        newOrEditPersonModalGenderSelectInput.appendChild(element);
+      }
+
+    });
+};
+
+
 async function getDepartments() {
 
   // Performing the operation
@@ -546,6 +585,45 @@ async function getDepartments() {
       let temp = data.data.departments;
       console.log(temp)
 
+      // Removing the possibly previously-fetched values
+      $('#selectModalInput').find('option').not(':first').remove();
+      $('#newOrEditStudyModalDepartmentSelectInput').find('option').not(':first').remove();
+
+      // Adding the newly-fetched values
+      for (let i = 0; i < temp.length; i++) {
+        var option = temp[i];
+        var element = document.createElement("option");
+        element.textContent = option;
+        element.value = option;
+        selectModalInput.appendChild(element);
+        newOrEditStudyModalDepartmentSelectInput.appendChild(element);
+      }
+
+    });
+};
+
+
+/* async function getDiplomas() {
+
+  // Performing the operation
+  const response = await fetch('http://localhost:8080/misc/getDiplomas', {
+    method: 'get',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    }
+  }).then(response => response.json())
+    .then(data => {
+      console.log(data);
+
+      // If the Java method throws an exception
+      if (data.status == 500) {
+        return;
+      }
+
+      // Extracting the new value from the response
+      let temp = data.data.diplomas;
+      console.log(temp)
+
       for (let i = 0; i < temp.length; i++) {
         var option = temp[i];
         var element = document.createElement("option");
@@ -555,7 +633,7 @@ async function getDepartments() {
       }
 
     });
-};
+}; */
 
 
 
@@ -682,3 +760,172 @@ async function toggleIsExamTakenFunction() {
 
     });
 }
+
+
+async function newEntryStudentFunction() {
+  var history = JSON.parse(localStorage["history"]);
+
+  // To force the user to wait for the response
+  disableButtonsInModal();
+
+  // Performing the operation
+  const response = await fetch('http://localhost:8080/students/create', {
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      "lastName": newOrEditPersonModalLastNameInput.value,
+      "firstName": newOrEditPersonModalFirstNameInput.value,
+      "gender": newOrEditPersonModalGenderSelectInput.value,
+      "birthdate": newOrEditPersonModalBirthdateInput.value,
+      "email": newOrEditPersonModalEmailInput.value,
+      "phone": newOrEditPersonModalPhoneInput.value
+    })
+  }).then(response => response.json())
+    .then(data => {
+      console.log(data)
+
+      // To let the user perform other actions afterward
+      enableButtonsInModal();
+
+      // If the Java method throws an exception
+      if (checkIfErrorOccurred(data)) {
+        return;
+      }
+
+      // Extracting the new value from the response
+      let temp = data.data.student;
+      for (let i = 0; i < history.length; i++) {
+        history[i].push(temp);
+      }
+
+      localStorage["history"] = JSON.stringify(history);
+      $table.bootstrapTable('append', temp);
+    });
+};
+
+
+async function newEntryProfessorFunction() {
+  var history = JSON.parse(localStorage["history"]);
+
+  // To force the user to wait for the response
+  disableButtonsInModal();
+
+  // Performing the operation
+  const response = await fetch('http://localhost:8080/professors/create', {
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      "lastName": newOrEditPersonModalLastNameInput.value,
+      "firstName": newOrEditPersonModalFirstNameInput.value,
+      "gender": newOrEditPersonModalGenderSelectInput.value,
+      "birthdate": newOrEditPersonModalBirthdateInput.value,
+      "email": newOrEditPersonModalEmailInput.value,
+      "phone": newOrEditPersonModalPhoneInput.value
+    })
+  }).then(response => response.json())
+    .then(data => {
+      console.log(data)
+
+      // To let the user perform other actions afterward
+      enableButtonsInModal();
+
+      // If the Java method throws an exception
+      if (checkIfErrorOccurred(data)) {
+        return;
+      }
+
+      // Extracting the new value from the response
+      let temp = data.data.professor;
+      for (let i = 0; i < history.length; i++) {
+        history[i].push(temp);
+      }
+
+      localStorage["history"] = JSON.stringify(history);
+      $table.bootstrapTable('append', temp);
+    });
+};
+
+
+
+async function newEntryCourseFunction() {
+  var history = JSON.parse(localStorage["history"]);
+
+  // To force the user to wait for the response
+  disableButtonsInModal();
+
+  // Performing the operation
+  const response = await fetch('http://localhost:8080/courses/create', {
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      "heading": newOrEditStudyModalHeadingInput.value,
+      "department": newOrEditStudyModalDepartmentSelectInput.value,
+    })
+  }).then(response => response.json())
+    .then(data => {
+      console.log(data)
+
+      // To let the user perform other actions afterward
+      enableButtonsInModal();
+
+      // If the Java method throws an exception
+      if (checkIfErrorOccurred(data)) {
+        return;
+      }
+
+      // Extracting the new value from the response
+      let temp = data.data.course;
+      for (let i = 0; i < history.length; i++) {
+        history[i].push(temp);
+      }
+
+      localStorage["history"] = JSON.stringify(history);
+      $table.bootstrapTable('append', temp);
+    });
+};
+
+
+async function newEntryDegreeFunction() {
+  var history = JSON.parse(localStorage["history"]);
+
+  // To force the user to wait for the response
+  disableButtonsInModal();
+
+  // Performing the operation
+  const response = await fetch('http://localhost:8080/degrees/create', {
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      "heading": newOrEditStudyModalHeadingInput.value,
+      "department": newOrEditStudyModalDepartmentSelectInput.value,
+    })
+  }).then(response => response.json())
+    .then(data => {
+      console.log(data)
+
+      // To let the user perform other actions afterward
+      enableButtonsInModal();
+
+      // If the Java method throws an exception
+      if (checkIfErrorOccurred(data)) {
+        return;
+      }
+
+      // Extracting the new value from the response
+      let temp = data.data.degree;
+      for (let i = 0; i < history.length; i++) {
+        history[i].push(temp);
+      }
+
+      localStorage["history"] = JSON.stringify(history);
+      $table.bootstrapTable('append', temp);
+    });
+};

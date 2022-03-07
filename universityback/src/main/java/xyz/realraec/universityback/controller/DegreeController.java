@@ -56,7 +56,7 @@ public class DegreeController {
     @PostMapping("/create")
     // A body is needed since you can't save an empty object as a server
     public ResponseEntity<Response> createDegree(@RequestBody @Valid Degree degree) {
-        //degree = new Degree(degree.getHeading());
+        degree = new Degree(degree.getHeading(), degree.getDepartment());
         // The .created() method also exists but returns a URI, and we want the message as well
         return ResponseEntity.ok(
                 Response.builder()
@@ -147,7 +147,7 @@ public class DegreeController {
                 Response.builder()
                         .timestamp(LocalDateTime.now())
                         .data(Map.of("course", degreeService.removeCourse(degreesIdList, courseCode)))
-                        .message("Degrees with id " + Arrays.toString(degreesIdList) + " had course with code " + courseCode + " added")
+                        .message("Degrees with id " + Arrays.toString(degreesIdList) + " had course with code " + courseCode + " removed")
                         .status(HttpStatus.OK)
                         .statusCode(HttpStatus.OK.value())
                         .build()

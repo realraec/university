@@ -1,6 +1,8 @@
 function applyFormatter(modelColumns, i) {
     let temp = modelColumns[i].field
-    if (temp == 'minorDegree' || temp == 'majorDegree') {
+    if (temp == 'lastName') {
+        modelColumns[i].formatter = function (value) { return value.toUpperCase() }
+    } else if (temp == 'minorDegree' || temp == 'majorDegree') {
         modelColumns[i].formatter = degreeFormatter;
     } else if (temp == 'courses') {
         modelColumns[i].formatter = coursesFormatter;
@@ -68,7 +70,7 @@ function studentsFormatter(value, row, index, field) {
             if (i % 2 == 0) {
                 finalStringToReturn += " — "
             } else {
-                finalStringToReturn += "<br>"
+                finalStringToReturn += "<br/>"
             }
         }
     }

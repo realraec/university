@@ -43,6 +43,15 @@ public class Course extends Study {
         }
     }
 
+    public Course(String heading, Department department) {
+        this.heading = heading;
+        this.department = department;
+        this.code = "C" + generateCodeAndDpt();
+
+        isExamMadeByProfessor = false;
+        isExamTakenByStudents = false;
+    }
+
     /*public Course(String heading, Professor professor, Set<Student> students) {
         Random random = new Random();
         isExamMadeByProfessor = ((random.nextInt(2)) == 1);

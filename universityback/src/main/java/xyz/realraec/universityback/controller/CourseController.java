@@ -54,7 +54,7 @@ public class CourseController {
     @PostMapping("/create")
     // A body is needed since you can't save an empty object as a server
     public ResponseEntity<Response> createCourse(@RequestBody @Valid Course course) {
-        course = new Course(course.getHeading());
+        course = new Course(course.getHeading(), course.getDepartment());
         // The .created() method also exists but returns a URI, and we want the message as well
         return ResponseEntity.ok(
                 Response.builder()

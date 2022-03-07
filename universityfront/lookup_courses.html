@@ -134,105 +134,7 @@
 
   <script>
 
-
-
-    //const toggleIsExamMadeButton = document.getElementById('toggleIsExamMadeButton');
-    //const toggleIsExamTakenButton = document.getElementById('toggleIsExamTakenButton');
-
-
-
-    /* $(document).ready(function () {
-    }); */
-
-
-
-    /*     toast2 = toastList[1];
-    const liveToastBtn2 = document.getElementById("liveToastBtn2");
-    liveToastBtn2.addEventListener("click", (e) => { toast2.show(); }) */
-
-
-
-
-    /* const codeModalConfirmButton = document.getElementById('codeModalConfirmButton');
-    const codeModalCancelButton = document.getElementById('codeModalCancelButton');
-    const codeModalCloseButton = document.getElementById('codeModalCloseButton');
-    const codeModalSpinner = document.getElementById('codeModalSpinner');
-    const codeModalInput = document.getElementById('codeModalInput');
-    const codeModalInputLabel = document.getElementById('codeModalInputLabel');
-
-    const radioModalConfirmButton = document.getElementById('radioModalConfirmButton');
-    const radioModalInputLabel = document.getElementById('radioModalInputLabel');
-    const radioModalInputRadio1Label = document.getElementById('radioModalInputRadio1Label');
-    const radioModalInputRadio2Label = document.getElementById('radioModalInputRadio2Label');
-    const radioModalCancelButton = document.getElementById('radioModalCancelButton');
-    const radioModalCloseButton = document.getElementById('radioModalCloseButton');
-    const radioModalSpinner = document.getElementById('radioModalSpinner');
-
-    const selectModalConfirmButton = document.getElementById('selectModalConfirmButton');
-    const selectModalCancelButton = document.getElementById('selectModalCancelButton');
-    const selectModalCloseButton = document.getElementById('selectModalCloseButton');
-    const selectModalSpinner = document.getElementById('selectModalSpinner');
-    const selectModalInput = document.getElementById('selectModalInput');
-    const selectModalInputOption = document.getElementById('selectModalInputOption'); */
-
-
-
-
-
-    //const informationModal = document.getElementById('informationModal');
-
-
-
-
-
-
-    //modalConfirmButton.addEventListener('click', setNewProf);
-
-
-
-
-    /* testButton.addEventListener('click', async _ => {
-
-      // Getting the ids of the current rows
-      let currentRows = $table.bootstrapTable('getData');
-      var currentRowsId = [];
-      for (let i = 0; i < currentRows.length; i++) {
-        currentRowsId.push(currentRows[i].id)
-      }
-      console.log(currentRowsId)
-
-      // Performing the operation
-      const response = await fetch('http://localhost:8080/misc/getDepartments', {
-        method: 'get',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-        }
-      }).then(response => response.json())
-        .then(data => {
-          console.log(data);
-
-          // If the Java method throws an exception
-          if (checkIfErrorOccurred(data)) {
-            return;
-          }
-
-          customizeAndDisplayToast();
-
-          // Extracting the new value from the response
-          let temp = data.data.departments;
-          console.log(temp)
-
-        });
-    }); */
-
-
-
-    // MULTIPLE
-    // GET
-
     $(document).ready(function () {
-
-
 
       degreesButtons.remove();
       levelButtons.remove();
@@ -241,8 +143,15 @@
       TBDButtons.remove();
       coursesButtons.remove();
 
+      newEntryPersonButton.remove();
+      editEntryPersonButton.remove();
+
+      editEntryStudyButton.disabled = true;
+
 
       //testButtonABC.addEventListener('click', getStudents);
+
+      newEntryStudyButton.addEventListener('click', getDepartments)
 
       buttons.classList.remove("invisible");
 
@@ -344,89 +253,6 @@
     };
 
 
-    // SINGLE
-    // PUT - ...FORM...
-    /* 
-      setNewProfessorButton.addEventListener('click', async _ => {
-        let windowScrollPosition = $(window).scrollTop()
-  
-        var history = JSON.parse(localStorage["history"]);
-  
-        let currentRows = $table.bootstrapTable('getData');
-  
-  
-        const response = await fetch('http://localhost:8080/courses/setNewProfessor/' + currentRows[0].id, {
-          method: 'put',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-          },
-          body: new URLSearchParams({
-            "professorCode": "X100"
-          })
-        }).then(response => response.json())
-          .then(data => {
-            console.log(data)
-  
-            // If the Java method throws an exception
-            if (data.status == 500) {
-              alert(data.message);
-              //console.log(data)
-              return;
-            }
-  
-            let temp = data.data.professor;
-            let professorReturned = {
-              id: temp.id,
-              code: temp.code,
-              lastName: temp.lastName,
-              firstName: temp.firstName
-            }
-  
-            $table.bootstrapTable('updateCell', {
-              index: 0,
-              field: 'professor',
-              value: professorReturned
-            })
-  
-  
-            // Update with the changed values
-            let newCurrentRows = $table.bootstrapTable('getData');
-  
-  
-  
-            // History tables
-            for (let j = 0; j < history.length; j++) {
-  
-              // History rows
-              for (let k = 0; k < history[j].length; k++) {
-  
-                if (newCurrentRows[0].id == history[j][k].id) {
-                  // Updating the item of the history
-                  history[j].splice(k, 1, newCurrentRows[0]);
-                  break;
-                }
-              }
-            }
-  
-  
-            localStorage["history"] = JSON.stringify(history);
-            //$(window).scrollTop(windowScrollPosition)
-  
-  
-          }).catch(error => {
-            alert("Please select a different professor.");
-          });
-  
-      });
-      */
-
-
-
-
-
-
-
-
 
 
     // DOM elements
@@ -468,6 +294,11 @@
           field: 'professor',
           title: 'Professor',
           filterControl: 'select'
+        }, {
+          field: 'degree',
+          title: 'Part of degree',
+          visible: false,
+          filterControl: 'input'
         }, {
           field: 'students',
           title: 'Students enrolled',

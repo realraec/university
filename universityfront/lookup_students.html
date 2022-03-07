@@ -88,7 +88,6 @@
 
   <div class="container">
 
-
     <h3 class="h3 mt-4">
       Students list<br />
       <small class="h4 text-muted">List of all the students enrolled at the university</small>
@@ -101,12 +100,6 @@
     <h4 class="h4 mt-5">Actions</h4>
     <div id="buttons-placeholder">
     </div>
-
-
-
-
-
-
 
   </div>
 
@@ -185,13 +178,18 @@
       coursesButtons.remove();
       TBDButtons.remove();
 
-      
+      newEntryStudyButton.remove();
+      editEntryStudyButton.remove();
+
+      editEntryPersonButton.disabled = true;
+
       buttons.classList.remove("invisible");
 
+      //newEntryPersonButton.addEventListener('click', newEntryStudentFunction);
+      //promoteButton.addEventListener('click', promoteFunction);
+      //deleteButton.addEventListener('click', deleteEntryStudentFunction);
 
-      newEntryButton.addEventListener('click', newEntryFunction);
-      promoteButton.addEventListener('click', promoteFunction);
-      deleteButton.addEventListener('click', deleteFunction);
+      newEntryPersonButton.addEventListener('click', getGenders)
 
 
     });
@@ -204,43 +202,14 @@
 
 
 
- 
+
     // POST - JSON
+
     
-    async function newEntryFunction() {
-      let windowScrollPosition = $(window).scrollTop();
-
-      var history = JSON.parse(localStorage["history"]);
-
-      const response = await fetch('http://localhost:8080/students/create', {
-        method: 'post',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          "lastName": "AAAAAAA",
-          "firstName": "zzzzzzz",
-          "gender": "GENDER_FEMALE"
-        })
-      }).then(response => response.json())
-        .then(data => {
-          console.log(data.data.student)
-          let addedRow = data.data.student;
-
-
-          for (let i = 0; i < history.length; i++) {
-            history[i].push(addedRow);
-          }
-
-          localStorage["history"] = JSON.stringify(history);
-          $table.bootstrapTable('append', addedRow);
-          $(window).scrollTop(windowScrollPosition)
-        });
-    };
 
 
     // PUT - ...FORM...
-    
+
     async function promoteFunction() {
       let windowScrollPosition = $(window).scrollTop()
 
@@ -298,8 +267,8 @@
 
 
     // DELETE
-    
-    async function deleteFunction() {
+
+    async function deleteEntryStudentFunction() {
       let windowScrollPosition = $(window).scrollTop()
 
       var history = JSON.parse(localStorage["history"]);
@@ -409,7 +378,6 @@
           title: 'Last name',
           filterControl: 'input',
           class: 'text-nowrap',
-          formatter: function (value) { return value.toUpperCase() }
         }, {
           field: 'firstName',
           title: 'First name',
@@ -432,6 +400,11 @@
           field: 'minorDegree',
           title: 'Minor degree',
           filterControl: 'select'
+        }, {
+          field: 'courses',
+          title: 'Enrolled in courses',
+          visible: false,
+          filterControl: 'input'
         }, {
           field: 'birthdate',
           title: 'Birthdate',

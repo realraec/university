@@ -130,6 +130,10 @@ public class DegreeServiceImplementation implements DegreeService {
     public Course addCourse(Long[] degreesIdList, String courseCode) throws Exception {
         log.info("Adding course for degrees with id: {}", Arrays.toString(degreesIdList));
 
+        if(degreesIdList.length > 1) {
+            throw new Exception("A course can only be included in one degree.");
+        }
+
         Course course = courseRepository.findByCode(courseCode);
         if (course == null) {
             throw new Exception("No course could be found with this code.");
@@ -144,7 +148,7 @@ public class DegreeServiceImplementation implements DegreeService {
             Set<Course> coursesSet = degree.getCourses();
             for (Course value : coursesSet) {
                 if (value.getId() == course.getId()) {
-                    throw new Exception("The course is already included" + (degreesIdList.length == 1 ? "" : " in at least one of the degrees") + ".");
+                    throw new Exception("The course is already included.");
                 }
             }
         }
@@ -159,6 +163,10 @@ public class DegreeServiceImplementation implements DegreeService {
     @Transactional
     public Course removeCourse(Long[] degreesIdList, String courseCode) throws Exception {
         log.info("Removing course for degrees with id: {}", Arrays.toString(degreesIdList));
+
+        if(degreesIdList.length > 1) {
+            throw new Exception("A course can only be included in one degree.");
+        }
 
         Course course = courseRepository.findByCode(courseCode);
         if (course == null) {
@@ -179,7 +187,7 @@ public class DegreeServiceImplementation implements DegreeService {
                 }
             }
             if (!coursePresent) {
-                throw new Exception("The course is not included" + (degreesIdList.length == 1 ? "" : " in at least one of the degrees") + ".");
+                throw new Exception("The course is already not included.");
             }
         }
 

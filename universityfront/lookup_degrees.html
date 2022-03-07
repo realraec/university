@@ -140,9 +140,19 @@
       extraButtons.remove();
       examsButtons.remove();
       studentsButtons.remove();
-      
-      
+
+      newEntryPersonButton.remove();
+      editEntryPersonButton.remove();
+
+      editEntryStudyButton.disabled = true;
+
+      addCourseButton.disabled = true;
+      removeCourseButton.disabled = true;
+
+      newEntryStudyButton.addEventListener('click', getDepartments)
+
       buttons.classList.remove("invisible");
+
 
     });
 
@@ -184,6 +194,11 @@
           field: 'department',
           title: 'Department',
           filterControl: 'select'
+        }, {
+          field: 'students',
+          title: 'Students enrolled',
+          visible: false,
+          filterControl: 'input'
         }, {
           field: 'courses',
           title: 'Courses associated',

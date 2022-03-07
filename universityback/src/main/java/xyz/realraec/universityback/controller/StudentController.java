@@ -33,7 +33,7 @@ public class StudentController {
                         // All the information to be passed
                         .timestamp(LocalDateTime.now())
                         // Where the service (implementation) method is to be found
-                        .data(Map.of("students", studentService.list(50)))
+                        .data(Map.of("students", studentService.list(100)))
                         .message("Students retrieved")
                         .status(HttpStatus.OK)
                         .statusCode(HttpStatus.OK.value())
@@ -57,7 +57,8 @@ public class StudentController {
     @PostMapping("/create")
     // A body is needed since you can't save an empty object as a student
     public ResponseEntity<Response> createStudent(@RequestBody @Valid Student student) throws Exception {
-        student = new Student(student.getLastName(), student.getFirstName(), student.getGender());
+        student = new Student(student.getLastName(), student.getFirstName(), student.getGender(),
+                student.getBirthdate(), student.getEmail(), student.getPhone());
         // The .created() method also exists but returns a URI, and we want the message as well
         return ResponseEntity.ok(
                 Response.builder()

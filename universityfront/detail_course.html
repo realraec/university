@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>UMS - Course detail</title>
+
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+  <!-- Bootstrap Table plugin -->
+  <link href="https://unpkg.com/bootstrap-table@1.19.1/dist/bootstrap-table.min.css" rel="stylesheet">
+
+
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+  <link href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" rel="stylesheet"
+    integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+
+</head>
+
+<body>
+
+  <div id="modals-placeholder">
+  </div>
+
+  <div id="toast-placeholder">
+  </div>
+
+  <nav id="nav-placeholder">
+  </nav>
+
+  <div id="loading-placeholder">
+  </div>
+
+
+  <div class="container">
+
+    <h3 class="h3 mt-4 mb-5">
+      Course detail<br />
+      <small class="h4 text-muted">Detail of a course offered by the university</small>
+    </h3>
+
+    <h4 class="h4">Single-row table</h4>
+    <div class="my-3">
+      <table id="table"></table>
+    </div>
+
+    <h4 class="h4 mt-5">Detail</h4>
+    <form>
+      <div class="row gy-2">
+
+        <div class="col-sm-12 col-md-6 col-xl-4">
+          <label for="idInput" class="form-label">ID</label>
+          <input id="idInput" type="text" class="form-control" value="0" disabled></input>
+        </div>
+
+        <div class="col-sm-12 col-md-6 col-xl-4">
+          <label for="codeInput" class="form-label">Code</label>
+          <input id="codeInput" type="text" class="form-control" value="0" disabled></input>
+        </div>
+
+        <div class="col-sm-12 col-md-6 col-xl-4">
+          <label for="headingInput" class="form-label">Heading</label>
+          <input id="headingInput" type="text" class="form-control" value="Degree 100" disabled></input>
+        </div>
+
+        <div class="col-sm-12 col-md-6 col-xl-4">
+          <label for="departmentInput" class="form-label">Department</label>
+          <input id="departmentInput" type="text" class="form-control" value="Department" disabled></input>
+        </div>
+
+        <div class="col-sm-12 col-md-6 col-xl-4">
+          <label for="examMadeInput" class="form-label">Is the exam made by the professor?</label>
+          <input id="examMadeInput" type="text" class="form-control" value="Maybe" disabled></input>
+        </div>
+
+        <div class="col-sm-12 col-md-6 col-xl-4">
+          <label for="examTakenInput" class="form-label">Is the exam taken by the students?</label>
+          <input id="examTakenInput" type="text" class="form-control" value="Maybe" disabled></input>
+        </div>
+
+        <div class="col-sm-12 col-md-6 col-xl-4">
+          <label for="professorInput" class="form-label">Professor</label>
+          <input id="professorInput" type="text" class="form-control" value="" disabled></input>
+        </div>
+
+        <div class="col-8">
+          <label for="studentsInput" class="form-label">Students enrolled</label>
+          <textarea id="studentsInput" class="form-control" rows="1" value="" disabled></textarea>
+        </div>
+
+      </div>
+    </form>
+
+
+    <h4 class="h4 mt-5">Actions</h4>
+    <div id="buttons-placeholder">
+    </div>
+
+  </div>
+
+
+  <!-- JQuery script -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+  <!-- Bootstrap 5 script -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+    crossorigin="anonymous"></script>
+
+  <!-- Bootstrap Table plugin script -->
+  <script src="https://unpkg.com/bootstrap-table@1.19.1/dist/bootstrap-table.min.js"></script>
+
+  <!-- Local scripts -->
+  <!-- <script type="text/javascript" src="js/simpleTableScript.js"></script> -->
+  <script type="text/javascript" src="js/tableScript.js"></script>
+  <script type="text/javascript" src="js/buttonsScript.js"></script>
+  <script type="text/javascript" src="js/modalsScript.js"></script>
+  <script type="text/javascript" src="js/toastScript.js" defer></script>
+  <script type="text/javascript" src="js/navbarScript.js"></script>
+  <script type="text/javascript" src="js/loadingScript.js"></script>
+  <script type="text/javascript" src="js/formattersScript.js"></script>
+
+
+  <script>
+
+    // DOM elements
+    var $table = $('#table')
+
+    // Columns
+    var modelColumns = JSON.parse(localStorage["modelColumns"])
+
+    // ID
+    var detailId = localStorage["detailId"];
+
+    // Table init
+    var sourceData = [];
+    $.ajax("http://localhost:8080/courses/get/" + detailId, {
+      success: function (response) {
+        // Array from JSON Objects
+        sourceData = [response.data.course];
+        console.log(sourceData)
+        buildTable($table, sourceData, modelColumns, 0);
+
+      }, complete: function () {
+        console.log("complete multiple");
+
+
+        document.getElementById("idInput").value = sourceData[0].id;
+        document.getElementById("codeInput").value = sourceData[0].code;
+        document.getElementById("headingInput").value = sourceData[0].heading;
+        document.getElementById("departmentInput").value = departmentFormatter(sourceData[0].department);
+        document.getElementById("examMadeInput").value = booleanFormatter(sourceData[0].isExamMadeByProfessor).replace(/<\/?[^>]+(>|$)/g, "");
+        document.getElementById("examTakenInput").value = booleanFormatter(sourceData[0].isExamTakenByStudents).replace(/<\/?[^>]+(>|$)/g, "");
+        document.getElementById("professorInput").value = (sourceData[0].professor == null ? null : professorFormatter(sourceData[0].professor).replace("<br/>", " "));
+        document.getElementById("studentsInput").value = (sourceData[0].students.length == 0 ? null : studentsFormatter(sourceData[0].students).replaceAll("<br/>", " — "));
+
+        // Students?
+      }
+    });
+
+
+    $(document).ready(function () {
+
+
+      degreesButtons.remove();
+      levelButtons.remove();
+      sanctionButtons.remove();
+      rewardButtons.remove();
+      TBDButtons.remove();
+      coursesButtons.remove();
+
+      newEntryPersonButton.remove();
+      editEntryPersonButton.remove();
+
+      newEntryStudyButton.disabled = true;
+
+      buttons.classList.remove("invisible");
+
+      editEntryStudyButton.addEventListener('click', getDepartments)
+
+      /*
+      newEntryButton.addEventListener('click', newEntryFunction);
+      promoteButton.addEventListener('click', promoteFunction);
+      deleteButton.addEventListener('click', deleteFunction);
+      */
+
+    })
+
+
+  </script>
+
+</body>
+
+</html>

@@ -30,7 +30,7 @@ public class Person {
 
     protected String generateCode() {
         Random random = new Random();
-        String code = String.valueOf(Year.now().getValue() - this.level).substring(2);
+        String code = String.valueOf(Year.now().getValue() - this.level + 1).substring(2);
         if (this.getGender() == Gender.GENDER_MALE) {
             code += "01";
         } else if (this.getGender() == Gender.GENDER_FEMALE) {

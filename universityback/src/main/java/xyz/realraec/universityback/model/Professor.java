@@ -45,6 +45,25 @@ public class Professor extends Person {
     }
 
 
+    public Professor(String lastName, String firstName, Gender gender, LocalDate birthdate, String email, String phone)
+            throws Exception {
+        Random random = new Random();
+
+        this.lastName = lastName;
+        this.firstName = firstName;
+        this.gender = gender;
+        this.email = email;
+        this.birthdate = birthdate;
+        this.phone = phone;
+        this.level = 1;
+        this.code = "P" + generateCode();
+        this.warnings = 0;
+
+        calculateSalary();
+        this.balance += (random.nextInt(3) * salary);
+    }
+
+
 
     @Id
     @SequenceGenerator(

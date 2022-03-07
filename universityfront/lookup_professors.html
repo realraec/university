@@ -138,8 +138,15 @@
       degreesButtons.remove();
       TBDButtons.remove();
 
+      newEntryStudyButton.remove();
+      editEntryStudyButton.remove();
+
+      editEntryPersonButton.disabled = true;
       
       buttons.classList.remove("invisible");
+
+      newEntryPersonButton.addEventListener('click', getGenders)
+
 
     });
 
@@ -173,7 +180,6 @@
           title: 'Last name',
           filterControl: 'input',
           class: 'text-nowrap',
-          formatter: function (value) { return value.toUpperCase() }
         }, {
           field: 'firstName',
           title: 'First name',
@@ -188,6 +194,11 @@
           field: 'level',
           title: 'Level',
           filterControl: 'select'
+        }, {
+          field: 'courses',
+          title: 'Teaching courses',
+          visible: false,
+          filterControl: 'input'
         }, {
           field: 'birthdate',
           title: 'Birthdate',

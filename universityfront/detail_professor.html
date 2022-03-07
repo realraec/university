@@ -5,7 +5,7 @@
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>UMS - Student detail</title>
+  <title>UMS - Professor detail</title>
 
 
   <!-- Bootstrap 5 CSS -->
@@ -41,17 +41,14 @@
   <div class="container">
 
     <h3 class="h3 mt-4 mb-5">
-      Student detail<br />
-      <small class="h4 text-muted">Detail of a student enrolled at the university</small>
+      Professor detail<br />
+      <small class="h4 text-muted">Detail of a professor teaching at the university</small>
     </h3>
 
     <h4 class="h4">Single-row table</h4>
     <div class="my-3">
       <table id="table"></table>
     </div>
-
-
-
 
     <h4 class="h4 mt-5">Detail</h4>
     <form>
@@ -88,16 +85,6 @@
         </div>
 
         <div class="col-sm-12 col-md-6 col-xl-4">
-          <label for="majorDegreeInput" class="form-label">Major degree</label>
-          <input id="majorDegreeInput" type="text" class="form-control" value="" disabled></input>
-        </div>
-
-        <div class="col-sm-12 col-md-6 col-xl-4">
-          <label for="minorDegreeInput" class="form-label">Minor degree</label>
-          <input id="minorDegreeInput" type="text" class="form-control" value="" disabled></input>
-        </div>
-
-        <div class="col-sm-12 col-md-6 col-xl-4">
           <label for="birthdateInput" class="form-label">Birthdate</label>
           <input id="birthdateInput" type="text" class="form-control" value="02/22/2002" disabled></input>
         </div>
@@ -113,23 +100,13 @@
         </div>
 
         <div class="col-sm-12 col-md-6 col-xl-4">
-          <label for="totalTuitionInput" class="form-label">Total tuition</label>
-          <input id="totalTuitionInput" type="text" class="form-control" value="0.0" disabled></input>
+          <label for="salaryInput" class="form-label">Salary</label>
+          <input id="salaryInput" type="text" class="form-control" value="0.0" disabled></input>
         </div>
 
         <div class="col-sm-12 col-md-6 col-xl-4">
           <label for="balanceInput" class="form-label">Account balance</label>
           <input id="balanceInput" type="text" class="form-control" value="0.0" disabled></input>
-        </div>
-
-        <div class="col-sm-12 col-md-6 col-xl-4">
-          <label for="creditsInput" class="form-label">Credits obtained</label>
-          <input id="creditsInput" type="text" class="form-control" value="0" disabled></input>
-        </div>
-
-        <div class="col-sm-12 col-md-6 col-xl-4">
-          <label for="diplomaInput" class="form-label">Last diploma obtained</label>
-          <input id="diplomaInput" type="text" class="form-control" value="" disabled></input>
         </div>
 
         <div class="col-sm-12 col-md-6 col-xl-4">
@@ -145,45 +122,7 @@
     <div id="buttons-placeholder">
     </div>
 
-
   </div>
-
-  <!-- <div class="modal fade" id="recapModal" tabindex="-1" aria-labelledby="recapModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="recapModalLabel">Change confirmation prompt
-          </h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <div class="mb-1">Here is a recap of the edit you are about to perform:</div>
-          <div class="bg-light px-3 py-2 form-control">
-            Target name: <strong>SMITHINGSTON Timothy</strong><br />
-            Target Uni-ID&trade;: <strong>2022-01-15061995</strong><br />
-            Feature: <strong>PROMOTE</strong><br />
-            Attribute: <strong>LEVEL</strong><br />
-            From (before): <strong>1</strong><br />
-            To (after): <strong>2</strong> <br />
-            Change by: <strong>SOMEONE Else (Admin)</strong><br />
-            Date and time: <strong>1/26/2022, 11:29:21 PM</strong>
-          </div>
-          <div class="mt-3">Please provide a reason for this change:</div>
-          <textarea class="form-control mt-1 mb-3" id="formId" aria-describedby="formIdHelp" rows='2'
-            data-min-rows='2'>Successfully completed their year.</textarea>
-          You will not be able to cancel afterward, and you might not be able to revert the changes. Are you
-          sure you want to perform this edit and save this change?
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Save</button>
-        </div>
-      </div>
-    </div>
-  </div> -->
-
-
-
 
 
   <!-- JQuery script -->
@@ -210,8 +149,6 @@
 
   <script>
 
-    //console.log(new Date().toLocaleString())
-
     // DOM elements
     var $table = $('#table')
 
@@ -220,23 +157,16 @@
 
     // ID
     var detailId = localStorage["detailId"];
-    console.log(detailId)
 
     // Eager fetch from server
-    //var url = "http://localhost:8080/students/get/" + localStorage["detailId"];
-
-
-
-    
-
-
+    //var url = "http://localhost:8080/professors/get/" + localStorage["detailId"];
 
     // Table init
-    var sourceData = []
-    $.ajax("http://localhost:8080/students/get/" + detailId, {
+    var sourceData = [];
+    $.ajax("http://localhost:8080/professors/get/" + detailId, {
       success: function (response) {
         // Array from JSON Objects
-        sourceData = [response.data.student];
+        sourceData = [response.data.professor];
         console.log(sourceData)
         buildTable($table, sourceData, modelColumns, 0);
 
@@ -250,39 +180,26 @@
         document.getElementById("firstNameInput").value = sourceData[0].firstName;
         document.getElementById("genderInput").value = genderFormatter(sourceData[0].gender).replace(/<\/?[^>]+(>|$)/g, "");
         document.getElementById("levelInput").value = sourceData[0].level;
-        document.getElementById("majorDegreeInput").value = degreeFormatter(sourceData[0].majorDegree);  //JSON.stringify(sourceData[0].majorDegree);
-        document.getElementById("minorDegreeInput").value = degreeFormatter(sourceData[0].minorDegree);  //JSON.stringify(sourceData[0].minorDegree);
         document.getElementById("birthdateInput").value = sourceData[0].birthdate;
         document.getElementById("emailInput").value = sourceData[0].email;
         document.getElementById("phoneInput").value = sourceData[0].phone;
-        document.getElementById("totalTuitionInput").value = sourceData[0].totalTuition;
+        document.getElementById("salaryInput").value = sourceData[0].salary;
         document.getElementById("balanceInput").value = sourceData[0].balance;
-        document.getElementById("creditsInput").value = sourceData[0].credits;
-        document.getElementById("diplomaInput").value = diplomaFormatter(sourceData[0].diploma);
         document.getElementById("warningsInput").value = sourceData[0].warnings;
+
+        // Courses?
       }
-    })
+    });
 
-
-
-    /* buildSimpleTable($table, url, modelColumns);
-    $table.bootstrapTable('refreshOptions',
-      {
-        responseHandler: function (res) { return [res.data.student] }
-      }
-    ) */
 
     $(document).ready(function () {
 
-
-
-      // Courses?
-
-
+      rewardButtons.remove();
       extraButtons.remove();
       examsButtons.remove();
       studentsButtons.remove();
       coursesButtons.remove();
+      degreesButtons.remove();
       TBDButtons.remove();
 
       newEntryStudyButton.remove();
@@ -290,49 +207,17 @@
 
       newEntryPersonButton.disabled = true;
 
-
       buttons.classList.remove("invisible");
-
-
-      /* 
-            newEntryButton.addEventListener('click', newEntryFunction);
-            promoteButton.addEventListener('click', promoteFunction);
-            deleteButton.addEventListener('click', deleteFunction); */
 
       editEntryPersonButton.addEventListener('click', getGenders)
 
+      /*
+      newEntryButton.addEventListener('click', newEntryFunction);
+      promoteButton.addEventListener('click', promoteFunction);
+      deleteButton.addEventListener('click', deleteFunction);
+      */
 
     })
-
-
-
-
-
-
-
-
-
-
-    //const promoteButton = document.getElementById('promoteButton');
-
-
-    // PUT - ...FORM...
-    /* promoteButton.addEventListener('click', async _ => {
-      try {
-        const response = await fetch('http://localhost:8080/students/update/' + document.getElementById("idInput").value, {
-          method: 'put',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-          },
-          body: new URLSearchParams({
-            "level": document.getElementById("levelInput").value - 1
-          })
-        });
-        console.log('Completed!', response);
-      } catch (err) {
-        console.error(`Error: ${err}`);
-      }
-    }); */
 
 
   </script>

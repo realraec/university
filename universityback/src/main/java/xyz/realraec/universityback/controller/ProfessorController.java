@@ -56,7 +56,8 @@ public class ProfessorController {
     @PostMapping("/create")
     // A body is needed since you can't save an empty object as a professor
     public ResponseEntity<Response> createProfessor(@RequestBody @Valid Professor professor) throws Exception {
-        professor = new Professor(professor.getLastName(), professor.getFirstName(), professor.getGender());
+        professor = new Professor(professor.getLastName(), professor.getFirstName(), professor.getGender(),
+                professor.getBirthdate(), professor.getEmail(), professor.getPhone());
         // The .created() method also exists but returns a URI, and we want the message as well
         return ResponseEntity.ok(
                 Response.builder()

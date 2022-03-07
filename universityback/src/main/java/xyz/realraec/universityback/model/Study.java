@@ -43,6 +43,7 @@ public class Study {
         } else if (this.heading.startsWith("History")
                 || this.heading.startsWith("US History")
                 || this.heading.startsWith("UK History")
+                || this.heading.startsWith("Indian History")
                 || this.heading.startsWith("French History")
                 || this.heading.startsWith("Linguistics")
                 || this.heading.startsWith("Economics")) {

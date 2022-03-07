@@ -26,6 +26,12 @@ public class Degree extends Study {
         this.code = "D" + generateCodeAndDpt();
     }
 
+    public Degree(String heading, Department department) {
+        this.heading = heading;
+        this.department = department;
+        this.code = "D" + generateCodeAndDpt();
+    }
+
     public Degree(String heading, HashSet<Course> courses) {
         this.heading = heading;
         this.code = "D" + generateCodeAndDpt();

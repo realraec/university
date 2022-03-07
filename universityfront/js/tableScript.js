@@ -15,7 +15,6 @@ function buildTable($table, sourceData, modelColumns, windowScrollPosition) {
 
         // Tweaks to columns
         for (let i = 0; i < modelColumns.length; i++) {
-            console.log(modelColumns[i].field)
 
             // Making the columns no longer sortable
             modelColumns[i].sortable = false;
@@ -363,13 +362,13 @@ function buildTable($table, sourceData, modelColumns, windowScrollPosition) {
         }
 
         // Opens up a new tab if only one row selected
-        /* else if (tempCustomSourceData.length == 1) {
+        else if (tempCustomSourceData.length == 1) {
             localStorage["modelColumns"] = JSON.stringify(modelColumns);
             localStorage["detailId"] = JSON.stringify(tempCustomSourceData[0].id);
 
-            let temp = tempCustomSourceData[0].lastName.toUpperCase() + " " + tempCustomSourceData[0].firstName;
+            /* let temp = tempCustomSourceData[0].lastName.toUpperCase() + " " + tempCustomSourceData[0].firstName;
             localStorage.setItem("userFullname", temp);
-            localStorage["userType"] = tempCustomSourceData[0].phone;
+            localStorage["userType"] = tempCustomSourceData[0].phone; */
 
             let documentURL = document.URL;
             if (documentURL.endsWith("lookup_students.html")) {
@@ -382,7 +381,7 @@ function buildTable($table, sourceData, modelColumns, windowScrollPosition) {
                 window.open("detail_degree.html", "_blank")
             }
             return;
-        } */
+        }
 
         // Removing elements in the history if called after an undo
         if (undoChain != 0) {

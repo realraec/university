@@ -199,7 +199,7 @@ public class CourseServiceImplementation implements CourseService {
         for (int i = 0; i < coursesIdList.length; i++) {
             Course course = get(coursesIdList[i]);
             coursesList.add(course);
-            if (course.getProfessor().getId() == professor.getId()) {
+            if (course.getProfessor() != null && course.getProfessor().getId() == professor.getId()) {
                 throw new Exception("The code of the new professor is the same as the old one" + (coursesIdList.length == 1 ? "" : " for at least one of the courses") + ".");
             }
         }

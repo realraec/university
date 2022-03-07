@@ -2,9 +2,9 @@
 
     <div id="contactButtons" class="col-xxl-2 col-lg-3 col-md-4 col-6 d-grid">
         <label class="form-label ">Contact</label>
-        <button type="button" class="btn btn-primary"><i class="bi bi-envelope"></i>
+        <button id="sendEmailButton" type="button" class="btn btn-primary"><i class="bi bi-envelope"></i>
             <span class="ms-2">Send email</span></button>
-        <button type="button" class="btn btn-primary"><i class="bi bi-shuffle"></i>
+        <button id="loadExtraInfoButton" type="button" class="btn btn-primary"><i class="bi bi-shuffle"></i>
             <span class="ms-2">Load extra info</span>
         </button>
     </div>
@@ -12,10 +12,11 @@
     <div id="degreesButtons" class="col-xxl-2 col-lg-3 col-md-4 col-6 d-grid">
         <label class="form-label">Degrees</label>
         <button id="setNewMajorDegreeButton" type="button" class="btn btn-info" data-bs-toggle="modal"
-        data-bs-target="#codeModal" aria-expanded="false" aria-controls="codeModal"><i class="bi bi-record-circle"></i>
+            data-bs-target="#codeModal" aria-expanded="false" aria-controls="codeModal"><i
+                class="bi bi-record-circle"></i>
             <span class="ms-2">Change majors</span></button>
         <button id="setNewMinorDegreeButton" type="button" class="btn btn-info" data-bs-toggle="modal"
-        data-bs-target="#codeModal" aria-expanded="false" aria-controls="codeModal"><i class="bi bi-record2"></i>
+            data-bs-target="#codeModal" aria-expanded="false" aria-controls="codeModal"><i class="bi bi-record2"></i>
             <span class="ms-2">Change minors</span></button>
     </div>
 
@@ -23,36 +24,25 @@
         <label class="form-label ">Level</label>
         <button id="promoteButton" type="button" class="btn btn-secondary"><i class="bi bi-chevron-double-up"></i>
             <span class="ms-2">Promote</span></button>
-        <button type="button" class="btn btn-secondary"><i class="bi bi-chevron-double-down"></i>
+        <button id="demotebutton" type="button" class="btn btn-secondary"><i class="bi bi-chevron-double-down"></i>
             <span class="ms-2">Demote</span></button>
     </div>
 
     <div id="sanctionButtons" class="col-xxl-2 col-lg-3 col-md-4 col-6 d-grid">
         <label class="form-label">Sanction</label>
-        <button type="button" class="btn btn-danger"><i class="bi bi-exclamation-diamond"></i>
+        <button id="giveWarningButton" type="button" class="btn btn-danger"><i class="bi bi-exclamation-diamond"></i>
             <span class="ms-2">Give warning</span></button>
-        <button type="button" class="btn btn-danger"><i class="bi bi-x-octagon"></i>
+        <button id="kickOutButton" type="button" class="btn btn-danger"><i class="bi bi-x-octagon"></i>
             <span class="ms-2">Kick out</span></button>
     </div>
 
     <div id="rewardButtons" class="col-xxl-2 col-lg-3 col-md-4 col-6 d-grid">
         <label class="form-label">Reward</label>
-        <button type="button" class="btn btn-success"><i class="bi bi-award"></i>
+        <button id="giveCreditsButton" type="button" class="btn btn-success"><i class="bi bi-award"></i>
             <span class="ms-2">Give credits</span></button>
-        <button type="button" class="btn btn-success"><i class="bi bi-mortarboard"></i>
+        <button id="giveDiplomaButton" type="button" class="btn btn-success"><i class="bi bi-mortarboard"></i>
             <span class="ms-2">Give diploma</span></button>
     </div>
-
-
-    <div id="TBDButtons" class="col-xxl-2 col-lg-3 col-md-4 col-6 d-grid">
-        <label class="form-label">TBD</label>
-        <button type="button" class="btn btn-info"><i class="bi bi-patch-question"></i>
-            <span class="ms-2">TBD 1</span></button>
-        <button type="button" class="btn btn-info"><i class="bi bi-patch-question"></i>
-            <span class="ms-2">TBD 2</span></button>
-
-    </div>
-
 
     <div id="extraButtons" class="col-xxl-2 col-lg-3 col-md-4 col-6 d-grid">
         <label class="form-label">Extra</label>
@@ -60,9 +50,9 @@
             data-bs-target="#codeModal" aria-expanded="false" aria-controls="codeModal">
             <i class="bi bi-asterisk"></i>
             <span class="ms-2">Set new Professor</span></button>
-        <button id="testButtonABC" type="button" class="btn btn-info">
-            <i class="bi bi-record2"></i>
-            <span class="ms-2">Change something</span></button>
+        <button id="setNewDegreeButton" type="button" class="btn btn-info">
+            <i class="bi bi-card-heading"></i>
+            <span class="ms-2">Set new Degree</span></button>
     </div>
 
     <div id="examsButtons" class="col-xxl-2 col-lg-3 col-md-4 col-6 d-grid">
@@ -100,10 +90,15 @@
 
 
     <div id="misc1Buttons" class="col-xxl-2 col-lg-3 col-md-4 col-6 d-grid">
-        <label class="form-label">Misc.</label>
-        <button id="newEntryButton" type="button" class="btn btn-dark">
+        <label class="form-label">Misc. (1/2)</label>
+        <button id="newEntryPersonButton" type="button" class="btn btn-dark" data-bs-toggle="modal"
+            data-bs-target="#newOrEditPersonModal" aria-expanded="false" aria-controls="newOrEditPersonModal">
             <i class="bi bi-plus-square"></i>
-            <span class="ms-2">New entry</span></button>
+            <span class="ms-2">New entry SP</span></button>
+        <button id="newEntryStudyButton" type="button" class="btn btn-dark" data-bs-toggle="modal"
+            data-bs-target="#newOrEditStudyModal" aria-expanded="false" aria-controls="newOrEditStudyModal">
+            <i class="bi bi-plus-square"></i>
+            <span class="ms-2">New entry CD</span></button>
         <button id="deleteButton" type="button" class="btn btn-dark">
             <i class="bi bi-x-square"></i>
             <span class="ms-2">Delete entry</span></button>
@@ -111,13 +106,29 @@
 
 
     <div id="misc2Buttons" class="col-xxl-2 col-lg-3 col-md-4 col-6 d-grid">
-        <label class="form-label">Misc.</label>
-        <button type="button" class="btn btn-dark">
+        <label class="form-label">Misc. (2/2)</label>
+        <button id="editEntryPersonButton" type="button" class="btn btn-dark" data-bs-toggle="modal"
+            data-bs-target="#newOrEditPersonModal" aria-expanded="false" aria-controls="newOrEditPersonModal">
             <i class="bi bi-pencil-square"></i>
-            <span class="ms-2">Edit entry</span></button>
-        <button type="button" class="btn btn-dark">
+            <span class="ms-2">Edit entry SP</span></button>
+        <button id="editEntryStudyButton" type="button" class="btn btn-dark" data-bs-toggle="modal"
+            data-bs-target="#newOrEditStudyModal" aria-expanded="false" aria-controls="newOrEditStudyModal">
+            <i class="bi bi-pencil-square"></i>
+            <span class="ms-2">Edit entry CD</span></button>
+        <button id="refreshEntryButton" type="button" class="btn btn-dark">
             <i class="bi bi-check-square"></i>
-            <span class="ms-2">Apply changes</span></button>
+            <span class="ms-2">Refresh entry</span></button>
+
+    </div>
+
+
+    <div id="TBDButtons" class="col-xxl-2 col-lg-3 col-md-4 col-6 d-grid">
+        <label class="form-label">TBD</label>
+        <button type="button" class="btn btn-info"><i class="bi bi-patch-question"></i>
+            <span class="ms-2">TBD 1</span></button>
+        <button type="button" class="btn btn-info"><i class="bi bi-patch-question"></i>
+            <span class="ms-2">TBD 2</span></button>
+
     </div>
 
 </div>

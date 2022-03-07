@@ -72,6 +72,26 @@ public class Student extends Person {
     }
 
 
+    public Student(String lastName, String firstName, Gender gender, LocalDate birthdate, String email, String phone)
+            throws Exception {
+
+        this.lastName = lastName;
+        this.firstName = firstName;
+        this.gender = gender;
+        this.email = email;
+        this.birthdate = birthdate;
+        this.phone = phone;
+        this.level = 1;
+        this.code = "S" + generateCode();
+        this.warnings = 0;
+
+        this.credits = 0;
+        this.totalTuition = 180.0;
+        this.diploma = Diploma.DIPLOMA_HIGH_SCHOOL;
+        this.balance -= totalTuition;
+    }
+
+
    /* @Override
     protected String generateEmail() {
         return this.firstName + "." + this.lastName + "@gmail.com";
@@ -211,7 +231,6 @@ public class Student extends Person {
     }
 
 
-
     //@JsonIgnore
     @JsonIgnoreProperties(value = {"department", "courses"})
     @ManyToOne(
@@ -222,15 +241,18 @@ public class Student extends Person {
     }
 
     @Transactional
-    public void setMajorDegree(Degree majorDegree) throws Exception {
+    public void setMajorDegree(Degree majorDegree) {
         this.majorDegree = majorDegree;
-        if (majorDegree != null) {
+        /*if (majorDegree != null) {*/
+        try {
             for (Course course : this.majorDegree.getCourses()) {
                 course.addStudent(this);
             }
-        } else {
-            throw new Exception("The degree mustn't be null.");
+        } catch (NullPointerException ignored) {
         }
+        /*} else {
+            throw new Exception("The degree mustn't be null.");
+        }*/
     }
 
     //@JsonIgnore
@@ -243,15 +265,18 @@ public class Student extends Person {
     }
 
     @Transactional
-    public void setMinorDegree(Degree minorDegree) throws Exception {
+    public void setMinorDegree(Degree minorDegree) {
         this.minorDegree = minorDegree;
-        if (minorDegree != null) {
+        /*if (minorDegree != null) {*/
+        try {
             for (Course course : this.minorDegree.getCourses()) {
                 course.addStudent(this);
             }
-        } else {
-            throw new Exception("The degree mustn't be null.");
+        } catch (NullPointerException ignored) {
         }
+        /*} else {
+            throw new Exception("The degree mustn't be null.");
+        }*/
     }
 
 
