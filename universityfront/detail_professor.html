@@ -158,9 +158,6 @@
     // ID
     var detailId = localStorage["detailId"];
 
-    // Eager fetch from server
-    //var url = "http://localhost:8080/professors/get/" + localStorage["detailId"];
-
     // Table init
     var sourceData = [];
     $.ajax("http://localhost:8080/professors/get/" + detailId, {
@@ -174,24 +171,14 @@
         console.log("complete multiple");
 
 
-        document.getElementById("idInput").value = sourceData[0].id;
-        document.getElementById("codeInput").value = sourceData[0].code;
-        document.getElementById("lastNameInput").value = sourceData[0].lastName.toUpperCase();
-        document.getElementById("firstNameInput").value = sourceData[0].firstName;
-        document.getElementById("genderInput").value = genderFormatter(sourceData[0].gender).replace(/<\/?[^>]+(>|$)/g, "");
-        document.getElementById("levelInput").value = sourceData[0].level;
-        document.getElementById("birthdateInput").value = sourceData[0].birthdate;
-        document.getElementById("emailInput").value = sourceData[0].email;
-        document.getElementById("phoneInput").value = sourceData[0].phone;
-        document.getElementById("salaryInput").value = sourceData[0].salary;
-        document.getElementById("balanceInput").value = sourceData[0].balance;
-        document.getElementById("warningsInput").value = sourceData[0].warnings;
+        updateDetailProfessor(sourceData);
 
         // Courses?
       }
     });
 
 
+    // Buttons and listeners
     $(document).ready(function () {
 
       rewardButtons.remove();
@@ -210,14 +197,25 @@
       buttons.classList.remove("invisible");
 
       editEntryPersonButton.addEventListener('click', getGenders)
-
-      /*
-      newEntryButton.addEventListener('click', newEntryFunction);
-      promoteButton.addEventListener('click', promoteFunction);
-      deleteButton.addEventListener('click', deleteFunction);
-      */
+      editEntryPersonButton.addEventListener('click', editEntryPersonPreparation);
 
     })
+
+
+    function updateDetailProfessor(sourceData) {
+      document.getElementById("idInput").value = sourceData[0].id;
+      document.getElementById("codeInput").value = sourceData[0].code;
+      document.getElementById("lastNameInput").value = sourceData[0].lastName.toUpperCase();
+      document.getElementById("firstNameInput").value = sourceData[0].firstName;
+      document.getElementById("genderInput").value = genderFormatter(sourceData[0].gender).replace(/<\/?[^>]+(>|$)/g, "");
+      document.getElementById("levelInput").value = sourceData[0].level;
+      document.getElementById("birthdateInput").value = sourceData[0].birthdate;
+      document.getElementById("emailInput").value = sourceData[0].email;
+      document.getElementById("phoneInput").value = sourceData[0].phone;
+      document.getElementById("salaryInput").value = sourceData[0].salary;
+      document.getElementById("balanceInput").value = sourceData[0].balance;
+      document.getElementById("warningsInput").value = sourceData[0].warnings;
+    }
 
 
   </script>

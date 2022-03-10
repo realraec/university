@@ -125,47 +125,7 @@
   <script type="text/javascript" src="js/formattersScript.js"></script>
 
 
-
-
   <script>
-
-    $(document).ready(function () {
-
-
-      degreesButtons.remove();
-      levelButtons.remove();
-      sanctionButtons.remove();
-      rewardButtons.remove();
-      TBDButtons.remove();
-      extraButtons.remove();
-      examsButtons.remove();
-      studentsButtons.remove();
-
-      newEntryPersonButton.remove();
-      editEntryPersonButton.remove();
-
-      editEntryStudyButton.disabled = true;
-
-      addCourseButton.disabled = true;
-      removeCourseButton.disabled = true;
-
-      newEntryStudyButton.addEventListener('click', getDepartments)
-
-      buttons.classList.remove("invisible");
-
-
-    });
-
-
-
-
-
-
-
-
-
-
-
 
     // DOM elements
     var $table = $('#table')
@@ -207,6 +167,7 @@
         }
       ]
 
+
     // Array from JSON Objects
     var sourceData;
     $.ajax("http://localhost:8080/degrees/list", {
@@ -220,6 +181,32 @@
       }
     })
 
+
+    // Buttons and listeners
+    $(document).ready(function () {
+
+      degreesButtons.remove();
+      levelButtons.remove();
+      sanctionButtons.remove();
+      rewardButtons.remove();
+      TBDButtons.remove();
+      extraButtons.remove();
+      examsButtons.remove();
+      studentsButtons.remove();
+      newEntryPersonButton.remove();
+      editEntryPersonButton.remove();
+
+      editEntryStudyButton.disabled = true;
+      addCourseButton.disabled = true;
+      removeCourseButton.disabled = true;
+
+      buttons.classList.remove("invisible");
+
+      newEntryStudyButton.addEventListener('click', getDepartments)
+      deleteButton.addEventListener('click', deleteEntryFunction);
+      refreshEntryButton.addEventListener('click', refreshEntryFunction);
+
+    });
 
   </script>
 

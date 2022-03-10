@@ -2,12 +2,17 @@
 $('#loading-placeholder').load('loading.html', function () {
     $(this).children(':first').unwrap();
 
-    let $loadingDiv = $('#loading')
+    $loadingDiv = $('#loading')
 
     $(document)
-        .ajaxStart(function () {
-            $loadingDiv.show();
-        }).ajaxStop(function () {
-            $loadingDiv.hide();
-        });
+        .ajaxStart(showLoadingDiv)
+        .ajaxStop(hideLoadingDiv);
 });
+
+function showLoadingDiv() {
+    $loadingDiv.show();
+}
+
+function hideLoadingDiv() {
+    $loadingDiv.hide();
+}

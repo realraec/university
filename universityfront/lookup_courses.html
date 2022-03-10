@@ -126,134 +126,7 @@
   <script type="text/javascript" src="js/formattersScript.js"></script>
 
 
-
-
-
-
-
-
   <script>
-
-    $(document).ready(function () {
-
-      degreesButtons.remove();
-      levelButtons.remove();
-      sanctionButtons.remove();
-      rewardButtons.remove();
-      TBDButtons.remove();
-      coursesButtons.remove();
-
-      newEntryPersonButton.remove();
-      editEntryPersonButton.remove();
-
-      editEntryStudyButton.disabled = true;
-
-
-      //testButtonABC.addEventListener('click', getStudents);
-
-      newEntryStudyButton.addEventListener('click', getDepartments)
-
-      buttons.classList.remove("invisible");
-
-    });
-
-
-
-
-
-    // MULTIPLE
-    // PUT - ...FORM...
-    //setNewProfessorButton.addEventListener('click', setNewProfessorFunction)
-
-    function testFunction() {
-      console.log("testFunction")
-      //modalConfirmButton.removeEventListener('click', setNewProf)
-
-      // Getting the ids of the current rows
-      /* let currentRows = $table.bootstrapTable('getData');
-      var currentRowsId = [];
-      for (let i = 0; i < currentRows.length; i++) {
-        currentRowsId.push(currentRows[i].id)
-      }
-
-      // To force the user to wait for the response
-      //disableButtonsInModal();
-
-      // Performing the operation
-      const response = await fetch('http://localhost:8080/courses/setNewProfessorMultiple', {
-        method: 'put',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-        },
-        body: new URLSearchParams({
-          "coursesIdList": currentRowsId,
-          "professorCode": "X100"
-        })
-      }).then(response => response.json())
-        .then(data => {
-          console.log(data);
-
-          // To let the user perform other actions afterward
-          //enableButtonsInModal();
-
-          // If the Java method throws an exception
-          if (checkIfErrorOccurred(data)) {
-            return;
-          }
-
-          // Extracting the new value from the response
-          let temp = data.data.professor;
-          let professorReturned = {
-            id: temp.id,
-            code: temp.code,
-            lastName: temp.lastName,
-            firstName: temp.firstName
-          }
-
-          // Update the current table with the changed value returned
-          for (let index = 0; index < currentRows.length; index++) {
-            $table.bootstrapTable('updateCell', {
-              index: index,
-              field: 'professor',
-              value: professorReturned
-            })
-          }
-
-          // Update history with the changes made
-          updateHistoryWithChanges($table)
-
-          /* Fetching changed rows
-          let newCurrentRows = $table.bootstrapTable('getData');
-
-          // Fetching saved history
-          var history = JSON.parse(localStorage["history"]);
-
-          // Modified rows
-          for (let i = 0; i < newCurrentRows.length; i++) {
-
-            // History tables
-            for (let j = 0; j < history.length; j++) {
-
-              // History rows
-              for (let k = 0; k < history[j].length; k++) {
-
-                if (newCurrentRows[i].id == history[j][k].id) {
-                  // Updating the item of the history
-                  history[j].splice(k, 1, newCurrentRows[i]);
-                }
-              }
-            }
-          }
-
-          // Saving the changes
-          localStorage["history"] = JSON.stringify(history); 
-        })/* .catch(error => {
-          console.log(error);
-        }) ; */
-    };
-
-
-
 
     // DOM elements
     var $table = $('#table')
@@ -306,6 +179,7 @@
         }
       ]
 
+
     // Array from JSON Objects
     var sourceData;
     $.ajax("http://localhost:8080/courses/list", {
@@ -320,7 +194,27 @@
     })
 
 
+    // Buttons and listeners
+    $(document).ready(function () {
 
+      degreesButtons.remove();
+      levelButtons.remove();
+      sanctionButtons.remove();
+      rewardButtons.remove();
+      TBDButtons.remove();
+      coursesButtons.remove();
+      newEntryPersonButton.remove();
+      editEntryPersonButton.remove();
+
+      editEntryStudyButton.disabled = true;
+
+      buttons.classList.remove("invisible");
+
+      newEntryStudyButton.addEventListener('click', getDepartments)
+      deleteButton.addEventListener('click', deleteEntryFunction);
+      refreshEntryButton.addEventListener('click', refreshEntryFunction);
+
+    });
 
   </script>
 

@@ -1,15 +1,12 @@
 package xyz.realraec.universityback.service.implementation;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import xyz.realraec.universityback.enumeration.Diploma;
 import xyz.realraec.universityback.enumeration.Gender;
-import xyz.realraec.universityback.model.Course;
 import xyz.realraec.universityback.model.Degree;
-import xyz.realraec.universityback.model.Professor;
 import xyz.realraec.universityback.model.Student;
 import xyz.realraec.universityback.repository.DegreeRepository;
 import xyz.realraec.universityback.repository.StudentRepository;
@@ -245,6 +242,10 @@ public class StudentServiceImplementation implements StudentService {
     public ArrayList<Set> getCourses(Long[] studentsIdList) throws Exception {
         log.info("Getting courses for students with id: {}", Arrays.toString(studentsIdList));
 
+        if (studentsIdList.length == 0) {
+            throw new Exception("No student was provided to perform this action on.");
+        }
+
         ArrayList<Set> studentsCoursesList = new ArrayList<>();
 
         for (int i = 0; i < studentsIdList.length; i++) {
@@ -259,6 +260,10 @@ public class StudentServiceImplementation implements StudentService {
     @Transactional
     public Degree setNewMinorDegree(Long[] studentsIdList, String degreeCode) throws Exception {
         log.info("Setting new minor degree for students with id: {}", Arrays.toString(studentsIdList));
+
+        if (studentsIdList.length == 0) {
+            throw new Exception("No student was provided to perform this action on.");
+        }
 
         Degree degree = degreeRepository.findByCode(degreeCode);
         if (degree == null) {
@@ -289,6 +294,10 @@ public class StudentServiceImplementation implements StudentService {
     public Degree setNewMajorDegree(Long[] studentsIdList, String degreeCode) throws Exception {
         log.info("Setting new major degree for students with id: {}", Arrays.toString(studentsIdList));
 
+        if (studentsIdList.length == 0) {
+            throw new Exception("No student was provided to perform this action on.");
+        }
+
         Degree degree = degreeRepository.findByCode(degreeCode);
         if (degree == null) {
             throw new Exception("No degree could be found with this code.");
@@ -312,6 +321,87 @@ public class StudentServiceImplementation implements StudentService {
         return degree;
     }
 
+
+    @Override
+    @Transactional
+    public ArrayList<Integer> giveCredits(Long[] studentsIdList, Integer credits) throws Exception {
+        log.info("Giving credits to students with id: {}", Arrays.toString(studentsIdList));
+
+        ArrayList<Integer> creditsList = new ArrayList<>();
+
+        if (studentsIdList.length == 0) {
+            throw new Exception("No student was provided to perform this action on.");
+        } else if (credits == 0) {
+            throw new Exception("No amount of credits was provided to perform this action with.");
+        }
+
+        for (int i = 0; i < studentsIdList.length; i++) {
+            Student student = get(studentsIdList[i]);
+            int temp = student.getCredits() + credits;
+            student.setCredits(temp);
+
+            creditsList.add(temp);
+        }
+
+        return creditsList;
+    }
+
+    /*public ArrayList<Integer> giveCredits(Long[] studentsIdList, Integer credits) throws Exception {
+        log.info("Giving credits to students with id: {}", Arrays.toString(studentsIdList));
+
+        ArrayList<Student> studentsList = new ArrayList<>();
+        ArrayList<Integer> creditsList = new ArrayList<>();
+
+        if (studentsIdList.length == 0) {
+            throw new Exception("No student was provided to perform this action on.");
+        } else if (credits == 0) {
+            throw new Exception("No amount of credits was provided to perform this action with.");
+        }
+
+        for (int i = 0; i < studentsIdList.length; i++) {
+            Student student = get(studentsIdList[i]);
+            studentsList.add(student);
+
+            creditsList.add(student.getCredits() + credits);
+        }
+
+        for (int i = 0; i < studentsList.size(); i++) {
+            studentsList.get(i).setCredits(creditsList.get(i));
+        }
+
+        return creditsList;
+    }*/
+
+
+    @Override
+    @Transactional
+    public Diploma giveDiploma(Long[] studentsIdList, Diploma diploma) throws Exception {
+        log.info("Giving credits to students with id: {}", Arrays.toString(studentsIdList));
+
+        if (studentsIdList.length == 0) {
+            throw new Exception("No student was provided to perform this action on.");
+        } else if (diploma == null) {
+            throw new Exception("No diploma was provided to perform this action with.");
+        }
+
+        ArrayList<Student> studentsList = new ArrayList<>();
+
+        for (int i = 0; i < studentsIdList.length; i++) {
+            Student student = get(studentsIdList[i]);
+            if (student.getDiploma() == diploma) {
+                throw new Exception("The diploma is the same as the old one" + (studentsIdList.length == 1 ? "" : " for at least one of the students") + ".");
+            } else {
+                studentsList.add(student);
+            }
+        }
+
+
+        for (int i = 0; i < studentsList.size(); i++) {
+            studentsList.get(i).setDiploma(diploma);
+        }
+
+        return diploma;
+    }
 
 }
 

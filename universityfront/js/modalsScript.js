@@ -1,45 +1,5 @@
 $('#modals-placeholder').load('modals.html', function () {
     $(this).children(':first').unwrap();
-
-
-    // Global constants
-    /* const codeModalConfirmButton = document.getElementById('codeModalConfirmButton');
-    const codeModalCancelButton = document.getElementById('codeModalCancelButton');
-    const codeModalCloseButton = document.getElementById('codeModalCloseButton');
-    const codeModalSpinner = document.getElementById('codeModalSpinner');
-    const codeModalInput = document.getElementById('codeModalInput');
-    const codeModalInputLabel = document.getElementById('codeModalInputLabel');
-
-    const radioModalConfirmButton = document.getElementById('radioModalConfirmButton');
-    const radioModalInputLabel = document.getElementById('radioModalInputLabel');
-    const radioModalInputRadio1Label = document.getElementById('radioModalInputRadio1Label');
-    const radioModalInputRadio2Label = document.getElementById('radioModalInputRadio2Label');
-    const radioModalCancelButton = document.getElementById('radioModalCancelButton');
-    const radioModalCloseButton = document.getElementById('radioModalCloseButton');
-    const radioModalSpinner = document.getElementById('radioModalSpinner');
-
-    const selectModalConfirmButton = document.getElementById('selectModalConfirmButton');
-    const selectModalCancelButton = document.getElementById('selectModalCancelButton');
-    const selectModalCloseButton = document.getElementById('selectModalCloseButton');
-    const selectModalSpinner = document.getElementById('selectModalSpinner');
-    const selectModalInput = document.getElementById('selectModalInput');
-    const selectModalInputOption = document.getElementById('selectModalInputOption');
-
-
-    const newOrEditPersonModalConfirmButton = document.getElementById('newOrEditPersonModalConfirmButton');
-    const newOrEditPersonModalCancelButton = document.getElementById('newOrEditPersonModalCancelButton');
-    const newOrEditPersonModalCloseButton = document.getElementById('newOrEditPersonModalCloseButton');
-    const newOrEditPersonModalSpinner = document.getElementById('newOrEditPersonModalSpinner');
-    const newOrEditPersonModalGenderSelectInput = document.getElementById('newOrEditPersonModalGenderSelectInput');
-    const newOrEditPersonModalGenderSelectInputOption = document.getElementById('newOrEditPersonModalGenderInputOption');
-
-    const newOrEditStudyModalConfirmButton = document.getElementById('newOrEditStudyModalConfirmButton');
-    const newOrEditStudyModalCancelButton = document.getElementById('newOrEditStudyModalCancelButton');
-    const newOrEditStudyModalCloseButton = document.getElementById('newOrEditStudyModalCloseButton');
-    const newOrEditStudyModalSpinner = document.getElementById('newOrEditStudyModalSpinner');
-    const newOrEditStudyModalDepartmentSelectInput = document.getElementById('newOrEditStudyModalDepartmentSelectInput');
-    const newOrEditStudyModalDepartmentSelectInputOption = document.getElementById('newOrEditStudyModalDepartmentSelectInputOption'); */
-    
 });
 
 
@@ -70,6 +30,7 @@ function disableButtonsInModal() {
     newOrEditStudyModalSpinner.removeAttribute("hidden");
 }
 
+
 function enableButtonsInModal() {
     codeModalConfirmButton.removeAttribute('disabled');
     codeModalCancelButton.removeAttribute('disabled');
@@ -96,4 +57,3 @@ function enableButtonsInModal() {
     newOrEditStudyModalCloseButton.removeAttribute('disabled');
     newOrEditStudyModalSpinner.setAttribute("hidden", "");
 }
-

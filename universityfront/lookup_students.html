@@ -162,202 +162,10 @@
   <script type="text/javascript" src="js/formattersScript.js"></script>
 
 
-
-
-
   <script>
-
-
-
-
-    $(document).ready(function () {
-
-      extraButtons.remove();
-      examsButtons.remove();
-      studentsButtons.remove();
-      coursesButtons.remove();
-      TBDButtons.remove();
-
-      newEntryStudyButton.remove();
-      editEntryStudyButton.remove();
-
-      editEntryPersonButton.disabled = true;
-
-      buttons.classList.remove("invisible");
-
-      //newEntryPersonButton.addEventListener('click', newEntryStudentFunction);
-      //promoteButton.addEventListener('click', promoteFunction);
-      //deleteButton.addEventListener('click', deleteEntryStudentFunction);
-
-      newEntryPersonButton.addEventListener('click', getGenders)
-
-
-    });
-
-
-
-
-
-
-
-
-
-
-    // POST - JSON
-
-    
-
-
-    // PUT - ...FORM...
-
-    async function promoteFunction() {
-      let windowScrollPosition = $(window).scrollTop()
-
-      var history = JSON.parse(localStorage["history"]);
-
-      let currentRows = $table.bootstrapTable('getData');
-      var editedRows = [];
-
-      for (let index = 0; index < currentRows.length; index++) {
-
-        const response = await fetch('http://localhost:8080/students/update/' + currentRows[index].id, {
-          method: 'put',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-          },
-          body: new URLSearchParams({
-            "level": currentRows[index].level + 1
-          })
-        }).then(response => response.json())
-          .then(data => {
-            editedRows.push(data.data.student);
-
-
-            // Last loop to only do it once
-            if (index == currentRows.length - 1) {
-
-              // Rows edited
-              for (let i = 0; i < editedRows.length; i++) {
-
-                // History tables
-                for (let j = 0; j < history.length; j++) {
-
-                  // History rows
-                  for (let k = 0; k < history[j].length; k++) {
-
-                    if (editedRows[i].id == history[j][k].id) {
-                      // Updating the item of the history
-                      history[j].splice(k, 1, editedRows[i]);
-                      break;
-                    }
-
-                  }
-                }
-              }
-
-              $table.bootstrapTable('load', editedRows)
-
-            }
-
-            localStorage["history"] = JSON.stringify(history);
-            $(window).scrollTop(windowScrollPosition)
-          });
-      }
-    };
-
-
-    // DELETE
-
-    async function deleteEntryStudentFunction() {
-      let windowScrollPosition = $(window).scrollTop()
-
-      var history = JSON.parse(localStorage["history"]);
-      console.log(history)
-
-      // No need to get the reply
-      let removedRows = $table.bootstrapTable('getData');
-
-      for (let index = 0; index < removedRows.length; index++) {
-
-        let idOfRowToRemove = removedRows[index].id;
-
-        const response = await fetch('http://localhost:8080/students/delete/' + idOfRowToRemove,
-          {
-            method: 'delete',
-          }
-        );
-
-
-        // Last loop to only do it once
-        if (index == removedRows.length - 1) {
-
-          // Rows edited
-          for (let i = 0; i < removedRows.length; i++) {
-
-            // History tables
-            for (let j = 0; j < history.length; j++) {
-
-              // History rows
-              for (let k = 0; k < history[j].length; k++) {
-
-                if (removedRows[i].id == history[j][k].id) {
-                  // Updating the item of the history
-                  history[j].splice(k, 1);
-                  break;
-                }
-
-              }
-            }
-          }
-
-          $table.bootstrapTable('load', [])
-        }
-      }
-
-      localStorage["history"] = JSON.stringify(history);
-      $(window).scrollTop(windowScrollPosition)
-    };
-
-
-
-
-    // Shared navbar
-    /* $(function () {
-      $("#nav-placeholder").load("navbar.html");
-    }); */
-
-    /* $('#nav-placeholder').load('navbar.html', function () {
-      $(this).children(':first').unwrap();
-
-      console.log(this)
-    }); */
-
-
-    /* var links = linksContainer.getElementsByClassName("nav-link");
-    console.log(links.length)
-
-    for (let i = 0; i < links.length; i++) {
-      console.log("xxx")
-      console.log(this)
-
-      console.log(links[i].getAttribute('href'))
-
-      if (links[i].getAttribute('href') == "lookup_students.html") {
-        console.log(i)
-      }
-
-      //links[i].addEventListener('click', function () {
-
-      //var current = document.getElementsByClassName("")
-      //});
-
-    } */
-
-
 
     // DOM elements
     const $table = $('#table')
-
 
     // Columns
     var modelColumns =
@@ -457,20 +265,32 @@
     })
 
 
+    // Buttons and listeners
+    $(document).ready(function () {
 
+      extraButtons.remove();
+      examsButtons.remove();
+      studentsButtons.remove();
+      coursesButtons.remove();
+      TBDButtons.remove();
+      newEntryStudyButton.remove();
+      editEntryStudyButton.remove();
 
+      editEntryPersonButton.disabled = true;
 
+      buttons.classList.remove("invisible");
 
-    /* var url = "http://localhost:8080/students/list";
-    buildTable($table, url, modelColumns, history, undoChain, lastDoAction, 0);
-    $table.bootstrapTable('refreshOptions',
-      {
-        responseHandler: function (res) { return res.data.students }
-      }) */
+      promotePersonButton.addEventListener('click', promotePersonFunction);
+      demotePersonButton.addEventListener('click', demotePersonFunction);
+      giveWarningPersonButton.addEventListener('click', giveWarningPersonFunction);
+      kickOutPersonButton.addEventListener('click', kickOutPersonFunction);
+      giveDiplomaButton.addEventListener("click", getDiplomas);
 
-      //console.log( $table.bootstrapTable('getData') )
-    //history.push($table.bootstrapTable('getData'));
+      newEntryPersonButton.addEventListener('click', getGenders);
+      deleteButton.addEventListener('click', deleteEntryFunction);
+      refreshEntryButton.addEventListener('click', refreshEntryFunction);
 
+    });
 
   </script>
 

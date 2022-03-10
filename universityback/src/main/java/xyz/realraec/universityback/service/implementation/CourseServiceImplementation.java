@@ -187,6 +187,10 @@ public class CourseServiceImplementation implements CourseService {
     public Professor setNewProfessor(Long[] coursesIdList, String professorCode) throws Exception {
         log.info("Setting new professor for courses with id: {}", Arrays.toString(coursesIdList));
 
+        if (coursesIdList.length == 0) {
+            throw new Exception("No course was provided to perform this action on.");
+        }
+
         //Thread.sleep(2000);
 
         Professor professor = professorRepository.findByCode(professorCode);
@@ -220,6 +224,10 @@ public class CourseServiceImplementation implements CourseService {
     public ArrayList<Set> getStudents(Long[] coursesIdList) throws Exception {
         log.info("Getting students for courses with id: {}", Arrays.toString(coursesIdList));
 
+        if (coursesIdList.length == 0) {
+            throw new Exception("No course was provided to perform this action on.");
+        }
+
         ArrayList<Set> coursesStudentsList = new ArrayList<>();
 
         for (int i = 0; i < coursesIdList.length; i++) {
@@ -235,6 +243,10 @@ public class CourseServiceImplementation implements CourseService {
     @Transactional
     public Student addStudent(Long[] coursesIdList, String studentCode) throws Exception {
         log.info("Adding student for courses with id: {}", Arrays.toString(coursesIdList));
+
+        if (coursesIdList.length == 0) {
+            throw new Exception("No course was provided to perform this action on.");
+        }
 
         Student student = studentRepository.findByCode(studentCode);
         if (student == null) {
@@ -265,6 +277,10 @@ public class CourseServiceImplementation implements CourseService {
     @Transactional
     public Student removeStudent(Long[] coursesIdList, String studentCode) throws Exception {
         log.info("Removing student for courses with id: {}", Arrays.toString(coursesIdList));
+
+        if (coursesIdList.length == 0) {
+            throw new Exception("No course was provided to perform this action on.");
+        }
 
         Student student = studentRepository.findByCode(studentCode);
         if (student == null) {
@@ -301,6 +317,10 @@ public class CourseServiceImplementation implements CourseService {
     public Boolean setIsExamMadeByProfessor(Long[] coursesIdList, Boolean isExamMadeByProfessor) throws Exception {
         log.info("Setting isExamMadeByProfessor to " + isExamMadeByProfessor + " for courses with id: {}", Arrays.toString(coursesIdList));
 
+        if (coursesIdList.length == 0) {
+            throw new Exception("No course was provided to perform this action on.");
+        }
+
         ArrayList<Course> coursesList = new ArrayList<>();
 
         for (int i = 0; i < coursesIdList.length; i++) {
@@ -325,6 +345,10 @@ public class CourseServiceImplementation implements CourseService {
     @Transactional
     public Boolean setIsExamTakenByStudents(Long[] coursesIdList, Boolean isExamTakenByStudents) throws Exception {
         log.info("Setting isExamTakenByStudents to " + isExamTakenByStudents + " for courses with id: {}", Arrays.toString(coursesIdList));
+
+        if (coursesIdList.length == 0) {
+            throw new Exception("No course was provided to perform this action on.");
+        }
 
         ArrayList<Course> coursesList = new ArrayList<>();
 

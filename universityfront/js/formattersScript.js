@@ -79,21 +79,6 @@ function studentsFormatter(value, row, index, field) {
 
 
 // Enums
-/* function genderFormatter(value, row, index, field) {
-    let color;
-    let symbol;
-    if (value.endsWith("_FEMALE")) {
-        color = '#E9967A'
-        symbol = 'bi-gender-female'
-    } else if (value.endsWith("_MALE")) {
-        color = '#BDB76B'
-        symbol = 'bi-gender-male'
-    } else {
-        color = '#8FBC8F'
-        symbol = 'bi-gender-ambiguous'
-    }
-    return '<div style="color: ' + color + '">' + '<i class="bi ' + symbol + '"></i></div>';
-} */
 function genderFormatter(value, row, index, field) {
     if (value.endsWith("_FEMALE")) {
         return '<i class="bi bi-gender-female me-2"></i>' + "Female";

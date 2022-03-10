@@ -63,7 +63,7 @@ public class StudentController {
         return ResponseEntity.ok(
                 Response.builder()
                         .timestamp(LocalDateTime.now())
-                        .data(Map.of("student", studentService.create(student)))
+                        .data(Map.of("person", studentService.create(student)))
                         .message("Student created")
                         .status(HttpStatus.CREATED)
                         .statusCode(HttpStatus.CREATED.value())
@@ -182,6 +182,38 @@ public class StudentController {
                         .timestamp(LocalDateTime.now())
                         .data(Map.of("degree", studentService.setNewMajorDegree(studentsIdList, degreeCode)))
                         .message("Students with id " + Arrays.toString(studentsIdList) + " set with new major degree with code " + degreeCode)
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build()
+        );
+    }
+
+    @PutMapping("/giveCredits")
+    public ResponseEntity<Response> giveCreditsToStudents(
+            @RequestParam Long[] studentsIdList,
+            @RequestParam Integer credits
+    ) throws Exception {
+        return ResponseEntity.ok(
+                Response.builder()
+                        .timestamp(LocalDateTime.now())
+                        .data(Map.of("credits", studentService.giveCredits(studentsIdList, credits)))
+                        .message("Students with id " + Arrays.toString(studentsIdList) + " given " + credits + " credits")
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build()
+        );
+    }
+
+    @PutMapping("/giveDiploma")
+    public ResponseEntity<Response> giveCreditsToStudents(
+            @RequestParam Long[] studentsIdList,
+            @RequestParam Diploma diploma
+    ) throws Exception {
+        return ResponseEntity.ok(
+                Response.builder()
+                        .timestamp(LocalDateTime.now())
+                        .data(Map.of("diploma", studentService.giveDiploma(studentsIdList, diploma)))
+                        .message("Students with id " + Arrays.toString(studentsIdList) + " given " + diploma + " diploma")
                         .status(HttpStatus.OK)
                         .statusCode(HttpStatus.OK.value())
                         .build()

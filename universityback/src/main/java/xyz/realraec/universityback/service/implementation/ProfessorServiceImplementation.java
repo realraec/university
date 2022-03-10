@@ -10,8 +10,6 @@ import xyz.realraec.universityback.repository.ProfessorRepository;
 import xyz.realraec.universityback.service.ProfessorService;
 
 import javax.transaction.Transactional;
-import java.io.IOException;
-import java.net.InetAddress;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Objects;

@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import xyz.realraec.universityback.enumeration.Gender;
 import xyz.realraec.universityback.model.Professor;
 import xyz.realraec.universityback.model.Response;
-import xyz.realraec.universityback.model.Student;
 import xyz.realraec.universityback.service.implementation.ProfessorServiceImplementation;
 
 import javax.validation.Valid;
@@ -62,7 +61,7 @@ public class ProfessorController {
         return ResponseEntity.ok(
                 Response.builder()
                         .timestamp(LocalDateTime.now())
-                        .data(Map.of("professor", professorService.create(professor)))
+                        .data(Map.of("person", professorService.create(professor)))
                         .message("Professor created")
                         .status(HttpStatus.CREATED)
                         .statusCode(HttpStatus.CREATED.value())
@@ -128,5 +127,6 @@ public class ProfessorController {
                         .build()
         );
     }
+
 
 }

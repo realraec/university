@@ -122,37 +122,7 @@
   <script type="text/javascript" src="js/formattersScript.js"></script>
 
 
-
-
   <script>
-
-
-    $(document).ready(function () {
-
-
-      rewardButtons.remove();
-      extraButtons.remove();
-      examsButtons.remove();
-      studentsButtons.remove();
-      coursesButtons.remove();
-      degreesButtons.remove();
-      TBDButtons.remove();
-
-      newEntryStudyButton.remove();
-      editEntryStudyButton.remove();
-
-      editEntryPersonButton.disabled = true;
-      
-      buttons.classList.remove("invisible");
-
-      newEntryPersonButton.addEventListener('click', getGenders)
-
-
-    });
-
-
-
-
 
     // DOM elements
     var $table = $('#table')
@@ -228,6 +198,7 @@
         }
       ]
 
+
     // Array from JSON Objects
     var sourceData;
     $.ajax("http://localhost:8080/professors/list", {
@@ -241,6 +212,34 @@
       }
     })
 
+
+    // Buttons and listeners
+    $(document).ready(function () {
+
+      rewardButtons.remove();
+      extraButtons.remove();
+      examsButtons.remove();
+      studentsButtons.remove();
+      coursesButtons.remove();
+      degreesButtons.remove();
+      TBDButtons.remove();
+      newEntryStudyButton.remove();
+      editEntryStudyButton.remove();
+
+      editEntryPersonButton.disabled = true;
+
+      buttons.classList.remove("invisible");
+
+      promotePersonButton.addEventListener('click', promotePersonFunction);
+      demotePersonButton.addEventListener('click', demotePersonFunction);
+      giveWarningPersonButton.addEventListener('click', giveWarningPersonFunction);
+      kickOutPersonButton.addEventListener('click', kickOutPersonFunction);
+
+      newEntryPersonButton.addEventListener('click', getGenders)
+      deleteButton.addEventListener('click', deleteEntryFunction);
+      refreshEntryButton.addEventListener('click', refreshEntryFunction);
+
+    });
 
   </script>
 

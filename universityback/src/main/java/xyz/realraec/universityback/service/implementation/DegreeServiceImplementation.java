@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import xyz.realraec.universityback.enumeration.Department;
 import xyz.realraec.universityback.model.Course;
 import xyz.realraec.universityback.model.Degree;
-import xyz.realraec.universityback.model.Student;
 import xyz.realraec.universityback.repository.CourseRepository;
 import xyz.realraec.universityback.repository.DegreeRepository;
 import xyz.realraec.universityback.service.DegreeService;
@@ -130,7 +129,9 @@ public class DegreeServiceImplementation implements DegreeService {
     public Course addCourse(Long[] degreesIdList, String courseCode) throws Exception {
         log.info("Adding course for degrees with id: {}", Arrays.toString(degreesIdList));
 
-        if(degreesIdList.length > 1) {
+        if (degreesIdList.length == 0) {
+            throw new Exception("No degree was provided to perform this action on.");
+        } else if (degreesIdList.length > 1) {
             throw new Exception("A course can only be included in one degree.");
         }
 
@@ -164,7 +165,9 @@ public class DegreeServiceImplementation implements DegreeService {
     public Course removeCourse(Long[] degreesIdList, String courseCode) throws Exception {
         log.info("Removing course for degrees with id: {}", Arrays.toString(degreesIdList));
 
-        if(degreesIdList.length > 1) {
+        if (degreesIdList.length == 0) {
+            throw new Exception("No degree was provided to perform this action on.");
+        } else if (degreesIdList.length > 1) {
             throw new Exception("A course can only be included in one degree.");
         }
 

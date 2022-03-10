@@ -8,8 +8,10 @@ import xyz.realraec.universityback.enumeration.Gender;
 @Service
 public interface MiscService {
 
-    Department[] getDepartments();
-    Gender[] getGenders();
-    Diploma[] getDiplomas();
+    Department[] getDepartments() throws InterruptedException;
+
+    Gender[] getGenders() throws InterruptedException;
+
+    Diploma[] getDiplomas() throws InterruptedException;
 
 }

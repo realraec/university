@@ -61,7 +61,7 @@ public class DegreeController {
         return ResponseEntity.ok(
                 Response.builder()
                         .timestamp(LocalDateTime.now())
-                        .data(Map.of("degree", degreeService.create(degree)))
+                        .data(Map.of("study", degreeService.create(degree)))
                         .message("Degree created")
                         .status(HttpStatus.CREATED)
                         .statusCode(HttpStatus.CREATED.value())

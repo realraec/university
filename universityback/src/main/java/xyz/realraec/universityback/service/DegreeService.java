@@ -23,8 +23,6 @@ public interface DegreeService {
 
     Boolean delete(Long id);
 
-    //
-
     Course addCourse(Long[] degreesIdList, String courseCode) throws Exception;
 
     Course removeCourse(Long[] degreesIdList, String courseCode) throws Exception;

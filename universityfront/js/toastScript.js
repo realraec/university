@@ -1,20 +1,11 @@
 $('#toast-placeholder').load('toast.html', function () {
     $(this).children(':first').unwrap();
 
-
-    // Global constants
-    /* const toastBodyText = document.getElementById('toastBodyText');
-    const toastHeaderIcon = document.getElementById('toastHeaderIcon');
-    const toastHeaderTime = document.getElementById('toastHeaderTime');
-    const toastHeaderText = document.getElementById('toastHeaderText'); */
-
-
-    var buttonClickedId;
-
-
-
     // Once the DOM is properly set up
     $(document).ready(function () {
+
+        var buttonClickedId;
+
 
         var toastElementsList = [].slice.call(document.querySelectorAll('.toast'))
         var toastList = toastElementsList.map(function (toastElement) {
@@ -26,6 +17,8 @@ $('#toast-placeholder').load('toast.html', function () {
         codeModalConfirmButton.addEventListener("click", customizeToast)
         radioModalConfirmButton.addEventListener("click", customizeToast)
         selectModalConfirmButton.addEventListener("click", customizeToast)
+        newOrEditPersonModalConfirmButton.addEventListener("click", customizeToast)
+        newOrEditStudyModalConfirmButton.addEventListener("click", customizeToast)
 
 
         let buttonsArray = $('#buttons').find("button").not("[id*='Modal']");
@@ -36,6 +29,7 @@ $('#toast-placeholder').load('toast.html', function () {
     });
 
 });
+
 
 function lastActionButtonClicked(e) {
     buttonClickedId = e.currentTarget.id;
@@ -48,6 +42,7 @@ function lastActionButtonClicked(e) {
     codeModalConfirmButton.removeEventListener('click', setNewProfessorFunction, false)
     codeModalConfirmButton.removeEventListener('click', setNewMajorDegreeFunction, false)
     codeModalConfirmButton.removeEventListener('click', setNewMinorDegreeFunction, false)
+    codeModalConfirmButton.removeEventListener('click', giveCreditsFunction, false)
 
     //codeModalConfirmButton.removeEventListener('click', testFunction, false)
 
@@ -55,8 +50,29 @@ function lastActionButtonClicked(e) {
     radioModalConfirmButton.removeEventListener('click', toggleIsExamTakenFunction, false)
 
 
+    newOrEditPersonModalConfirmButton.removeEventListener('click', newEntryPersonFunction, false)
+    newOrEditPersonModalConfirmButton.removeEventListener('click', editEntryPersonFunction, false)
+
+    newOrEditStudyModalConfirmButton.removeEventListener('click', newEntryStudyFunction, false)
+    newOrEditPersonModalConfirmButton.removeEventListener('click', editEntryPersonFunction, false)
+
 
     switch (buttonClickedId) {
+        case "giveCreditsButton":
+            codeModalInput.value = "5";
+            codeModalInputLabel.textContent = "Credits to give to the student(s)"
+            codeModalConfirmButton.addEventListener('click', giveCreditsFunction);
+            break;
+        case "giveDiplomaButton":
+            selectModalInput.value = "5";
+            selectModalInputLabel.textContent = "Diploma to give to the student(s)"
+            selectModalConfirmButton.addEventListener("click", giveDiplomaFunction);
+            break;
+        case "promotePersonButton":
+            /* codeModalInput.value = "P1"
+            codeModalInputLabel.textContent = "Code of the new professor"
+            codeModalConfirmButton.addEventListener('click', setNewProfessorFunction); */
+            break;
         case "setNewProfessorButton":
             codeModalInput.value = "P1"
             codeModalInputLabel.textContent = "Code of the new professor"
@@ -110,26 +126,65 @@ function lastActionButtonClicked(e) {
             codeModalConfirmButton.addEventListener('click', removeCourseFunction);
             break;
         case "newEntryPersonButton":
-            //codeModalInput.value = "C1"
-            //codeModalInputLabel.textContent = "Code of the course to remove"
             if (document.URL.endsWith("lookup_students.html")) {
-                newOrEditPersonModalConfirmButton.addEventListener('click', newEntryStudentFunction);
+                newOrEditPersonModalLastNameInputLabel.textContent = "Last name of the student to add"
+                newOrEditPersonModalFirstNameInputLabel.textContent = "First name of the student to add"
+                newOrEditPersonModalGenderSelectInputLabel.textContent = "Gender of the student to add"
+                newOrEditPersonModalBirthdateInputLabel.textContent = "Birthdate of the student to add"
+                newOrEditPersonModalEmailInputLabel.textContent = "Email of the student to add"
+                newOrEditPersonModalPhoneInputLabel.textContent = "Phone number of the student to add"
             } else {
-                newOrEditPersonModalConfirmButton.addEventListener('click', newEntryProfessorFunction);
+                newOrEditPersonModalLastNameInputLabel.textContent = "Last name of the professor to add"
+                newOrEditPersonModalFirstNameInputLabel.textContent = "First name of the professor to add"
+                newOrEditPersonModalGenderSelectInputLabel.textContent = "Gender of the professor to add"
+                newOrEditPersonModalBirthdateInputLabel.textContent = "Birthdate of the professor to add"
+                newOrEditPersonModalEmailInputLabel.textContent = "Email of the professor to add"
+                newOrEditPersonModalPhoneInputLabel.textContent = "Phone number of the professor to add"
             }
+            newOrEditPersonModalConfirmButton.addEventListener('click', newEntryPersonFunction);
             break;
         case "newEntryStudyButton":
-            //codeModalInput.value = "C1"
-            //codeModalInputLabel.textContent = "Code of the course to remove"
             if (document.URL.endsWith("lookup_courses.html")) {
-                newOrEditStudyModalConfirmButton.addEventListener('click', newEntryCourseFunction);
+                newOrEditStudyModalHeadingInputLabel.textContent = "Heading of the course to add"
+                newOrEditStudyModalDepartmentSelectInputLabel.textContent = "Department of the course to add"
             } else {
-                newOrEditStudyModalConfirmButton.addEventListener('click', newEntryDegreeFunction);
+                newOrEditStudyModalHeadingInputLabel.textContent = "Heading of the degree to add"
+                newOrEditStudyModalDepartmentSelectInputLabel.textContent = "Department of the degree to add"
             }
+            newOrEditStudyModalConfirmButton.addEventListener('click', newEntryStudyFunction);
+            break;
+        case "editEntryPersonButton":
+            if (document.URL.endsWith("detail_student.html")) {
+                newOrEditPersonModalLastNameInputLabel.textContent = "Last name of the student to edit"
+                newOrEditPersonModalFirstNameInputLabel.textContent = "First name of the student to edit"
+                newOrEditPersonModalGenderSelectInputLabel.textContent = "Gender of the student to edit"
+                newOrEditPersonModalBirthdateInputLabel.textContent = "Birthdate of the student to edit"
+                newOrEditPersonModalEmailInputLabel.textContent = "Email of the student to edit"
+                newOrEditPersonModalPhoneInputLabel.textContent = "Phone number of the student to edit"
+            } else {
+                newOrEditPersonModalLastNameInputLabel.textContent = "Last name of the professor to edit"
+                newOrEditPersonModalFirstNameInputLabel.textContent = "First name of the professor to edit"
+                newOrEditPersonModalGenderSelectInputLabel.textContent = "Gender of the professor to edit"
+                newOrEditPersonModalBirthdateInputLabel.textContent = "Birthdate of the professor to edit"
+                newOrEditPersonModalEmailInputLabel.textContent = "Email of the professor to edit"
+                newOrEditPersonModalPhoneInputLabel.textContent = "Phone number of the professor to edit"
+            }
+            newOrEditPersonModalConfirmButton.addEventListener('click', editEntryPersonFunction);
+            break;
+        case "editEntryStudyButton":
+            if (document.URL.endsWith("detail_course.html")) {
+                newOrEditStudyModalHeadingInputLabel.textContent = "Heading of the course to edit"
+                newOrEditStudyModalDepartmentSelectInputLabel.textContent = "Department of the course to edit"
+            } else {
+                newOrEditStudyModalHeadingInputLabel.textContent = "Heading of the degree to edit"
+                newOrEditStudyModalDepartmentSelectInputLabel.textContent = "Department of the degree to edit"
+            }
+            newOrEditStudyModalConfirmButton.addEventListener('click', editEntryStudyFunction);
             break;
     }
 
 }
+
 
 function customizeToast() {
 
@@ -138,6 +193,40 @@ function customizeToast() {
 
     console.log(buttonClickedId)
     switch (buttonClickedId) {
+        case "giveDiplomaButton":
+            operationHeader = "Give diploma"
+            operationBody = "diploma given";
+            break;
+        case "giveCreditsButton":
+            operationHeader = "Give credits"
+            operationBody = "credits given";
+            break;
+        case "giveWarningPersonButton":
+            operationHeader = "Give warning"
+            operationBody = "warning given";
+            break;
+        case "kickOutPersonButton":
+            operationHeader = "Kick out"
+            operationBody = "person kicked out";
+            break;
+        case "demotePersonButton":
+            if (document.URL.endsWith("lookup_students.html")) {
+                operationHeader = "Demote student(s)"
+                operationBody = "student(s) demoted";
+            } else {
+                operationHeader = "Demote professor(s)"
+                operationBody = "professor(s) demoted";
+            }
+            break;
+        case "promotePersonButton":
+            if (document.URL.endsWith("lookup_students.html")) {
+                operationHeader = "Promote student(s)"
+                operationBody = "student(s) promoted";
+            } else {
+                operationHeader = "Promote professor(s)"
+                operationBody = "professor(s) promoted";
+            }
+            break;
         case "setNewProfessorButton":
             operationHeader = "New professor"
             operationBody = "professor changed";
@@ -178,6 +267,42 @@ function customizeToast() {
             operationHeader = "Remove course"
             operationBody = "course removed";
             break;
+        case "newEntryPersonButton":
+            if (document.URL.endsWith("lookup_students.html")) {
+                operationHeader = "Add new student"
+                operationBody = "new student added";
+            } else {
+                operationHeader = "Add new professor"
+                operationBody = "new professor added";
+            }
+            break;
+        case "newEntryStudyButton":
+            if (document.URL.endsWith("lookup_courses.html")) {
+                operationHeader = "Add new course"
+                operationBody = "new course added";
+            } else {
+                operationHeader = "Add new degree"
+                operationBody = "new degree added";
+            }
+            break;
+        case "editEntryPersonButton":
+            if (document.URL.endsWith("detail_student.html")) {
+                operationHeader = "Edit student"
+                operationBody = "student edited";
+            } else {
+                operationHeader = "Edit professor"
+                operationBody = "professor edited";
+            }
+            break;
+        case "editEntryStudyButton":
+            if (document.URL.endsWith("detail_course.html")) {
+                operationHeader = "Edit course"
+                operationBody = "course edited";
+            } else {
+                operationHeader = "Edit degree"
+                operationBody = "degree edited";
+            }
+            break;
     }
 
     toastHeaderText.textContent = operationHeader + " notification";
@@ -202,6 +327,11 @@ function checkIfErrorOccurred(data) {
         $('#newOrEditPersonModal').modal('hide');
         $('#newOrEditStudyModal').modal('hide');
         toast.show();
+        return true;
+    } else if (data.status == 400) {
+        newOrEditStudyModalDepartmentSelectInputOption.textContent = "> " + newOrEditStudyModalDepartmentSelectInputOption.textContent.toUpperCase();
+        newOrEditPersonModalGenderSelectInputOption.textContent = "> " + newOrEditPersonModalGenderSelectInputOption.textContent.toUpperCase();
+        selectModalInputOption.textContent = "> " + selectModalInputOption.textContent.toUpperCase();
         return true;
     } else {
         $('#codeModal').modal('hide');

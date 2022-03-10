@@ -3,6 +3,8 @@ package xyz.realraec.universityback.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import xyz.realraec.universityback.enumeration.Department;
 
 import javax.persistence.*;
@@ -145,6 +147,7 @@ public class Course extends Study {
     @ManyToMany(
             //fetch = FetchType.EAGER
     )
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinTable(
             name = "students_courses_m2m",
             joinColumns = @JoinColumn(name = "student_id"),

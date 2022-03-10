@@ -25,8 +25,6 @@ public interface CourseService {
 
     Boolean delete(Long id);
 
-    //Professor setNewProfessor(Long id, String professorCode) throws Exception;
-
     Professor setNewProfessor(Long[] coursesIdList, String professorCode) throws Exception;
 
     ArrayList<Set> getStudents(Long[] coursesIdList) throws Exception;
@@ -38,7 +36,6 @@ public interface CourseService {
     Boolean setIsExamMadeByProfessor(Long[] coursesIdList, Boolean isExamMadeByProfessor) throws Exception;
 
     Boolean setIsExamTakenByStudents(Long[] coursesIdList, Boolean isExamTakenByStudents) throws Exception;
-
 
 }
 

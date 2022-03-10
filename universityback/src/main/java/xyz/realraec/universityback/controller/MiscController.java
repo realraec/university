@@ -23,7 +23,7 @@ public class MiscController {
     private final MiscServiceImplementation miscService;
 
     @GetMapping("/getDepartments")
-    public ResponseEntity<Response> getDepartments() {
+    public ResponseEntity<Response> getDepartments() throws InterruptedException {
         return ResponseEntity.ok(
                 Response.builder()
                         .timestamp(LocalDateTime.now())
@@ -36,7 +36,7 @@ public class MiscController {
     }
 
     @GetMapping("/getGenders")
-    public ResponseEntity<Response> getGenders() {
+    public ResponseEntity<Response> getGenders() throws InterruptedException {
         return ResponseEntity.ok(
                 Response.builder()
                         .timestamp(LocalDateTime.now())
@@ -49,7 +49,7 @@ public class MiscController {
     }
 
     @GetMapping("/getDiplomas")
-    public ResponseEntity<Response> getDiplomas() {
+    public ResponseEntity<Response> getDiplomas() throws InterruptedException {
         return ResponseEntity.ok(
                 Response.builder()
                         .timestamp(LocalDateTime.now())

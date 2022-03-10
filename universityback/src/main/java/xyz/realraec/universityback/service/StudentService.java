@@ -4,10 +4,8 @@ import org.springframework.stereotype.Service;
 import xyz.realraec.universityback.enumeration.Diploma;
 import xyz.realraec.universityback.enumeration.Gender;
 import xyz.realraec.universityback.model.Degree;
-import xyz.realraec.universityback.model.Professor;
 import xyz.realraec.universityback.model.Student;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -28,15 +26,15 @@ public interface StudentService {
 
     Boolean delete(Long id);
 
-    //
-
     ArrayList<Set> getCourses(Long[] studentsIdList) throws Exception;
 
     Degree setNewMinorDegree(Long[] studentsIdList, String degreeCode) throws Exception;
 
     Degree setNewMajorDegree(Long[] studentsIdList, String degreeCode) throws Exception;
 
+    ArrayList<Integer> giveCredits(Long[] studentsIdList, Integer credits) throws Exception;
 
+    Diploma giveDiploma(Long[] studentsIdList, Diploma diploma) throws Exception;
 
 }
 

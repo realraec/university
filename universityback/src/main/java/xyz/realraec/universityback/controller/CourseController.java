@@ -59,7 +59,7 @@ public class CourseController {
         return ResponseEntity.ok(
                 Response.builder()
                         .timestamp(LocalDateTime.now())
-                        .data(Map.of("course", courseService.create(course)))
+                        .data(Map.of("study", courseService.create(course)))
                         .message("Course created")
                         .status(HttpStatus.CREATED)
                         .statusCode(HttpStatus.CREATED.value())
@@ -237,9 +237,6 @@ public class CourseController {
                         .build()
         );
     }
-
-
-
 
 
 }

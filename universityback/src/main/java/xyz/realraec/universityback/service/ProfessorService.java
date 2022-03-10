@@ -3,7 +3,6 @@ package xyz.realraec.universityback.service;
 import org.springframework.stereotype.Service;
 import xyz.realraec.universityback.enumeration.Gender;
 import xyz.realraec.universityback.model.Professor;
-import xyz.realraec.universityback.model.Student;
 
 import java.time.LocalDate;
 import java.util.Collection;

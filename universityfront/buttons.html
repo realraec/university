@@ -22,25 +22,30 @@
 
     <div id="levelButtons" class="col-xxl-2 col-lg-3 col-md-4 col-6 d-grid">
         <label class="form-label ">Level</label>
-        <button id="promoteButton" type="button" class="btn btn-secondary"><i class="bi bi-chevron-double-up"></i>
+        <button id="promotePersonButton" type="button" class="btn btn-secondary"><i class="bi bi-chevron-double-up"></i>
             <span class="ms-2">Promote</span></button>
-        <button id="demotebutton" type="button" class="btn btn-secondary"><i class="bi bi-chevron-double-down"></i>
+        <button id="demotePersonButton" type="button" class="btn btn-secondary"><i
+                class="bi bi-chevron-double-down"></i>
             <span class="ms-2">Demote</span></button>
     </div>
 
     <div id="sanctionButtons" class="col-xxl-2 col-lg-3 col-md-4 col-6 d-grid">
         <label class="form-label">Sanction</label>
-        <button id="giveWarningButton" type="button" class="btn btn-danger"><i class="bi bi-exclamation-diamond"></i>
+        <button id="giveWarningPersonButton" type="button" class="btn btn-danger"><i
+                class="bi bi-exclamation-diamond"></i>
             <span class="ms-2">Give warning</span></button>
-        <button id="kickOutButton" type="button" class="btn btn-danger"><i class="bi bi-x-octagon"></i>
+        <button id="kickOutPersonButton" type="button" class="btn btn-danger"><i class="bi bi-x-octagon"></i>
             <span class="ms-2">Kick out</span></button>
     </div>
 
     <div id="rewardButtons" class="col-xxl-2 col-lg-3 col-md-4 col-6 d-grid">
         <label class="form-label">Reward</label>
-        <button id="giveCreditsButton" type="button" class="btn btn-success"><i class="bi bi-award"></i>
+        <button id="giveCreditsButton" type="button" class="btn btn-success" data-bs-toggle="modal"
+            data-bs-target="#codeModal" aria-expanded="false" aria-controls="codeModal"><i class="bi bi-award"></i>
             <span class="ms-2">Give credits</span></button>
-        <button id="giveDiplomaButton" type="button" class="btn btn-success"><i class="bi bi-mortarboard"></i>
+        <button id="giveDiplomaButton" type="button" class="btn btn-success" data-bs-toggle="modal"
+            data-bs-target="#selectModal" aria-expanded="false" aria-controls="selectModal"><i
+                class="bi bi-mortarboard"></i>
             <span class="ms-2">Give diploma</span></button>
     </div>
 
@@ -94,11 +99,11 @@
         <button id="newEntryPersonButton" type="button" class="btn btn-dark" data-bs-toggle="modal"
             data-bs-target="#newOrEditPersonModal" aria-expanded="false" aria-controls="newOrEditPersonModal">
             <i class="bi bi-plus-square"></i>
-            <span class="ms-2">New entry SP</span></button>
+            <span class="ms-2">New entry</span></button>
         <button id="newEntryStudyButton" type="button" class="btn btn-dark" data-bs-toggle="modal"
             data-bs-target="#newOrEditStudyModal" aria-expanded="false" aria-controls="newOrEditStudyModal">
             <i class="bi bi-plus-square"></i>
-            <span class="ms-2">New entry CD</span></button>
+            <span class="ms-2">New entry</span></button>
         <button id="deleteButton" type="button" class="btn btn-dark">
             <i class="bi bi-x-square"></i>
             <span class="ms-2">Delete entry</span></button>
@@ -110,11 +115,11 @@
         <button id="editEntryPersonButton" type="button" class="btn btn-dark" data-bs-toggle="modal"
             data-bs-target="#newOrEditPersonModal" aria-expanded="false" aria-controls="newOrEditPersonModal">
             <i class="bi bi-pencil-square"></i>
-            <span class="ms-2">Edit entry SP</span></button>
+            <span class="ms-2">Edit entry</span></button>
         <button id="editEntryStudyButton" type="button" class="btn btn-dark" data-bs-toggle="modal"
             data-bs-target="#newOrEditStudyModal" aria-expanded="false" aria-controls="newOrEditStudyModal">
             <i class="bi bi-pencil-square"></i>
-            <span class="ms-2">Edit entry CD</span></button>
+            <span class="ms-2">Edit entry</span></button>
         <button id="refreshEntryButton" type="button" class="btn btn-dark">
             <i class="bi bi-check-square"></i>
             <span class="ms-2">Refresh entry</span></button>

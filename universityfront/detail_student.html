@@ -222,15 +222,6 @@
     var detailId = localStorage["detailId"];
     console.log(detailId)
 
-    // Eager fetch from server
-    //var url = "http://localhost:8080/students/get/" + localStorage["detailId"];
-
-
-
-    
-
-
-
     // Table init
     var sourceData = []
     $.ajax("http://localhost:8080/students/get/" + detailId, {
@@ -243,41 +234,16 @@
       }, complete: function () {
         console.log("complete multiple");
 
+        updateDetailStudent(sourceData);
 
-        document.getElementById("idInput").value = sourceData[0].id;
-        document.getElementById("codeInput").value = sourceData[0].code;
-        document.getElementById("lastNameInput").value = sourceData[0].lastName.toUpperCase();
-        document.getElementById("firstNameInput").value = sourceData[0].firstName;
-        document.getElementById("genderInput").value = genderFormatter(sourceData[0].gender).replace(/<\/?[^>]+(>|$)/g, "");
-        document.getElementById("levelInput").value = sourceData[0].level;
-        document.getElementById("majorDegreeInput").value = degreeFormatter(sourceData[0].majorDegree);  //JSON.stringify(sourceData[0].majorDegree);
-        document.getElementById("minorDegreeInput").value = degreeFormatter(sourceData[0].minorDegree);  //JSON.stringify(sourceData[0].minorDegree);
-        document.getElementById("birthdateInput").value = sourceData[0].birthdate;
-        document.getElementById("emailInput").value = sourceData[0].email;
-        document.getElementById("phoneInput").value = sourceData[0].phone;
-        document.getElementById("totalTuitionInput").value = sourceData[0].totalTuition;
-        document.getElementById("balanceInput").value = sourceData[0].balance;
-        document.getElementById("creditsInput").value = sourceData[0].credits;
-        document.getElementById("diplomaInput").value = diplomaFormatter(sourceData[0].diploma);
-        document.getElementById("warningsInput").value = sourceData[0].warnings;
       }
     })
 
 
-
-    /* buildSimpleTable($table, url, modelColumns);
-    $table.bootstrapTable('refreshOptions',
-      {
-        responseHandler: function (res) { return [res.data.student] }
-      }
-    ) */
-
+    // Buttons and listeners
     $(document).ready(function () {
 
-
-
       // Courses?
-
 
       extraButtons.remove();
       examsButtons.remove();
@@ -290,50 +256,32 @@
 
       newEntryPersonButton.disabled = true;
 
-
       buttons.classList.remove("invisible");
 
-
-      /* 
-            newEntryButton.addEventListener('click', newEntryFunction);
-            promoteButton.addEventListener('click', promoteFunction);
-            deleteButton.addEventListener('click', deleteFunction); */
-
-      editEntryPersonButton.addEventListener('click', getGenders)
-
+      editEntryPersonButton.addEventListener('click', getGenders);
+      editEntryPersonButton.addEventListener('click', editEntryPersonPreparation);
 
     })
 
 
-
-
-
-
-
-
-
-
-    //const promoteButton = document.getElementById('promoteButton');
-
-
-    // PUT - ...FORM...
-    /* promoteButton.addEventListener('click', async _ => {
-      try {
-        const response = await fetch('http://localhost:8080/students/update/' + document.getElementById("idInput").value, {
-          method: 'put',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-          },
-          body: new URLSearchParams({
-            "level": document.getElementById("levelInput").value - 1
-          })
-        });
-        console.log('Completed!', response);
-      } catch (err) {
-        console.error(`Error: ${err}`);
-      }
-    }); */
-
+    function updateDetailStudent(sourceData) {
+      document.getElementById("idInput").value = sourceData[0].id;
+      document.getElementById("codeInput").value = sourceData[0].code;
+      document.getElementById("lastNameInput").value = sourceData[0].lastName.toUpperCase();
+      document.getElementById("firstNameInput").value = sourceData[0].firstName;
+      document.getElementById("genderInput").value = genderFormatter(sourceData[0].gender).replace(/<\/?[^>]+(>|$)/g, "");
+      document.getElementById("levelInput").value = sourceData[0].level;
+      document.getElementById("majorDegreeInput").value = degreeFormatter(sourceData[0].majorDegree);  //JSON.stringify(sourceData[0].majorDegree);
+      document.getElementById("minorDegreeInput").value = degreeFormatter(sourceData[0].minorDegree);  //JSON.stringify(sourceData[0].minorDegree);
+      document.getElementById("birthdateInput").value = sourceData[0].birthdate;
+      document.getElementById("emailInput").value = sourceData[0].email;
+      document.getElementById("phoneInput").value = sourceData[0].phone;
+      document.getElementById("totalTuitionInput").value = sourceData[0].totalTuition;
+      document.getElementById("balanceInput").value = sourceData[0].balance;
+      document.getElementById("creditsInput").value = sourceData[0].credits;
+      document.getElementById("diplomaInput").value = diplomaFormatter(sourceData[0].diploma);
+      document.getElementById("warningsInput").value = sourceData[0].warnings;
+    }
 
   </script>
 

@@ -19,20 +19,23 @@ import javax.transaction.Transactional;
 public class MiscServiceImplementation implements MiscService {
 
     @Override
-    public Department[] getDepartments() {
+    public Department[] getDepartments() throws InterruptedException {
         log.info("Fetching all departments");
+        Thread.sleep(1000);
         return Department.class.getEnumConstants();
     }
 
     @Override
-    public Gender[] getGenders() {
+    public Gender[] getGenders() throws InterruptedException {
         log.info("Fetching all genders");
+        Thread.sleep(1000);
         return Gender.class.getEnumConstants();
     }
 
     @Override
-    public Diploma[] getDiplomas() {
+    public Diploma[] getDiplomas() throws InterruptedException {
         log.info("Fetching all diplomas");
+        Thread.sleep(1000);
         return Diploma.class.getEnumConstants();
     }
 }

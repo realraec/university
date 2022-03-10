@@ -135,18 +135,14 @@
       }, complete: function () {
         console.log("complete multiple");
 
-
-        document.getElementById("idInput").value = sourceData[0].id;
-        document.getElementById("codeInput").value = sourceData[0].code;
-        document.getElementById("headingInput").value = sourceData[0].heading;
-        document.getElementById("departmentInput").value = departmentFormatter(sourceData[0].department);
-        document.getElementById("coursesInput").value = (sourceData[0].courses.length == 0 ? null : coursesFormatter(sourceData[0].courses).replaceAll("<br/>", " — "));
+        updateDetailDegree(sourceData)
 
         // Students?
       }
     });
 
 
+    // Buttons and listeners
     $(document).ready(function () {
 
       degreesButtons.remove();
@@ -166,14 +162,18 @@
       buttons.classList.remove("invisible");
 
       editEntryStudyButton.addEventListener('click', getDepartments)
-
-      /*
-      newEntryButton.addEventListener('click', newEntryFunction);
-      promoteButton.addEventListener('click', promoteFunction);
-      deleteButton.addEventListener('click', deleteFunction);
-      */
+      editEntryStudyButton.addEventListener('click', editEntryStudyPreparation)
 
     })
+
+
+    function updateDetailDegree(sourceData) {
+      document.getElementById("idInput").value = sourceData[0].id;
+      document.getElementById("codeInput").value = sourceData[0].code;
+      document.getElementById("headingInput").value = sourceData[0].heading;
+      document.getElementById("departmentInput").value = departmentFormatter(sourceData[0].department);
+      document.getElementById("coursesInput").value = (sourceData[0].courses.length == 0 ? null : coursesFormatter(sourceData[0].courses).replaceAll("<br/>", " — "));
+    }
 
 
   </script>

@@ -3,6 +3,8 @@ package xyz.realraec.universityback.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import xyz.realraec.universityback.enumeration.Diploma;
 import xyz.realraec.universityback.enumeration.Gender;
 
@@ -176,10 +178,10 @@ public class Student extends Person {
     public void setLevel(int level) throws Exception {
         if ((level >= 1) && (level <= 7)) {
             this.level = level;
-            calculateCredits();
+            /*calculateCredits();
             calculateTotalTuition();
         } else if (level == 0) {
-            this.level = level;
+            this.level = level;*/
         } else {
             throw new Exception("Invalid level for a student.");
         }
@@ -218,6 +220,7 @@ public class Student extends Person {
     @JsonIgnore
     //@JsonIgnoreProperties(
     //        {"department", "isExamMadeByProfessor", "isExamTakenByStudents", "professor", "students"})
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToMany(
             //fetch = FetchType.EAGER,
             mappedBy = "students"
