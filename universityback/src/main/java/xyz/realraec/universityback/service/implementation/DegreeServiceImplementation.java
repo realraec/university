@@ -3,12 +3,17 @@ package xyz.realraec.universityback.service.implementation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import xyz.realraec.universityback.enumeration.Department;
 import xyz.realraec.universityback.model.Course;
 import xyz.realraec.universityback.model.Degree;
+import xyz.realraec.universityback.model.Professor;
+import xyz.realraec.universityback.model.Student;
 import xyz.realraec.universityback.repository.CourseRepository;
 import xyz.realraec.universityback.repository.DegreeRepository;
+import xyz.realraec.universityback.repository.ProfessorRepository;
+import xyz.realraec.universityback.repository.StudentRepository;
 import xyz.realraec.universityback.service.DegreeService;
 
 import javax.transaction.Transactional;
@@ -25,6 +30,8 @@ public class DegreeServiceImplementation implements DegreeService {
 
     private final DegreeRepository degreeRepository;
     private final CourseRepository courseRepository;
+    private final StudentRepository studentRepository;
+    private final ProfessorRepository professorRepository;
 
 
     @Override
@@ -198,6 +205,88 @@ public class DegreeServiceImplementation implements DegreeService {
             degreeList.get(i).removeCourse(course);
         }
         return course;
+    }
+
+
+    @Override
+    public ArrayList<ArrayList<Student>> getStudentsEnrolledInDegree(Long[] degreesIdList) throws Exception {
+        log.info("Getting students enrolled in degree with id: {}", Arrays.toString(degreesIdList));
+
+        if (degreesIdList.length == 0) {
+            throw new Exception("No degree was provided to perform this action on.");
+        }
+
+        ArrayList<ArrayList<Student>> studentsList = new ArrayList<>();
+        for (int i = 0; i < degreesIdList.length; i++) {
+            studentsList.add(new ArrayList<>(new HashSet<>(studentRepository.findByDegreeId(degreesIdList[i]))));
+        }
+
+        return studentsList;
+    }
+
+
+    @Override
+    public ArrayList<ArrayList<Professor>> getProfessorsTeachingInDegree(Long[] degreesIdList) throws Exception {
+        log.info("Getting professors teaching in degree with id: {}", Arrays.toString(degreesIdList));
+
+        if (degreesIdList.length == 0) {
+            throw new Exception("No degree was provided to perform this action on.");
+        }
+
+        ArrayList<ArrayList<Professor>> professorsList = new ArrayList<>();
+        for (int i = 0; i < degreesIdList.length; i++) {
+            professorsList.add(new ArrayList<>(new HashSet<>(professorRepository.findByDegreeId(degreesIdList[i]))));
+        }
+
+        return professorsList;
+    }
+
+
+    @Override
+    @Transactional
+    public Boolean deleteDegrees(Long[] entitiesIdList) throws Exception {
+        log.info("Deleting entities (degrees) with id: {}", Arrays.toString(entitiesIdList));
+
+        if (entitiesIdList.length == 0) {
+            throw new Exception("No entity (degree) was provided to perform this action on.");
+        }
+
+        ArrayList<Degree> degreesList = new ArrayList<>();
+
+        for (int i = 0; i < entitiesIdList.length; i++) {
+
+            Degree degree;
+            try {
+                degree = degreeRepository.findById(entitiesIdList[i]).get();
+            } catch (Exception e) {
+                throw new Exception("The ID is incorrect" + (entitiesIdList.length == 1 ? "" : " for at least one of the entities") + ".");
+            }
+
+            degreesList.add(degree);
+        }
+
+        ArrayList<ArrayList<Student>> studentsEnrolled = getStudentsEnrolledInDegree(entitiesIdList);
+        for (int i = 0; i < studentsEnrolled.size(); i++) {
+            for (int j = 0; j < studentsEnrolled.get(i).size(); j++) {
+                Student student = studentsEnrolled.get(i).get(j);
+                if (student.getMinorDegree() != null && student.getMinorDegree().getId() == degreesList.get(i).getId()) {
+                    student.setMinorDegree(null);
+                } else if (student.getMajorDegree() != null && student.getMajorDegree().getId() == degreesList.get(i).getId()) {
+                    student.setMajorDegree(null);
+                }
+
+                for (int k = 0; k < degreesList.size(); k++) {
+                    studentsEnrolled.get(i).get(j).getCourses().remove(degreesList.get(k).getCourses());
+                }
+            }
+        }
+
+        for (int i = 0; i < degreesList.size(); i++) {
+            degreesList.get(i).setCourses(null);
+            degreeRepository.deleteById(entitiesIdList[i]);
+        }
+
+        return Boolean.TRUE;
     }
 
 }

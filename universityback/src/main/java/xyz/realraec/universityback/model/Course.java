@@ -3,12 +3,9 @@ package xyz.realraec.universityback.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 import xyz.realraec.universityback.enumeration.Department;
 
 import javax.persistence.*;
-import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Random;
@@ -20,7 +17,6 @@ import java.util.Set;
 @Entity(name = "Course")
 @Table(name = "courses")
 @NoArgsConstructor
-//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Course extends Study {
 
     protected static final int CREDITS_BASE = 5;
@@ -89,17 +85,17 @@ public class Course extends Study {
 
     @Override
     public String getHeading() {
-        return heading;
+        return super.getHeading();
     }
 
     @Override
     public String getCode() {
-        return code;
+        return super.getCode();
     }
 
     @Override
     public Department getDepartment() {
-        return department;
+        return super.getDepartment();
     }
 
 
@@ -107,7 +103,7 @@ public class Course extends Study {
     //@JsonIgnore
     @JsonIgnoreProperties(
             {"gender", "birthdate", "email", "phone", "level", "warnings", "balance", "salary"})
-    @ManyToOne(
+    @ManyToOne(cascade = {CascadeType.ALL}
             //fetch = FetchType.LAZY
     )
     public Professor getProfessor() {
@@ -147,33 +143,27 @@ public class Course extends Study {
     @ManyToMany(
             //fetch = FetchType.EAGER
     )
-    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinTable(
-            name = "students_courses_m2m",
-            joinColumns = @JoinColumn(name = "student_id"),
-            inverseJoinColumns = @JoinColumn(name = "course_id")
+            name = "courses_students_m2m",
+            joinColumns = @JoinColumn(name = "course_id"),
+            inverseJoinColumns = @JoinColumn(name = "student_id")
     )
     public Set<Student> getStudents() {
         return students;
     }
 
-    /*@OneToMany(fetch = FetchType.EAGER)
-    public Set<Student> getStudentsEager() {
-        return students;
-    }*/
-
     public void setStudents(Set<Student> students) {
         this.students = students;
     }
 
-    @Transactional
     public void addStudent(Student student) {
         this.students.add(student);
+        //student.getCourses().add(this);
     }
 
-    @Transactional
     public void removeStudent(Student student) {
         this.students.remove(student);
+        //student.getCourses().remove(this);
     }
 
 

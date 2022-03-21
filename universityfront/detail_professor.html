@@ -54,64 +54,69 @@
     <form>
       <div class="row gy-2">
 
-        <div class="col-sm-12 col-md-6 col-xl-4">
+        <div class="col-sm-12 col-md-6 col-xl-4" hidden>
           <label for="idInput" class="form-label">ID</label>
-          <input id="idInput" type="text" class="form-control" value="0" disabled></input>
+          <input id="idInput" type="text" class="form-control" value="" disabled></input>
         </div>
 
         <div class="col-sm-12 col-md-6 col-xl-4">
           <label for="codeInput" class="form-label">Code</label>
-          <input id="codeInput" type="text" class="form-control" value="0" disabled></input>
+          <input id="codeInput" type="text" class="form-control" value="" disabled></input>
         </div>
 
         <div class="col-sm-12 col-md-6 col-xl-4">
           <label for="lastNameInput" class="form-label">Last name</label>
-          <input id="lastNameInput" type="text" class="form-control" value="Washington" disabled></input>
+          <input id="lastNameInput" type="text" class="form-control" value="" disabled></input>
         </div>
 
         <div class="col-sm-12 col-md-6 col-xl-4">
           <label for="firstNameInput" class="form-label">First name</label>
-          <input id="firstNameInput" type="text" class="form-control" value="Georges" disabled></input>
+          <input id="firstNameInput" type="text" class="form-control" value="" disabled></input>
         </div>
 
         <div class="col-sm-12 col-md-6 col-xl-4">
           <label for="genderInput" class="form-label">Gender</label>
-          <input id="genderInput" type="text" class="form-control" value="GENDER_MALE" disabled></input>
+          <input id="genderInput" type="text" class="form-control" value="" disabled></input>
         </div>
 
         <div class="col-sm-12 col-md-6 col-xl-4">
           <label for="levelInput" class="form-label">Level</label>
-          <input id="levelInput" type="text" class="form-control" value="2" disabled></input>
+          <input id="levelInput" type="text" class="form-control" value="" disabled></input>
         </div>
 
         <div class="col-sm-12 col-md-6 col-xl-4">
           <label for="birthdateInput" class="form-label">Birthdate</label>
-          <input id="birthdateInput" type="text" class="form-control" value="02/22/2002" disabled></input>
+          <input id="birthdateInput" type="text" class="form-control" value="" disabled></input>
         </div>
 
         <div class="col-sm-12 col-md-6 col-xl-4">
           <label for="emailInput" class="form-label">E-mail</label>
-          <input id="emailInput" type="text" class="form-control" value="georges.washington@gmail.com" disabled></input>
+          <input id="emailInput" type="text" class="form-control" value="" disabled></input>
         </div>
 
         <div class="col-sm-12 col-md-6 col-xl-4">
           <label for="phoneInput" class="form-label">Phone</label>
-          <input id="phoneInput" type="text" class="form-control" value="0694656761" disabled></input>
+          <input id="phoneInput" type="text" class="form-control" value="" disabled></input>
         </div>
 
         <div class="col-sm-12 col-md-6 col-xl-4">
           <label for="salaryInput" class="form-label">Salary</label>
-          <input id="salaryInput" type="text" class="form-control" value="0.0" disabled></input>
+          <input id="salaryInput" type="text" class="form-control" value="" disabled></input>
         </div>
 
         <div class="col-sm-12 col-md-6 col-xl-4">
           <label for="balanceInput" class="form-label">Account balance</label>
-          <input id="balanceInput" type="text" class="form-control" value="0.0" disabled></input>
+          <input id="balanceInput" type="text" class="form-control" value="" disabled></input>
         </div>
 
         <div class="col-sm-12 col-md-6 col-xl-4">
           <label for="warningsInput" class="form-label">Warnings</label>
-          <input id="warningsInput" type="text" class="form-control" value="0" disabled></input>
+          <input id="warningsInput" type="text" class="form-control" value="" disabled></input>
+        </div>
+
+        <div class="col-12">
+          <label for="coursesInput" class="form-label">Teaching courses</label>
+          <textarea id="coursesInput" class="form-control" rows="1" value="" disabled></textarea>
         </div>
 
       </div>
@@ -181,7 +186,7 @@
     // Buttons and listeners
     $(document).ready(function () {
 
-      rewardButtons.remove();
+      /* rewardButtons.remove();
       extraButtons.remove();
       examsButtons.remove();
       studentsButtons.remove();
@@ -196,8 +201,19 @@
 
       buttons.classList.remove("invisible");
 
+      promotePersonButton.addEventListener('click', promoteOrDemotePersonFunction);
+      demotePersonButton.addEventListener('click', promoteOrDemotePersonFunction);
+      giveWarningPersonButton.addEventListener('click', giveWarningOrKickOutPersonFunction);
+      kickOutPersonButton.addEventListener('click', giveWarningOrKickOutPersonFunction);
+      
       editEntryPersonButton.addEventListener('click', getGenders)
       editEntryPersonButton.addEventListener('click', editEntryPersonPreparation);
+      deleteButton.addEventListener('click', deleteEntryFunction);
+      refreshEntryButton.addEventListener('click', refreshEntryFunction);
+
+      loadExtraInfoButton.addEventListener('click', loadCoursesForPersonsFunction);
+
+      sendEmailButton.addEventListener('click', emailPersons); */
 
     })
 
@@ -215,6 +231,22 @@
       document.getElementById("salaryInput").value = sourceData[0].salary;
       document.getElementById("balanceInput").value = sourceData[0].balance;
       document.getElementById("warningsInput").value = sourceData[0].warnings;
+      document.getElementById("coursesInput").value = "";
+    }
+
+    function wipeOutDetailProfessor() {
+      document.getElementById("idInput").value = "";
+      document.getElementById("codeInput").value = "";
+      document.getElementById("lastNameInput").value = "";
+      document.getElementById("firstNameInput").value = "";
+      document.getElementById("genderInput").value = "";
+      document.getElementById("levelInput").value = "";
+      document.getElementById("birthdateInput").value = "";
+      document.getElementById("emailInput").value = "";
+      document.getElementById("phoneInput").value = "";
+      document.getElementById("salaryInput").value = "";
+      document.getElementById("balanceInput").value = "";
+      document.getElementById("warningsInput").value = "";
     }
 
 

@@ -150,9 +150,6 @@ public class Professor extends Person {
         if ((level >= 1) && (level <= 6)) {
             super.setLevel(level);
             calculateSalary();
-        } else if (level == 0) {
-            super.setLevel(level);
-            salary = 0;
         } else {
             throw new Exception("Invalid level for a professor.");
         }

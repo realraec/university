@@ -54,34 +54,34 @@
     <form>
       <div class="row gy-2">
 
-        <div class="col-sm-12 col-md-6 col-xl-4">
+        <div class="col-sm-12 col-md-6 col-xl-4" hidden>
           <label for="idInput" class="form-label">ID</label>
-          <input id="idInput" type="text" class="form-control" value="0" disabled></input>
+          <input id="idInput" type="text" class="form-control" value="" disabled></input>
         </div>
 
         <div class="col-sm-12 col-md-6 col-xl-4">
           <label for="codeInput" class="form-label">Code</label>
-          <input id="codeInput" type="text" class="form-control" value="0" disabled></input>
+          <input id="codeInput" type="text" class="form-control" value="" disabled></input>
         </div>
 
         <div class="col-sm-12 col-md-6 col-xl-4">
           <label for="headingInput" class="form-label">Heading</label>
-          <input id="headingInput" type="text" class="form-control" value="Degree 100" disabled></input>
+          <input id="headingInput" type="text" class="form-control" value="" disabled></input>
         </div>
 
         <div class="col-sm-12 col-md-6 col-xl-4">
           <label for="departmentInput" class="form-label">Department</label>
-          <input id="departmentInput" type="text" class="form-control" value="Department" disabled></input>
+          <input id="departmentInput" type="text" class="form-control" value="" disabled></input>
         </div>
 
         <div class="col-sm-12 col-md-6 col-xl-4">
           <label for="examMadeInput" class="form-label">Is the exam made by the professor?</label>
-          <input id="examMadeInput" type="text" class="form-control" value="Maybe" disabled></input>
+          <input id="examMadeInput" type="text" class="form-control" value="" disabled></input>
         </div>
 
         <div class="col-sm-12 col-md-6 col-xl-4">
           <label for="examTakenInput" class="form-label">Is the exam taken by the students?</label>
-          <input id="examTakenInput" type="text" class="form-control" value="Maybe" disabled></input>
+          <input id="examTakenInput" type="text" class="form-control" value="" disabled></input>
         </div>
 
         <div class="col-sm-12 col-md-6 col-xl-4">
@@ -89,9 +89,14 @@
           <input id="professorInput" type="text" class="form-control" value="" disabled></input>
         </div>
 
-        <div class="col-8">
+        <div class="col-12">
           <label for="studentsInput" class="form-label">Students enrolled</label>
           <textarea id="studentsInput" class="form-control" rows="1" value="" disabled></textarea>
+        </div>
+
+        <div class="col-sm-12 col-md-6 col-xl-4">
+          <label for="degreeInput" class="form-label">Part of degree</label>
+          <input id="degreeInput" type="text" class="form-control" value="" disabled></input>
         </div>
 
       </div>
@@ -160,7 +165,7 @@
     // Buttons and listeners
     $(document).ready(function () {
 
-      degreesButtons.remove();
+      /* degreesButtons.remove();
       levelButtons.remove();
       sanctionButtons.remove();
       rewardButtons.remove();
@@ -176,6 +181,12 @@
 
       editEntryStudyButton.addEventListener('click', getDepartments)
       editEntryStudyButton.addEventListener('click', editEntryStudyPreparation)
+      deleteButton.addEventListener('click', deleteEntryFunction);
+      refreshEntryButton.addEventListener('click', refreshEntryFunction);
+
+      loadExtraInfoButton.addEventListener('click', loadDegreeForCoursesFunction);
+
+      sendEmailButton.addEventListener('click', emailPersons); */
 
     })
 
@@ -187,8 +198,20 @@
       document.getElementById("departmentInput").value = departmentFormatter(sourceData[0].department);
       document.getElementById("examMadeInput").value = booleanFormatter(sourceData[0].isExamMadeByProfessor).replace(/<\/?[^>]+(>|$)/g, "");
       document.getElementById("examTakenInput").value = booleanFormatter(sourceData[0].isExamTakenByStudents).replace(/<\/?[^>]+(>|$)/g, "");
-      document.getElementById("professorInput").value = (sourceData[0].professor == null ? null : professorFormatter(sourceData[0].professor).replace("<br/>", " "));
-      document.getElementById("studentsInput").value = (sourceData[0].students.length == 0 ? null : studentsFormatter(sourceData[0].students).replaceAll("<br/>", " — "));
+      document.getElementById("professorInput").value = (sourceData[0].professor == null ? null : onePersonPerColumnFormatter(sourceData[0].professor).replace("<br/>", " "));
+      document.getElementById("studentsInput").value = (sourceData[0].students.length == 0 ? null : twoPersonsPerLineFormatter(sourceData[0].students).replaceAll("<br/>", " — "));
+      document.getElementById("degreeInput").value = "";
+    }
+
+    function wipeOutDetailCourse() {
+      document.getElementById("idInput").value = "";
+      document.getElementById("codeInput").value = "";
+      document.getElementById("headingInput").value = "";
+      document.getElementById("departmentInput").value = "";
+      document.getElementById("examMadeInput").value = "";
+      document.getElementById("examTakenInput").value = "";
+      document.getElementById("professorInput").value = "";
+      document.getElementById("studentsInput").value = "";
     }
 
 

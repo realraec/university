@@ -1,5 +1,148 @@
 $('#buttons-placeholder').load('buttons.html', function () {
   $(this).children(':first').unwrap();
+
+
+  $(document).ready(function () {
+
+    console.log("xxx\n" + document.URL)
+    let documentURL = document.URL;
+
+    if (documentURL.includes("student")) {
+
+      extraButtons.remove();
+      examsButtons.remove();
+      studentsButtons.remove();
+      coursesButtons.remove();
+      TBDButtons.remove();
+      newEntryStudyButton.remove();
+      editEntryStudyButton.remove();
+
+      if (documentURL.includes("detail_")) {
+        // Detail-specific
+        newEntryPersonButton.disabled = true;
+        editEntryPersonButton.addEventListener('click', getGenders);
+        editEntryPersonButton.addEventListener('click', editEntryPersonPreparation);
+      } else {
+        // Lookup-specfic
+        editEntryPersonButton.disabled = true;
+        newEntryPersonButton.addEventListener('click', getGenders);
+      }
+
+      buttons.classList.remove("invisible");
+
+      promotePersonButton.addEventListener('click', promoteOrDemotePersonFunction);
+      demotePersonButton.addEventListener('click', promoteOrDemotePersonFunction);
+      giveWarningPersonButton.addEventListener('click', giveWarningOrKickOutPersonFunction);
+      kickOutPersonButton.addEventListener('click', giveWarningOrKickOutPersonFunction);
+      giveDiplomaButton.addEventListener("click", getDiplomas);
+
+      deleteButton.addEventListener('click', deleteEntryFunction);
+      refreshEntryButton.addEventListener('click', refreshEntryFunction);
+      loadExtraInfoButton.addEventListener('click', loadCoursesForPersonsFunction);
+      sendEmailButton.addEventListener('click', emailPersons);
+
+    } else if (documentURL.includes("professor")) {
+
+      rewardButtons.remove();
+      extraButtons.remove();
+      examsButtons.remove();
+      studentsButtons.remove();
+      coursesButtons.remove();
+      degreesButtons.remove();
+      TBDButtons.remove();
+      newEntryStudyButton.remove();
+      editEntryStudyButton.remove();
+
+      if (documentURL.includes("detail_")) {
+        // Detail-specific
+        newEntryPersonButton.disabled = true;
+        editEntryPersonButton.addEventListener('click', getGenders)
+        editEntryPersonButton.addEventListener('click', editEntryPersonPreparation);
+      } else {
+        // Lookup-specfic
+        editEntryPersonButton.disabled = true;
+        newEntryPersonButton.addEventListener('click', getGenders)
+      }
+
+      buttons.classList.remove("invisible");
+
+      promotePersonButton.addEventListener('click', promoteOrDemotePersonFunction);
+      demotePersonButton.addEventListener('click', promoteOrDemotePersonFunction);
+      giveWarningPersonButton.addEventListener('click', giveWarningOrKickOutPersonFunction);
+      kickOutPersonButton.addEventListener('click', giveWarningOrKickOutPersonFunction);
+      deleteButton.addEventListener('click', deleteEntryFunction);
+      refreshEntryButton.addEventListener('click', refreshEntryFunction);
+      loadExtraInfoButton.addEventListener('click', loadCoursesForPersonsFunction);
+      sendEmailButton.addEventListener('click', emailPersons);
+
+    } else if (documentURL.includes("course")) {
+
+      degreesButtons.remove();
+      levelButtons.remove();
+      sanctionButtons.remove();
+      rewardButtons.remove();
+      TBDButtons.remove();
+      coursesButtons.remove();
+      newEntryPersonButton.remove();
+      editEntryPersonButton.remove();
+
+      if (documentURL.includes("detail_")) {
+        // Detail-specific
+        newEntryStudyButton.disabled = true;
+        editEntryStudyButton.addEventListener('click', getDepartments)
+        editEntryStudyButton.addEventListener('click', editEntryStudyPreparation)
+      } else {
+        // Lookup-specfic
+        editEntryStudyButton.disabled = true;
+        newEntryStudyButton.addEventListener('click', getDepartments)
+      }
+
+      buttons.classList.remove("invisible");
+
+      deleteButton.addEventListener('click', deleteEntryFunction);
+      refreshEntryButton.addEventListener('click', refreshEntryFunction);
+      loadExtraInfoButton.addEventListener('click', loadDegreeForCoursesFunction);
+      sendEmailButton.addEventListener('click', emailPersons);
+
+    } else if (documentURL.includes("degree")) {
+
+      degreesButtons.remove();
+      levelButtons.remove();
+      sanctionButtons.remove();
+      rewardButtons.remove();
+      TBDButtons.remove();
+      extraButtons.remove();
+      examsButtons.remove();
+      studentsButtons.remove();
+      newEntryPersonButton.remove();
+      editEntryPersonButton.remove();
+
+      if (documentURL.includes("detail_")) {
+        // Detail-specific
+        newEntryStudyButton.disabled = true;
+        editEntryStudyButton.addEventListener('click', getDepartments)
+        editEntryStudyButton.addEventListener('click', editEntryStudyPreparation)
+      } else {
+        // Lookup-specfic
+        editEntryStudyButton.disabled = true;
+        addCourseButton.disabled = true;
+        removeCourseButton.disabled = true;
+        newEntryStudyButton.addEventListener('click', getDepartments)
+      }
+
+      buttons.classList.remove("invisible");
+
+      deleteButton.addEventListener('click', deleteEntryFunction);
+      refreshEntryButton.addEventListener('click', refreshEntryFunction);
+      loadExtraInfoButton.addEventListener('click', loadStudentsForDegreesFunction);
+      loadExtraInfoButton.addEventListener('click', loadProfessorsForDegreesFunction);
+      loadExtraInfoButton.addEventListener('click', changeFormatterCoursesForDegree);
+      sendEmailButton.addEventListener('click', emailPersons);
+
+    }
+
+  });
+
 });
 
 
@@ -32,7 +175,14 @@ function updateHistoryWithChanges(table) {
 }
 
 
-async function addStudentFunction() {
+async function addOrRemoveStudentFunction() {
+
+  let addOrRemove = "";
+  if (buttonClickedId == 'addStudentButton') {
+    addOrRemove = "add";
+  } else {
+    addOrRemove = "remove";
+  }
 
   // Getting the ids of the current rows
   let currentRows = $table.bootstrapTable('getData');
@@ -45,7 +195,7 @@ async function addStudentFunction() {
   disableButtonsInModal();
 
   // Performing the operation
-  const response = await fetch('http://localhost:8080/courses/addStudent', {
+  const response = await fetch('http://localhost:8080/courses/' + addOrRemove + 'Student', {
     method: 'put',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
@@ -68,17 +218,18 @@ async function addStudentFunction() {
 
       // Extracting the new value from the response
       let temp = data.data.student;
-      let studentReturned = {
-        id: temp.id,
-        code: temp.code,
-        lastName: temp.lastName,
-        firstName: temp.firstName
-      }
 
       // Update the current table adding the student to the array
       for (let index = 0; index < currentRows.length; index++) {
+
         let studentsSet = [...currentRows[index].students];
-        studentsSet.push(studentReturned);
+        if (addOrRemove == "add") {
+          studentsSet.push(temp);
+        } else {
+          studentsSet = studentsSet.filter(function (object) {
+            return object.id !== temp.id;
+          });
+        }
 
         $table.bootstrapTable('updateCell', {
           index: index,
@@ -87,13 +238,27 @@ async function addStudentFunction() {
         })
       }
 
-      // Update history with the changes made
-      updateHistoryWithChanges($table)
+      // Updating detail part
+      if (document.URL.includes('detail_')) {
+        let data = $table.bootstrapTable('getData')[0].students;
+        document.getElementById("studentsInput").value = (data[0] == null ? null : twoPersonsPerLineFormatter(data).replaceAll("<br/>", " — "));
+      } else {
+        // Update history with the changes made
+        updateHistoryWithChanges($table)
+      }
+
     })
 };
 
 
-async function removeStudentFunction() {
+async function addOrRemoveCourseFunction() {
+
+  let addOrRemove = "";
+  if (buttonClickedId == 'addCourseButton') {
+    addOrRemove = "add";
+  } else {
+    addOrRemove = "remove";
+  }
 
   // Getting the ids of the current rows
   let currentRows = $table.bootstrapTable('getData');
@@ -106,70 +271,7 @@ async function removeStudentFunction() {
   disableButtonsInModal();
 
   // Performing the operation
-  const response = await fetch('http://localhost:8080/courses/removeStudent', {
-    method: 'put',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-    },
-    body: new URLSearchParams({
-      "coursesIdList": currentRowsId,
-      "studentCode": codeModalInput.value
-    })
-  }).then(response => response.json())
-    .then(data => {
-      console.log(data);
-
-      // To let the user perform other actions afterward
-      enableButtonsInModal();
-
-      // If the Java method throws an exception
-      if (checkIfErrorOccurred(data)) {
-        return;
-      }
-
-      // Extracting the new value from the response
-      let temp = data.data.student;
-      let studentReturned = {
-        id: temp.id,
-        code: temp.code,
-        lastName: temp.lastName,
-        firstName: temp.firstName
-      }
-
-      // Update the current table removing the student from the array
-      for (let index = 0; index < currentRows.length; index++) {
-        let studentsSet = [...currentRows[index].students];
-        studentsSet = studentsSet.filter(function (object) {
-          return object.id !== studentReturned.id;
-        });
-
-        $table.bootstrapTable('updateCell', {
-          index: index,
-          field: 'students',
-          value: studentsSet
-        })
-      }
-
-      // Update history with the changes made
-      updateHistoryWithChanges($table)
-    })
-};
-
-
-async function addCourseFunction() {
-
-  // Getting the ids of the current rows
-  let currentRows = $table.bootstrapTable('getData');
-  var currentRowsId = [];
-  for (let i = 0; i < currentRows.length; i++) {
-    currentRowsId.push(currentRows[i].id)
-  }
-
-  // To force the user to wait for the response
-  disableButtonsInModal();
-
-  // Performing the operation
-  const response = await fetch('http://localhost:8080/degrees/addCourse', {
+  const response = await fetch('http://localhost:8080/degrees/' + addOrRemove + 'Course', {
     method: 'put',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
@@ -192,16 +294,18 @@ async function addCourseFunction() {
 
       // Extracting the new value from the response
       let temp = data.data.course;
-      let courseReturned = {
-        id: temp.id,
-        code: temp.code,
-        heading: temp.heading
-      }
 
       // Update the current table adding the student to the array
       for (let index = 0; index < currentRows.length; index++) {
         let coursesSet = [...currentRows[index].courses];
-        coursesSet.push(courseReturned);
+
+        if (addOrRemove == "add") {
+          coursesSet.push(temp);
+        } else {
+          coursesSet = coursesSet.filter(function (object) {
+            return object.id !== temp.id;
+          });
+        }
 
         $table.bootstrapTable('updateCell', {
           index: index,
@@ -210,13 +314,30 @@ async function addCourseFunction() {
         })
       }
 
-      // Update history with the changes made
-      updateHistoryWithChanges($table)
+      // Updating detail part
+      if (document.URL.includes('detail_')) {
+        let data = $table.bootstrapTable('getData')[0].courses;
+        document.getElementById("coursesInput").value = (data[0] == null ? null : threeStudiesPerLineFormatter(data).replaceAll("<br/>", " — "));
+      } else {
+        // Update history with the changes made
+        updateHistoryWithChanges($table)
+      }
+
     })
 };
 
 
-async function removeCourseFunction() {
+async function setNewProfessorOrDegreeFunction() {
+
+  let professorOrDegree = "";
+  let field = "";
+  if (buttonClickedId == 'setNewProfessorButton') {
+    professorOrDegree = "Professor";
+    field = "professor";
+  } else {
+    professorOrDegree = "Degree";
+    field = "degree";
+  }
 
   // Getting the ids of the current rows
   let currentRows = $table.bootstrapTable('getData');
@@ -229,77 +350,14 @@ async function removeCourseFunction() {
   disableButtonsInModal();
 
   // Performing the operation
-  const response = await fetch('http://localhost:8080/degrees/removeCourse', {
-    method: 'put',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-    },
-    body: new URLSearchParams({
-      "degreesIdList": currentRowsId,
-      "courseCode": codeModalInput.value
-    })
-  }).then(response => response.json())
-    .then(data => {
-      console.log(data);
-
-      // To let the user perform other actions afterward
-      enableButtonsInModal();
-
-      // If the Java method throws an exception
-      if (checkIfErrorOccurred(data)) {
-        return;
-      }
-
-      // Extracting the new value from the response
-      let temp = data.data.course;
-      let courseReturned = {
-        id: temp.id,
-        code: temp.code,
-        heading: temp.heading
-      }
-
-      // Update the current table removing the course from the array
-      for (let index = 0; index < currentRows.length; index++) {
-        let coursesSet = [...currentRows[index].courses];
-        coursesSet = coursesSet.filter(function (object) {
-          return object.id !== courseReturned.id;
-        });
-
-        $table.bootstrapTable('updateCell', {
-          index: index,
-          field: 'courses',
-          value: coursesSet
-        })
-      }
-
-      // Update history with the changes made
-      updateHistoryWithChanges($table)
-    })
-};
-
-
-async function setNewProfessorFunction() {
-
-  // Getting the ids of the current rows
-  let currentRows = $table.bootstrapTable('getData');
-  var currentRowsId = [];
-  for (let i = 0; i < currentRows.length; i++) {
-    currentRowsId.push(currentRows[i].id)
-  }
-
-
-  // To force the user to wait for the response
-  disableButtonsInModal();
-
-  // Performing the operation
-  const response = await fetch('http://localhost:8080/courses/setNewProfessor', {
+  const response = await fetch('http://localhost:8080/courses/setNew' + professorOrDegree, {
     method: 'put',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
     },
     body: new URLSearchParams({
       "coursesIdList": currentRowsId,
-      "professorCode": codeModalInput.value
+      "entityCode": codeModalInput.value
     })
   }).then(response => response.json())
     .then(data => {
@@ -314,30 +372,50 @@ async function setNewProfessorFunction() {
       }
 
       // Extracting the new value from the response
-      let temp = data.data.professor;
-      let professorReturned = {
-        id: temp.id,
-        code: temp.code,
-        lastName: temp.lastName,
-        firstName: temp.firstName
+      let temp;
+
+      if (professorOrDegree == "Professor") {
+        temp = data.data.professor;
+      } else {
+        temp = data.data.degree;
       }
 
       // Update the current table with the changed value returned
       for (let index = 0; index < currentRows.length; index++) {
         $table.bootstrapTable('updateCell', {
           index: index,
-          field: 'professor',
-          value: professorReturned
+          field: field,
+          value: temp
         })
       }
 
-      // Update history with the changes made
-      updateHistoryWithChanges($table)
+      // Updating detail part
+      if (document.URL.includes('detail_')) {
+        if (professorOrDegree == "Professor") {
+          document.getElementById(field + "Input").value = onePersonPerColumnFormatter(temp).replaceAll("<br/>", " ");
+        } else {
+          $table.bootstrapTable('showColumn', 'degree');
+          document.getElementById(field + "Input").value = oneStudyPerColumnFormatter(temp).replaceAll("<br/>", " ");
+        }
+      } else {
+        // Update history with the changes made
+        updateHistoryWithChanges($table)
+      }
     })
 };
 
 
-async function setNewMajorDegreeFunction() {
+async function setNewMajorOrMinorDegreeFunction() {
+
+  let majorOrMinor = "";
+  let field = "";
+  if (buttonClickedId == 'setNewMajorDegreeButton') {
+    majorOrMinor = "Major";
+    field = "majorDegree";
+  } else {
+    majorOrMinor = "Minor";
+    field = "minorDegree";
+  }
 
   // Getting the ids of the current rows
   let currentRows = $table.bootstrapTable('getData');
@@ -346,12 +424,11 @@ async function setNewMajorDegreeFunction() {
     currentRowsId.push(currentRows[i].id)
   }
 
-
   // To force the user to wait for the response
   disableButtonsInModal();
 
   // Performing the operation
-  const response = await fetch('http://localhost:8080/students/setNewMajorDegree', {
+  const response = await fetch('http://localhost:8080/students/setNew' + majorOrMinor + 'Degree', {
     method: 'put',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
@@ -374,115 +451,26 @@ async function setNewMajorDegreeFunction() {
 
       // Extracting the new value from the response
       let temp = data.data.degree;
-      let degreeReturned = {
-        id: temp.id,
-        code: temp.code,
-        heading: temp.heading,
-      }
 
       // Update the current table with the changed value returned
       for (let index = 0; index < currentRows.length; index++) {
         $table.bootstrapTable('updateCell', {
           index: index,
-          field: 'majorDegree',
-          value: degreeReturned
+          field: field,
+          value: temp
         })
       }
 
-      // Update history with the changes made
-      updateHistoryWithChanges($table)
+      // Updating detail part
+      if (document.URL.includes('detail_')) {
+        document.getElementById(field + "Input").value = oneStudyPerColumnFormatter(temp);
+      } else {
+        // Update history with the changes made
+        updateHistoryWithChanges($table)
+      }
     })
 };
 
-
-async function setNewMinorDegreeFunction() {
-
-  // Getting the ids of the current rows
-  let currentRows = $table.bootstrapTable('getData');
-  var currentRowsId = [];
-  for (let i = 0; i < currentRows.length; i++) {
-    currentRowsId.push(currentRows[i].id)
-  }
-
-
-  // To force the user to wait for the response
-  disableButtonsInModal();
-
-  // Performing the operation
-  const response = await fetch('http://localhost:8080/students/setNewMinorDegree', {
-    method: 'put',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-    },
-    body: new URLSearchParams({
-      "studentsIdList": currentRowsId,
-      "degreeCode": codeModalInput.value
-    })
-  }).then(response => response.json())
-    .then(data => {
-      console.log(data);
-
-      // To let the user perform other actions afterward
-      enableButtonsInModal();
-
-      // If the Java method throws an exception
-      if (checkIfErrorOccurred(data)) {
-        return;
-      }
-
-      // Extracting the new value from the response
-      let temp = data.data.degree;
-      let degreeReturned = {
-        id: temp.id,
-        code: temp.code,
-        heading: temp.heading,
-      }
-
-      // Update the current table with the changed value returned
-      for (let index = 0; index < currentRows.length; index++) {
-        $table.bootstrapTable('updateCell', {
-          index: index,
-          field: 'minorDegree',
-          value: degreeReturned
-        })
-      }
-
-      // Update history with the changes made
-      updateHistoryWithChanges($table)
-    })
-};
-
-
-async function getStudents() {
-
-  // Getting the ids of the current rows
-  let currentRows = $table.bootstrapTable('getData');
-  var currentRowsId = [];
-  for (let i = 0; i < currentRows.length; i++) {
-    currentRowsId.push(currentRows[i].id)
-  }
-
-  // Performing the operation
-  const response = await fetch('http://localhost:8080/courses/getStudents/' + currentRowsId.toString(), {
-    method: 'get',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-    }
-  }).then(response => response.json())
-    .then(data => {
-      console.log(data);
-
-      // If the Java method throws an exception
-      if (data.status == 500) {
-        return;
-      }
-
-      // Extracting the new value from the response
-      let temp = data.data.students;
-      console.log(temp);
-      return temp;
-    });
-};
 
 
 async function getGenders() {
@@ -633,123 +621,6 @@ async function getDiplomas() {
 };
 
 
-async function toggleIsExamMadeFunction() {
-
-  // Getting the ids of the current rows
-  let currentRows = $table.bootstrapTable('getData');
-  var currentRowsId = [];
-  for (let i = 0; i < currentRows.length; i++) {
-    currentRowsId.push(currentRows[i].id)
-  }
-
-  // To force the user to wait for the response
-  disableButtonsInModal();
-
-  // Performing the operation
-  const response = await fetch('http://localhost:8080/courses/setIsExamMadeByProfessorMultiple', {
-    method: 'put',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-    },
-    body: new URLSearchParams({
-      "coursesIdList": currentRowsId,
-      "isExamMadeByProfessor": radioModalInputRadio1.checked
-    })
-  }).then(response => response.json())
-    .then(data => {
-      console.log(data);
-
-      // To let the user perform other actions afterward
-      enableButtonsInModal();
-
-      if (checkIfErrorOccurred(data)) {
-        return;
-      }
-
-      // Extracting the new value from the response
-      let temp = data.data.boolean;
-      console.log(temp)
-      /* let professorReturned = {
-        id: temp.id,
-        code: temp.code,
-        lastName: temp.lastName,
-        firstName: temp.firstName
-      } */
-
-      // Update the current table with the changed value returned
-      for (let index = 0; index < currentRows.length; index++) {
-        $table.bootstrapTable('updateCell', {
-          index: index,
-          field: 'isExamMadeByProfessor',
-          value: temp
-        })
-      }
-
-      // Update history with the changes made
-      updateHistoryWithChanges($table)
-
-    });
-};
-
-
-async function toggleIsExamTakenFunction() {
-
-  // Getting the ids of the current rows
-  let currentRows = $table.bootstrapTable('getData');
-  var currentRowsId = [];
-  for (let i = 0; i < currentRows.length; i++) {
-    currentRowsId.push(currentRows[i].id)
-  }
-
-  // To force the user to wait for the response
-  disableButtonsInModal();
-
-  // Performing the operation
-  const response = await fetch('http://localhost:8080/courses/setIsExamTakenByStudentsMultiple', {
-    method: 'put',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-    },
-    body: new URLSearchParams({
-      "coursesIdList": currentRowsId,
-      "isExamTakenByStudents": radioModalInputRadio1.checked
-    })
-  }).then(response => response.json())
-    .then(data => {
-      console.log(data);
-
-      // To let the user perform other actions afterward
-      enableButtonsInModal();
-
-      // If the Java method throws an exception
-      if (checkIfErrorOccurred(data)) {
-        return;
-      }
-
-      // Extracting the new value from the response
-      let temp = data.data.boolean;
-      /* let professorReturned = {
-        id: temp.id,
-        code: temp.code,
-        lastName: temp.lastName,
-        firstName: temp.firstName
-      } */
-
-      // Update the current table with the changed value returned
-      for (let index = 0; index < currentRows.length; index++) {
-        $table.bootstrapTable('updateCell', {
-          index: index,
-          field: 'isExamTakenByStudents',
-          value: temp
-        })
-      }
-
-      // Update history with the changes made
-      updateHistoryWithChanges($table)
-
-    });
-}
-
 
 async function newEntryPersonFunction() {
 
@@ -822,9 +693,9 @@ async function newEntryStudyFunction() {
 
   // Performing the operation
   const response = await fetch('http://localhost:8080/' + studyType + 's/create', {
-    method: 'put',
+    method: 'post',
     headers: {
-      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+      'Content-Type': 'application/json'
     },
     body: JSON.stringify({
       "heading": newOrEditStudyModalHeadingInput.value,
@@ -936,7 +807,6 @@ async function editEntryStudyFunction() {
   // To force the user to wait for the response
   disableButtonsInModal();
 
-
   // Performing the operation
   const response = await fetch('http://localhost:8080/studies/edit', {
     method: 'put',
@@ -975,14 +845,18 @@ async function editEntryStudyFunction() {
 };
 
 
-async function promotePersonFunction() {
+async function refreshEntryFunction() {
 
-  let personType = "";
+  let entityType = "";
   let documentURL = document.URL;
-  if (documentURL.endsWith("lookup_students.html")) {
-    personType = "S";
+  if (documentURL.includes("student")) {
+    entityType = "S";
+  } else if (documentURL.includes("professor")) {
+    entityType = "P";
+  } else if (documentURL.includes("course")) {
+    entityType = "C";
   } else {
-    personType = "P";
+    entityType = "D";
   }
 
   // Getting the ids of the current rows
@@ -996,14 +870,14 @@ async function promotePersonFunction() {
   disableButtonsInModal();
 
   // Performing the operation
-  const response = await fetch('http://localhost:8080/persons/promote', {
+  const response = await fetch('http://localhost:8080/entities/refresh', {
     method: 'put',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
     },
     body: new URLSearchParams({
-      "personsIdList": currentRowsId,
-      "personType": personType
+      "entitiesIdList": currentRowsId,
+      "entityType": entityType
     })
   }).then(response => response.json())
     .then(data => {
@@ -1018,91 +892,133 @@ async function promotePersonFunction() {
       }
 
       // Extracting the new values from the response
-      let temp = data.data.levels;
+      let temp = data.data.entities;
 
       // Update the current table with the changed value returned
-      for (let index = 0; index < currentRows.length; index++) {
-        $table.bootstrapTable('updateCell', {
-          index: index,
-          field: 'level',
-          value: temp[index]
-        })
-      }
+      $table.bootstrapTable('load', temp)
 
       // Update history with the changes made
       updateHistoryWithChanges($table)
 
-    });
-
-};
-
-
-async function demotePersonFunction() {
-
-  let personType = "";
-  let documentURL = document.URL;
-  if (documentURL.endsWith("lookup_students.html")) {
-    personType = "S";
-  } else {
-    personType = "P";
-  }
-
-  // Getting the ids of the current rows
-  let currentRows = $table.bootstrapTable('getData');
-  var currentRowsId = [];
-  for (let i = 0; i < currentRows.length; i++) {
-    currentRowsId.push(currentRows[i].id)
-  }
-
-  // To force the user to wait for the response
-  disableButtonsInModal();
-
-  // Performing the operation
-  const response = await fetch('http://localhost:8080/persons/demote', {
-    method: 'put',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-    },
-    body: new URLSearchParams({
-      "personsIdList": currentRowsId,
-      "personType": personType
-    })
-  }).then(response => response.json())
-    .then(data => {
-      console.log(data);
-
-      // To let the user perform other actions afterward
-      enableButtonsInModal();
-
-      // If the Java method throws an exception
-      if (checkIfErrorOccurred(data)) {
-        return;
+      // Updating detail part
+      if (documentURL.includes('detail_')) {
+        let data = $table.bootstrapTable('getData');
+        if (entityType == "S") {
+          updateDetailStudent(data);
+        } else if (entityType == "P") {
+          updateDetailProfessor(data);
+        } else if (entityType == "C") {
+          updateDetailCourse(data);
+        } else {
+          updateDetailDegree(data);
+        }
       }
-
-      // Extracting the new values from the response
-      let temp = data.data.levels;
-
-      // Update the current table with the changed value returned
-      for (let index = 0; index < currentRows.length; index++) {
-        $table.bootstrapTable('updateCell', {
-          index: index,
-          field: 'level',
-          value: temp[index]
-        })
-      }
-
-      // Update history with the changes made
-      updateHistoryWithChanges($table)
 
     });
 }
 
 
-async function giveWarningPersonFunction() {
+async function deleteEntryFunction() {
+
+  let entityType = "";
+  let documentURL = document.URL;
+  if (documentURL.includes("student")) {
+    entityType = "student";
+  } else if (documentURL.includes("professor")) {
+    entityType = "professor";
+  } else if (documentURL.includes("course")) {
+    entityType = "course";
+  } else {
+    entityType = "degree";
+  }
+
+  // Getting the ids of the current rows
+  let currentRows = $table.bootstrapTable('getData');
+  var currentRowsId = [];
+  for (let i = 0; i < currentRows.length; i++) {
+    currentRowsId.push(currentRows[i].id)
+  }
+
+  // To force the user to wait for the response
+  disableButtonsInModal();
+
+  // Performing the operation
+  const response = await fetch('http://localhost:8080/' + entityType + 's/delete', {
+    method: 'delete',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    body: new URLSearchParams({
+      entitiesIdList: currentRowsId,
+      //"entityType": entityType
+    })
+  }).then(response => response.json())
+    .then(data => {
+      console.log(data);
+
+      // To let the user perform other actions afterward
+      enableButtonsInModal();
+
+      // If the Java method throws an exception
+      if (checkIfErrorOccurred(data)) {
+        return;
+      }
+
+
+      // Update history with the changes made
+      var history = JSON.parse(localStorage["history"]);
+
+      // Rows edited
+      for (let i = 0; i < currentRows.length; i++) {
+
+        // History tables
+        for (let j = 0; j < history.length; j++) {
+
+          // History rows
+          for (let k = 0; k < history[j].length; k++) {
+
+            if (currentRows[i].id == history[j][k].id) {
+              // Updating the item of the history
+              history[j].splice(k, 1);
+              break;
+            }
+
+          }
+        }
+      }
+
+      localStorage["history"] = JSON.stringify(history);
+
+      $table.bootstrapTable('load', [])
+
+      if (documentURL.includes('detail_')) {
+        if (entityType == "student") {
+          wipeOutDetailStudent($table);
+        } else if (entityType == "professor") {
+          wipeOutDetailProfessor($table);
+        } else if (entityType == "course") {
+          wipeOutDetailCourse($table);
+        } else {
+          wipeOutDetailDegree($table);
+        }
+      }
+
+    });
+}
+
+
+async function promoteOrDemotePersonFunction(e) {
+
+  let promoteOrDemote = "";
+  if (e.currentTarget.id == 'promotePersonButton') {
+    promoteOrDemote = "promote";
+  } else {
+    promoteOrDemote = "demote";
+  }
 
   let personType = "";
   let documentURL = document.URL;
-  if (documentURL.endsWith("lookup_students.html")) {
+  if (documentURL.includes("student")) {
     personType = "S";
   } else {
     personType = "P";
@@ -1119,7 +1035,80 @@ async function giveWarningPersonFunction() {
   disableButtonsInModal();
 
   // Performing the operation
-  const response = await fetch('http://localhost:8080/persons/giveWarning', {
+  const response = await fetch('http://localhost:8080/persons/' + promoteOrDemote, {
+    method: 'put',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    body: new URLSearchParams({
+      "personsIdList": currentRowsId,
+      "personType": personType
+    })
+  }).then(response => response.json())
+    .then(data => {
+      console.log(data);
+
+      // To let the user perform other actions afterward
+      enableButtonsInModal();
+
+      // If the Java method throws an exception
+      if (checkIfErrorOccurred(data)) {
+        return;
+      }
+
+      // Extracting the new values from the response
+      let temp = data.data.levels;
+
+      // Update the current table with the changed value returned
+      for (let index = 0; index < currentRows.length; index++) {
+        $table.bootstrapTable('updateCell', {
+          index: index,
+          field: 'level',
+          value: temp[index]
+        })
+      }
+
+      // Updating detail part
+      if (document.URL.includes('detail_')) {
+        document.getElementById("levelInput").value = temp[0];
+      } else {
+        // Update history with the changes made
+        updateHistoryWithChanges($table)
+      }
+
+    });
+};
+
+
+async function giveWarningOrKickOutPersonFunction(e) {
+
+  let giveWarningOrKickOut = "";
+  if (e.currentTarget.id == 'giveWarningPersonButton') {
+    giveWarningOrKickOut = "giveWarning";
+  } else {
+    giveWarningOrKickOut = "kickOut";
+  }
+
+  let personType = "";
+  let documentURL = document.URL;
+  if (documentURL.includes("student")) {
+    personType = "S";
+  } else {
+    personType = "P";
+  }
+
+  // Getting the ids of the current rows
+  let currentRows = $table.bootstrapTable('getData');
+  var currentRowsId = [];
+  for (let i = 0; i < currentRows.length; i++) {
+    currentRowsId.push(currentRows[i].id)
+  }
+
+  // To force the user to wait for the response
+  disableButtonsInModal();
+
+  // Performing the operation
+  const response = await fetch('http://localhost:8080/persons/' + giveWarningOrKickOut, {
     method: 'put',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
@@ -1148,77 +1137,19 @@ async function giveWarningPersonFunction() {
         $table.bootstrapTable('updateCell', {
           index: index,
           field: 'warnings',
-          value: temp[index]
+          value: (temp.length > 1) ? temp[index] : temp
         })
       }
 
-      // Update history with the changes made
-      updateHistoryWithChanges($table)
-
-    });
-
-};
-
-
-async function kickOutPersonFunction() {
-
-  let personType = "";
-  let documentURL = document.URL;
-  if (documentURL.endsWith("lookup_students.html")) {
-    personType = "S";
-  } else {
-    personType = "P";
-  }
-
-  // Getting the ids of the current rows
-  let currentRows = $table.bootstrapTable('getData');
-  var currentRowsId = [];
-  for (let i = 0; i < currentRows.length; i++) {
-    currentRowsId.push(currentRows[i].id)
-  }
-
-  // To force the user to wait for the response
-  disableButtonsInModal();
-
-  // Performing the operation
-  const response = await fetch('http://localhost:8080/persons/kickOut', {
-    method: 'put',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-    },
-    body: new URLSearchParams({
-      "personsIdList": currentRowsId,
-      "personType": personType
-    })
-  }).then(response => response.json())
-    .then(data => {
-      console.log(data);
-
-      // To let the user perform other actions afterward
-      enableButtonsInModal();
-
-      // If the Java method throws an exception
-      if (checkIfErrorOccurred(data)) {
-        return;
+      // Updating detail part
+      if (document.URL.includes('detail_')) {
+        document.getElementById("warningsInput").value = temp[0];
+      } else {
+        // Update history with the changes made
+        updateHistoryWithChanges($table)
       }
 
-      // Extracting the new values from the response
-      let temp = data.data.maxWarning;
-
-      // Update the current table with the changed value returned
-      for (let index = 0; index < currentRows.length; index++) {
-        $table.bootstrapTable('updateCell', {
-          index: index,
-          field: 'warnings',
-          value: temp
-        })
-      }
-
-      // Update history with the changes made
-      updateHistoryWithChanges($table)
-
     });
-
 };
 
 
@@ -1268,11 +1199,15 @@ async function giveCreditsFunction() {
         })
       }
 
-      // Update history with the changes made
-      updateHistoryWithChanges($table)
+      // Updating detail part
+      if (document.URL.includes('detail_')) {
+        document.getElementById("creditsInput").value = temp[0];
+      } else {
+        // Update history with the changes made
+        updateHistoryWithChanges($table)
+      }
 
     });
-
 };
 
 
@@ -1322,24 +1257,340 @@ async function giveDiplomaFunction() {
         })
       }
 
-      // Update history with the changes made
-      updateHistoryWithChanges($table)
+      // Updating detail part
+      if (document.URL.includes('detail_')) {
+        document.getElementById("diplomaInput").value = diplomaFormatter(temp);
+      } else {
+        // Update history with the changes made
+        updateHistoryWithChanges($table)
+      }
 
     });
 
 };
 
 
+async function toggleIsExamMadeOrTakenFunction() {
 
-async function refreshEntryFunction() {
+  let attributeToSet = "";
+  if (buttonClickedId == 'toggleIsExamMadeButton') {
+    attributeToSet = "MadeByProfessor";
+  } else {
+    attributeToSet = "TakenByStudents";
+  }
+
+  // Getting the ids of the current rows
+  let currentRows = $table.bootstrapTable('getData');
+  var currentRowsId = [];
+  for (let i = 0; i < currentRows.length; i++) {
+    currentRowsId.push(currentRows[i].id)
+  }
+
+  // To force the user to wait for the response
+  disableButtonsInModal();
+
+  // Performing the operation
+  const response = await fetch('http://localhost:8080/courses/setIsExam' + attributeToSet, {
+    method: 'put',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    body: new URLSearchParams({
+      "coursesIdList": currentRowsId,
+      "isExamMadeOrTaken": radioModalInputRadio1.checked
+    })
+  }).then(response => response.json())
+    .then(data => {
+      console.log(data);
+
+      // To let the user perform other actions afterward
+      enableButtonsInModal();
+
+      if (checkIfErrorOccurred(data)) {
+        return;
+      }
+
+      // Extracting the new value from the response
+      let temp = data.data.boolean;
+
+      // Update the current table with the changed value returned
+      for (let index = 0; index < currentRows.length; index++) {
+        $table.bootstrapTable('updateCell', {
+          index: index,
+          field: 'isExam' + attributeToSet,
+          value: temp
+        })
+      }
+
+      // Updating detail part
+      if (document.URL.includes('detail_')) {
+        if (attributeToSet == "MadeByProfessor") {
+          document.getElementById("examMadeInput").value = booleanFormatter(temp).replace(/<\/?[^>]+(>|$)/g, "");;
+        } else {
+          document.getElementById("examTakenInput").value = booleanFormatter(temp).replace(/<\/?[^>]+(>|$)/g, "");;
+        }
+      } else {
+        // Update history with the changes made
+        updateHistoryWithChanges($table)
+      }
+
+    });
+};
+
+
+async function loadCoursesForPersonsFunction() {
+
+  $table.bootstrapTable('showColumn', 'courses');
 
   let entityType = "";
   let documentURL = document.URL;
-  if (documentURL.endsWith("lookup_students.html")) {
+  if (documentURL.endsWith("lookup_students.html") || documentURL.endsWith("detail_student.html")) {
+    entityType = "student";
+  } else {
+    entityType = "professor";
+  }
+
+  // Getting the ids of the current rows
+  let currentRows = $table.bootstrapTable('getData');
+  var currentRowsId = [];
+  for (let i = 0; i < currentRows.length; i++) {
+    currentRowsId.push(currentRows[i].id)
+  }
+
+  // To force the user to wait for the response
+  disableButtonsInModal();
+
+  // Performing the operation
+  const response = await fetch('http://localhost:8080/' + entityType + 's/getCourses', {
+    method: 'put',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    body: new URLSearchParams({
+      "personsIdList": currentRowsId
+    })
+  }).then(response => response.json())
+    .then(data => {
+      console.log(data);
+
+      // To let the user perform other actions afterward
+      enableButtonsInModal();
+
+      // If the Java method throws an exception
+      if (checkIfErrorOccurred(data)) {
+        return;
+      }
+
+      // Extracting the new value from the response
+      let temp = data.data.courses;
+
+      // Update the current table with the changed value returned
+      for (let index = 0; index < currentRows.length; index++) {
+        $table.bootstrapTable('updateCell', {
+          index: index,
+          field: 'courses',
+          value: temp[index]
+        })
+      }
+
+      // Updating detail part
+      if (documentURL.includes('detail_')) {
+        document.getElementById("coursesInput").value = (temp[0] == null ? null : threeStudiesPerLineFormatter(temp[0]).replaceAll("<br/>", " — "));
+      } else {
+        // Update history with the changes made
+        updateHistoryWithChanges($table)
+      }
+    })
+
+}
+
+
+async function loadDegreeForCoursesFunction() {
+
+  $table.bootstrapTable('showColumn', 'degree');
+
+  // Getting the ids of the current rows
+  let currentRows = $table.bootstrapTable('getData');
+  var currentRowsId = [];
+  for (let i = 0; i < currentRows.length; i++) {
+    currentRowsId.push(currentRows[i].id)
+  }
+
+  // To force the user to wait for the response
+  disableButtonsInModal();
+
+  // Performing the operation
+  const response = await fetch('http://localhost:8080/courses/getDegree', {
+    method: 'put',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    body: new URLSearchParams({
+      "coursesIdList": currentRowsId
+    })
+  }).then(response => response.json())
+    .then(data => {
+      console.log(data);
+
+      // To let the user perform other actions afterward
+      enableButtonsInModal();
+
+      // If the Java method throws an exception
+      if (checkIfErrorOccurred(data)) {
+        return;
+      }
+
+      // Extracting the new value from the response
+      let temp = data.data.degree;
+
+      // Update the current table with the changed value returned
+      for (let index = 0; index < currentRows.length; index++) {
+        $table.bootstrapTable('updateCell', {
+          index: index,
+          field: 'degree',
+          value: temp[index]
+        })
+      }
+
+      // Updating detail part
+      if (document.URL.includes('detail_')) {
+        document.getElementById("degreeInput").value = (temp[0] == null ? null : oneStudyPerColumnFormatter(temp[0]));
+      } else {
+        // Update history with the changes made
+        updateHistoryWithChanges($table)
+      }
+    })
+
+}
+
+
+async function loadStudentsForDegreesFunction() {
+
+  $table.bootstrapTable('showColumn', 'students');
+
+  // Getting the ids of the current rows
+  let currentRows = $table.bootstrapTable('getData');
+  var currentRowsId = [];
+  for (let i = 0; i < currentRows.length; i++) {
+    currentRowsId.push(currentRows[i].id)
+  }
+
+  // To force the user to wait for the response
+  disableButtonsInModal();
+
+  // Performing the operation
+  const response = await fetch('http://localhost:8080/degrees/getStudents', {
+    method: 'put',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    body: new URLSearchParams({
+      "degreesIdList": currentRowsId
+    })
+  }).then(response => response.json())
+    .then(data => {
+      console.log(data);
+
+      // To let the user perform other actions afterward
+      enableButtonsInModal();
+
+      // If the Java method throws an exception
+      if (checkIfErrorOccurred(data)) {
+        return;
+      }
+
+      // Extracting the new value from the response
+      let temp = data.data.students;
+
+      // Update the current table with the changed value returned
+      for (let index = 0; index < currentRows.length; index++) {
+        $table.bootstrapTable('updateCell', {
+          index: index,
+          field: 'students',
+          value: temp[index]
+        })
+      }
+
+      // Updating detail part
+      if (document.URL.includes('detail_')) {
+        document.getElementById("studentsInput").value = (temp[0] == null ? null : twoPersonsPerLineFormatter(temp[0]).replaceAll("<br/>", " — "));
+      } else {
+        // Update history with the changes made
+        updateHistoryWithChanges($table)
+      }
+    })
+
+}
+
+
+async function loadProfessorsForDegreesFunction() {
+
+  $table.bootstrapTable('showColumn', 'professors');
+
+  // Getting the ids of the current rows
+  let currentRows = $table.bootstrapTable('getData');
+  var currentRowsId = [];
+  for (let i = 0; i < currentRows.length; i++) {
+    currentRowsId.push(currentRows[i].id)
+  }
+
+  // To force the user to wait for the response
+  disableButtonsInModal();
+
+  // Performing the operation
+  const response = await fetch('http://localhost:8080/degrees/getProfessors', {
+    method: 'put',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    body: new URLSearchParams({
+      "degreesIdList": currentRowsId
+    })
+  }).then(response => response.json())
+    .then(data => {
+      console.log(data);
+
+      // To let the user perform other actions afterward
+      enableButtonsInModal();
+
+      // If the Java method throws an exception
+      if (checkIfErrorOccurred(data)) {
+        return;
+      }
+
+      // Extracting the new value from the response
+      let temp = data.data.professors;
+
+      // Update the current table with the changed value returned
+      for (let index = 0; index < currentRows.length; index++) {
+        $table.bootstrapTable('updateCell', {
+          index: index,
+          field: 'professors',
+          value: temp[index]
+        })
+      }
+
+      // Updating detail part
+      if (document.URL.includes('detail_')) {
+        document.getElementById("professorsInput").value = (temp[0] == null ? null : twoPersonsPerLineFormatter(temp[0]).replaceAll("<br/>", " — "));
+      } else {
+        // Update history with the changes made
+        updateHistoryWithChanges($table)
+      }
+    })
+
+}
+
+
+async function emailPersons() {
+
+  let entityType = "";
+  let documentURL = document.URL;
+  if (documentURL.includes("student")) {
     entityType = "S";
-  } else if (documentURL.endsWith("lookup_professors.html")) {
+  } else if (documentURL.includes("professor")) {
     entityType = "P";
-  } else if (documentURL.endsWith("lookup_courses.html")) {
+  } else if (documentURL.includes("course")) {
     entityType = "C";
   } else {
     entityType = "D";
@@ -1356,7 +1607,7 @@ async function refreshEntryFunction() {
   disableButtonsInModal();
 
   // Performing the operation
-  const response = await fetch('http://localhost:8080/entities/refresh', {
+  const response = await fetch('http://localhost:8080/entities/contact', {
     method: 'put',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
@@ -1377,92 +1628,30 @@ async function refreshEntryFunction() {
         return;
       }
 
-      // Extracting the new values from the response
-      let temp = data.data.entities;
+      // Extracting the new value from the response
+      let temp = data.data.emails;
+      let stringToDisplayInAlert = "";
 
-      // Update the current table with the changed value returned
-      $table.bootstrapTable('load', temp)
+      for (let index = 0; index < temp.length; index++) {
+        stringToDisplayInAlert += temp[index];
+        if (index != temp.length - 1)
+          stringToDisplayInAlert += "\n"
+      }
 
-      // Update history with the changes made
-      updateHistoryWithChanges($table)
+      alert(stringToDisplayInAlert)
+    })
 
-    });
 }
 
 
-async function deleteEntryFunction() {
 
-  let entityType = "";
-  let documentURL = document.URL;
-  if (documentURL.endsWith("lookup_students.html")) {
-    entityType = "S";
-  } else if (documentURL.endsWith("lookup_professors.html")) {
-    entityType = "P";
-  } else if (documentURL.endsWith("lookup_courses.html")) {
-    entityType = "C";
+function changeFormatterCoursesForDegree() {
+  let temp = { ...$table.bootstrapTable('getOptions').columns };
+  console.log(temp)
+  if (document.URL.includes("detail_")) {
+    temp[0][6].formatter = oneStudyPerLineFormatter;
   } else {
-    entityType = "D";
+    temp[0][7].formatter = oneStudyPerLineFormatter;
   }
-
-  // Getting the ids of the current rows
-  let currentRows = $table.bootstrapTable('getData');
-  var currentRowsId = [];
-  for (let i = 0; i < currentRows.length; i++) {
-    currentRowsId.push(currentRows[i].id)
-  }
-
-  // To force the user to wait for the response
-  disableButtonsInModal();
-
-  // Performing the operation
-  const response = await fetch('http://localhost:8080/entities/delete', {
-    method: 'delete',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-    },
-    body: new URLSearchParams({
-      "entitiesIdList": currentRowsId,
-      "entityType": entityType
-    })
-  }).then(response => response.json())
-    .then(data => {
-      console.log(data);
-
-      // To let the user perform other actions afterward
-      enableButtonsInModal();
-
-      // If the Java method throws an exception
-      if (checkIfErrorOccurred(data)) {
-        return;
-      }
-
-
-      // Update history with the changes made
-      var history = JSON.parse(localStorage["history"]);
-
-      // Rows edited
-      for (let i = 0; i < currentRows.length; i++) {
-
-        // History tables
-        for (let j = 0; j < history.length; j++) {
-
-          // History rows
-          for (let k = 0; k < history[j].length; k++) {
-
-            if (currentRows[i].id == history[j][k].id) {
-              // Updating the item of the history
-              history[j].splice(k, 1);
-              break;
-            }
-
-          }
-        }
-      }
-
-      localStorage["history"] = JSON.stringify(history);
-
-      $table.bootstrapTable('load', [])
-
-    });
-
+  $table.bootstrapTable('refreshOptions', { columns: temp });
 }

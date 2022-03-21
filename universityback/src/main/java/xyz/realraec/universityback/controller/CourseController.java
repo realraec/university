@@ -123,33 +123,16 @@ public class CourseController {
     }
 
 
-    /*@PutMapping("/setNewProfessor/{id}")
-    public ResponseEntity<Response> setNewProfessorForCourse(
-            @PathVariable("id") Long id,
-            @RequestParam String professorCode
-    ) throws Exception {
-        return ResponseEntity.ok(
-                Response.builder()
-                        .timestamp(LocalDateTime.now())
-                        .data(Map.of("professor", courseService.setNewProfessor(id, professorCode)))
-                        .message("Course with id " + id + " set with new professor with code " + professorCode)
-                        .status(HttpStatus.OK)
-                        .statusCode(HttpStatus.OK.value())
-                        .build()
-        );
-    }*/
-
-
     @PutMapping("/setNewProfessor")
     public ResponseEntity<Response> setNewProfessorForCourses(
             @RequestParam Long[] coursesIdList,
-            @RequestParam String professorCode
+            @RequestParam String entityCode
     ) throws Exception {
         return ResponseEntity.ok(
                 Response.builder()
                         .timestamp(LocalDateTime.now())
-                        .data(Map.of("professor", courseService.setNewProfessor(coursesIdList, professorCode)))
-                        .message("Courses with id " + Arrays.toString(coursesIdList) + " set with new professor with code " + professorCode)
+                        .data(Map.of("professor", courseService.setNewProfessor(coursesIdList, entityCode)))
+                        .message("Courses with id " + Arrays.toString(coursesIdList) + " set with new professor with code " + entityCode)
                         .status(HttpStatus.OK)
                         .statusCode(HttpStatus.OK.value())
                         .build()
@@ -157,22 +140,22 @@ public class CourseController {
     }
 
 
-    @GetMapping("/getStudents/{id}")
-    public ResponseEntity<Response> getStudentsForCourses(
-            @PathVariable("id") Long[] coursesIdList
+    @PutMapping("/setNewDegree")
+    public ResponseEntity<Response> setNewDegreeForCourses(
+            @RequestParam Long[] coursesIdList,
+            @RequestParam String entityCode
     ) throws Exception {
         return ResponseEntity.ok(
                 Response.builder()
-                        // All the information to be passed
                         .timestamp(LocalDateTime.now())
-                        // Where the service (implementation) method is to be found
-                        .data(Map.of("students", courseService.getStudents(coursesIdList)))
-                        .message("Students retrieved for course with id " + Arrays.toString(coursesIdList))
+                        .data(Map.of("degree", courseService.setNewDegree(coursesIdList, entityCode)))
+                        .message("Courses with id " + Arrays.toString(coursesIdList) + " set with new degree with code " + entityCode)
                         .status(HttpStatus.OK)
                         .statusCode(HttpStatus.OK.value())
                         .build()
         );
     }
+
 
     @PutMapping("/addStudent")
     public ResponseEntity<Response> addStudentForCourses(
@@ -206,37 +189,69 @@ public class CourseController {
         );
     }
 
-    @PutMapping("/setIsExamMadeByProfessorMultiple")
+    @PutMapping("/setIsExamMadeByProfessor")
     public ResponseEntity<Response> setIsExamMadeByProfessorForCourses(
             @RequestParam Long[] coursesIdList,
-            @RequestParam Boolean isExamMadeByProfessor
+            @RequestParam Boolean isExamMadeOrTaken
     ) throws Exception {
         return ResponseEntity.ok(
                 Response.builder()
                         .timestamp(LocalDateTime.now())
-                        .data(Map.of("boolean", courseService.setIsExamMadeByProfessor(coursesIdList, isExamMadeByProfessor)))
-                        .message("Boolean for isExamMadeByProfessor for Courses with id " + Arrays.toString(coursesIdList) + " set to " + isExamMadeByProfessor)
+                        .data(Map.of("boolean", courseService.setIsExamMadeByProfessor(coursesIdList, isExamMadeOrTaken)))
+                        .message("Boolean for isExamMadeByProfessor for Courses with id " + Arrays.toString(coursesIdList) + " set to " + isExamMadeOrTaken)
                         .status(HttpStatus.OK)
                         .statusCode(HttpStatus.OK.value())
                         .build()
         );
     }
 
-    @PutMapping("/setIsExamTakenByStudentsMultiple")
+    @PutMapping("/setIsExamTakenByStudents")
     public ResponseEntity<Response> setIsExamTakenByStudentsForCourses(
             @RequestParam Long[] coursesIdList,
-            @RequestParam Boolean isExamTakenByStudents
+            @RequestParam Boolean isExamMadeOrTaken
     ) throws Exception {
         return ResponseEntity.ok(
                 Response.builder()
                         .timestamp(LocalDateTime.now())
-                        .data(Map.of("boolean", courseService.setIsExamTakenByStudents(coursesIdList, isExamTakenByStudents)))
-                        .message("Boolean for isExamTakenByStudents for Courses with id " + Arrays.toString(coursesIdList) + " set to " + isExamTakenByStudents)
+                        .data(Map.of("boolean", courseService.setIsExamTakenByStudents(coursesIdList, isExamMadeOrTaken)))
+                        .message("Boolean for isExamTakenByStudents for Courses with id " + Arrays.toString(coursesIdList) + " set to " + isExamMadeOrTaken)
                         .status(HttpStatus.OK)
                         .statusCode(HttpStatus.OK.value())
                         .build()
         );
     }
 
+
+    @PutMapping("/getDegree")
+    public ResponseEntity<Response> getDegreesTheCoursesAreIn(
+            @RequestParam Long[] coursesIdList
+    ) throws Exception {
+        return ResponseEntity.ok(
+                Response.builder()
+                        // All the information to be passed
+                        .timestamp(LocalDateTime.now())
+                        // Where the service (implementation) method is to be found
+                        .data(Map.of("degree", courseService.getDegreeTheCourseIsPartOf(coursesIdList)))
+                        .message("Degree retrieved for courses with id " + Arrays.toString(coursesIdList))
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build()
+        );
+    }
+
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<Response> deleteCourses(@RequestParam Long[] entitiesIdList) throws Exception {
+        return ResponseEntity.ok(
+                Response.builder()
+                        .timestamp(LocalDateTime.now())
+                        // Either true or false key
+                        .data(Map.of("deleted", courseService.deleteCourses(entitiesIdList)))
+                        .message("Entities (courses) with id " + Arrays.toString(entitiesIdList) + " deleted")
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build()
+        );
+    }
 
 }

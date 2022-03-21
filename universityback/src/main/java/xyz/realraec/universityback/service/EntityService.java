@@ -12,4 +12,6 @@ public interface EntityService {
 
     Boolean deleteEntities(Long[] entitiesIdList, String entityType) throws Exception;
 
+    ArrayList<String> contactPersonsRelatedToEntities(Long[] entitiesIdList, String entityType) throws Exception;
+
 }

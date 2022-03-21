@@ -36,5 +36,7 @@ public interface StudentService {
 
     Diploma giveDiploma(Long[] studentsIdList, Diploma diploma) throws Exception;
 
+    Boolean deleteStudents(Long[] entitiesIdList) throws Exception;
+
 }
 

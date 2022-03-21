@@ -173,7 +173,7 @@
         {
           field: 'id',
           title: 'ID',
-          visible: false,
+          //visible: false,
           switchable: false,
           filterControl: 'input'
         }, {
@@ -216,13 +216,13 @@
         }, {
           field: 'birthdate',
           title: 'Birthdate',
-          filterControl: 'input',
-          class: 'text-nowrap'
+          class: 'text-nowrap',
+          filterControl: 'input'
         }, {
           field: 'email',
           title: 'E-mail',
-          filterControl: 'input',
-          class: 'text-nowrap'
+          class: 'text-nowrap',
+          filterControl: 'input'
         }, {
           field: 'phone',
           title: 'Phone',
@@ -242,8 +242,8 @@
         }, {
           field: 'diploma',
           title: 'Last diploma',
-          filterControl: 'select',
-          class: 'text-nowrap'
+          class: 'text-nowrap',
+          filterControl: 'select'
         }, {
           field: 'warnings',
           title: '<i class="bi bi-exclamation-triangle-fill"></i>',
@@ -268,7 +268,7 @@
     // Buttons and listeners
     $(document).ready(function () {
 
-      extraButtons.remove();
+      /* extraButtons.remove();
       examsButtons.remove();
       studentsButtons.remove();
       coursesButtons.remove();
@@ -280,15 +280,19 @@
 
       buttons.classList.remove("invisible");
 
-      promotePersonButton.addEventListener('click', promotePersonFunction);
-      demotePersonButton.addEventListener('click', demotePersonFunction);
-      giveWarningPersonButton.addEventListener('click', giveWarningPersonFunction);
-      kickOutPersonButton.addEventListener('click', kickOutPersonFunction);
+      promotePersonButton.addEventListener('click', promoteOrDemotePersonFunction);
+      demotePersonButton.addEventListener('click', promoteOrDemotePersonFunction);
+      giveWarningPersonButton.addEventListener('click', giveWarningOrKickOutPersonFunction);
+      kickOutPersonButton.addEventListener('click', giveWarningOrKickOutPersonFunction);
       giveDiplomaButton.addEventListener("click", getDiplomas);
 
       newEntryPersonButton.addEventListener('click', getGenders);
       deleteButton.addEventListener('click', deleteEntryFunction);
       refreshEntryButton.addEventListener('click', refreshEntryFunction);
+
+      loadExtraInfoButton.addEventListener('click', loadCoursesForPersonsFunction);
+
+      sendEmailButton.addEventListener('click', emailPersons); */
 
     });
 

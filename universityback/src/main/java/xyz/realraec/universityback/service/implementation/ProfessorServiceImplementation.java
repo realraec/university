@@ -5,14 +5,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import xyz.realraec.universityback.enumeration.Gender;
+import xyz.realraec.universityback.model.Course;
+import xyz.realraec.universityback.model.Degree;
 import xyz.realraec.universityback.model.Professor;
+import xyz.realraec.universityback.model.Student;
+import xyz.realraec.universityback.repository.CourseRepository;
 import xyz.realraec.universityback.repository.ProfessorRepository;
 import xyz.realraec.universityback.service.ProfessorService;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.Objects;
+import java.util.*;
 
 
 // Creates a constructor using the one attribute as argument
@@ -24,6 +27,7 @@ import java.util.Objects;
 public class ProfessorServiceImplementation implements ProfessorService {
 
     private final ProfessorRepository professorRepository;
+    private final CourseRepository courseRepository;
 
 
     @Override
@@ -201,5 +205,66 @@ public class ProfessorServiceImplementation implements ProfessorService {
         return Boolean.TRUE;
     }
 
+
+    @Override
+    public ArrayList<ArrayList<Course>> getCoursesTaughtByProfessor(Long[] professorsIdList) throws Exception {
+        log.info("Getting courses taught by professor with id: {}", Arrays.toString(professorsIdList));
+
+        if (professorsIdList.length == 0) {
+            throw new Exception("No student was provided to perform this action on.");
+        }
+
+        ArrayList<ArrayList<Course>> coursesList = new ArrayList<>();
+        for (int i = 0; i < professorsIdList.length; i++) {
+            coursesList.add(courseRepository.findByProfessorId(professorsIdList[i]));
+        }
+
+        return coursesList;
+    }
+
+
+    @Override
+    @Transactional
+    public Boolean deleteProfessors(Long[] entitiesIdList) throws Exception {
+        log.info("Deleting entities (professors) with id: {}", Arrays.toString(entitiesIdList));
+
+        if (entitiesIdList.length == 0) {
+            throw new Exception("No entity (professor) was provided to perform this action on.");
+        }
+
+        //ArrayList<Professor> professorsList = new ArrayList<>();
+
+        for (int i = 0; i < entitiesIdList.length; i++) {
+
+            /*Professor professor;
+            try {
+                professor = professorRepository.findById(entitiesIdList[i]).get();
+            } catch (Exception e) {
+                throw new Exception("The ID is incorrect" + (entitiesIdList.length == 1 ? "" : " for at least one of the entities") + ".");
+            }*/
+
+            if (!professorRepository.existsById(entitiesIdList[i])) {
+                throw new Exception("The ID is incorrect" + (entitiesIdList.length == 1 ? "" : " for at least one of the entities") + ".");
+            }
+
+            //professorsList.add(professor);
+        }
+
+
+        ArrayList<ArrayList<Course>> coursesTaughtByProfessorsList = getCoursesTaughtByProfessor(entitiesIdList);
+
+        for (int i = 0; i < coursesTaughtByProfessorsList.size(); i++) {
+            for (int j = 0; j < coursesTaughtByProfessorsList.get(i).size(); j++) {
+                coursesTaughtByProfessorsList.get(i).get(j).setProfessor(null);
+            }
+        }
+
+        for (int i = 0; i < entitiesIdList.length; i++) { //professorsList.size()
+            //Professor professor = professorsList.get(i);
+            professorRepository.deleteById(entitiesIdList[i]);
+        }
+
+        return Boolean.TRUE;
+    }
 }
 

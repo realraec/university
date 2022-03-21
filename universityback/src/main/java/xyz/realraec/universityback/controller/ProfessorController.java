@@ -12,6 +12,7 @@ import xyz.realraec.universityback.service.implementation.ProfessorServiceImplem
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Map;
 
 @RestController
@@ -128,5 +129,37 @@ public class ProfessorController {
         );
     }
 
+
+    @PutMapping("/getCourses")
+    public ResponseEntity<Response> getCoursesTaught(
+            @RequestParam Long[] personsIdList
+    ) throws Exception {
+        return ResponseEntity.ok(
+                Response.builder()
+                        // All the information to be passed
+                        .timestamp(LocalDateTime.now())
+                        // Where the service (implementation) method is to be found
+                        .data(Map.of("courses", professorService.getCoursesTaughtByProfessor(personsIdList)))
+                        .message("Courses retrieved for professors with id " + Arrays.toString(personsIdList))
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build()
+        );
+    }
+
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<Response> deleteProfessors(@RequestParam Long[] entitiesIdList) throws Exception {
+        return ResponseEntity.ok(
+                Response.builder()
+                        .timestamp(LocalDateTime.now())
+                        // Either true or false key
+                        .data(Map.of("deleted", professorService.deleteProfessors(entitiesIdList)))
+                        .message("Entities (professors) with id " + Arrays.toString(entitiesIdList) + " deleted")
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build()
+        );
+    }
 
 }

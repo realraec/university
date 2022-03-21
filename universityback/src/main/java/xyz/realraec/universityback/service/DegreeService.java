@@ -4,7 +4,10 @@ import org.springframework.stereotype.Service;
 import xyz.realraec.universityback.enumeration.Department;
 import xyz.realraec.universityback.model.Course;
 import xyz.realraec.universityback.model.Degree;
+import xyz.realraec.universityback.model.Professor;
+import xyz.realraec.universityback.model.Student;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
 
@@ -26,6 +29,13 @@ public interface DegreeService {
     Course addCourse(Long[] degreesIdList, String courseCode) throws Exception;
 
     Course removeCourse(Long[] degreesIdList, String courseCode) throws Exception;
+
+    ArrayList<ArrayList<Student>> getStudentsEnrolledInDegree(Long[] degreesIdList) throws Exception;
+
+    ArrayList<ArrayList<Professor>> getProfessorsTeachingInDegree(Long[] degreesIdList) throws Exception;
+
+    Boolean deleteDegrees(Long[] entitiesIdList) throws Exception;
+
 
 }
 

@@ -155,13 +155,54 @@ public class DegreeController {
     }
 
 
-        /*
-        // Several parameters, so "path =" needed
-        // By default would return JSON content, now an image of type PNG
-        @GetMapping(path = "/images/{fileName}", produces = IMAGE_PNG_VALUE)
-        public byte[] getServerImage(@PathVariable("fileName") String fileName) throws IOException {
-            // No need for a response, just for a byte array of the image
-            return Files.readAllBytes(Paths.get("C:/Desktop/Projects/images/" + fileName));
-        }*/
+    @PutMapping("/getStudents")
+    public ResponseEntity<Response> getStudentsEnrolled(
+            @RequestParam Long[] degreesIdList
+    ) throws Exception {
+        return ResponseEntity.ok(
+                Response.builder()
+                        // All the information to be passed
+                        .timestamp(LocalDateTime.now())
+                        // Where the service (implementation) method is to be found
+                        .data(Map.of("students", degreeService.getStudentsEnrolledInDegree(degreesIdList)))
+                        .message("Students retrieved for degrees with id " + Arrays.toString(degreesIdList))
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build()
+        );
+    }
+
+
+    @PutMapping("/getProfessors")
+    public ResponseEntity<Response> getProfessorsTeaching(
+            @RequestParam Long[] degreesIdList
+    ) throws Exception {
+        return ResponseEntity.ok(
+                Response.builder()
+                        // All the information to be passed
+                        .timestamp(LocalDateTime.now())
+                        // Where the service (implementation) method is to be found
+                        .data(Map.of("professors", degreeService.getProfessorsTeachingInDegree(degreesIdList)))
+                        .message("Professors retrieved for degrees with id " + Arrays.toString(degreesIdList))
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build()
+        );
+    }
+
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<Response> deleteDegree(@RequestParam Long[] entitiesIdList) throws Exception {
+        return ResponseEntity.ok(
+                Response.builder()
+                        .timestamp(LocalDateTime.now())
+                        // Either true or false key
+                        .data(Map.of("deleted", degreeService.deleteDegrees(entitiesIdList)))
+                        .message("Entities (degrees) with id " + Arrays.toString(entitiesIdList) + " deleted")
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build()
+        );
+    }
 
 }

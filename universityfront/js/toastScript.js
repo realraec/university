@@ -35,19 +35,16 @@ function lastActionButtonClicked(e) {
     buttonClickedId = e.currentTarget.id;
     console.log(buttonClickedId)
 
-    codeModalConfirmButton.removeEventListener('click', addStudentFunction, false)
-    codeModalConfirmButton.removeEventListener('click', removeStudentFunction, false)
-    codeModalConfirmButton.removeEventListener('click', addCourseFunction, false)
-    codeModalConfirmButton.removeEventListener('click', removeCourseFunction, false)
-    codeModalConfirmButton.removeEventListener('click', setNewProfessorFunction, false)
-    codeModalConfirmButton.removeEventListener('click', setNewMajorDegreeFunction, false)
-    codeModalConfirmButton.removeEventListener('click', setNewMinorDegreeFunction, false)
+    codeModalConfirmButton.removeEventListener('click', addOrRemoveStudentFunction, false)
+    codeModalConfirmButton.removeEventListener('click', addOrRemoveCourseFunction, false)
+    codeModalConfirmButton.removeEventListener('click', setNewProfessorOrDegreeFunction, false)
+    codeModalConfirmButton.removeEventListener('click', setNewMajorOrMinorDegreeFunction, false)
     codeModalConfirmButton.removeEventListener('click', giveCreditsFunction, false)
 
     //codeModalConfirmButton.removeEventListener('click', testFunction, false)
 
-    radioModalConfirmButton.removeEventListener('click', toggleIsExamMadeFunction, false)
-    radioModalConfirmButton.removeEventListener('click', toggleIsExamTakenFunction, false)
+    radioModalConfirmButton.removeEventListener('click', toggleIsExamMadeOrTakenFunction, false)
+    radioModalConfirmButton.removeEventListener('click', toggleIsExamMadeOrTakenFunction, false)
 
 
     newOrEditPersonModalConfirmButton.removeEventListener('click', newEntryPersonFunction, false)
@@ -76,54 +73,54 @@ function lastActionButtonClicked(e) {
         case "setNewProfessorButton":
             codeModalInput.value = "P1"
             codeModalInputLabel.textContent = "Code of the new professor"
-            codeModalConfirmButton.addEventListener('click', setNewProfessorFunction);
+            codeModalConfirmButton.addEventListener('click', setNewProfessorOrDegreeFunction);
             break;
         case "setNewMajorDegreeButton":
             codeModalInput.value = "D1"
             codeModalInputLabel.textContent = "Code of the new major degree"
-            codeModalConfirmButton.addEventListener('click', setNewMajorDegreeFunction);
+            codeModalConfirmButton.addEventListener('click', setNewMajorOrMinorDegreeFunction);
             break;
         case "setNewMinorDegreeButton":
             codeModalInput.value = "D2"
             codeModalInputLabel.textContent = "Code of the new minor degree"
-            codeModalConfirmButton.addEventListener('click', setNewMinorDegreeFunction);
+            codeModalConfirmButton.addEventListener('click', setNewMajorOrMinorDegreeFunction);
             break;
-        case "testButtonABC":
-            selectModalInputOption.textContent = "testtt"
-            selectModalInputLabel.textContent = "test"
-            selectModalConfirmButton.addEventListener('click', getDepartments);
+        case "setNewDegreeButton":
+            codeModalInput.value = "D1"
+            codeModalInputLabel.textContent = "Code of the new degree"
+            codeModalConfirmButton.addEventListener('click', setNewProfessorOrDegreeFunction);
             break;
         case "toggleIsExamMadeButton":
             radioModalInputLabel.textContent = "State of the exam (made)"
             radioModalInputRadio1Label.innerHTML = "<i class='bi bi-check-circle ms-1 me-2'></i>Made"
             radioModalInputRadio2Label.innerHTML = "<i class='bi bi-x-circle-fill ms-1 me-2'></i>Not made"
-            radioModalConfirmButton.addEventListener('click', toggleIsExamMadeFunction);
+            radioModalConfirmButton.addEventListener('click', toggleIsExamMadeOrTakenFunction);
             break;
         case "toggleIsExamTakenButton":
             radioModalInputLabel.textContent = "State of the exam (taken)"
             radioModalInputRadio1Label.innerHTML = "<i class='bi bi-check-circle ms-1 me-2'></i>Taken"
             radioModalInputRadio2Label.innerHTML = "<i class='bi bi-x-circle-fill ms-1 me-2'></i>Not taken"
-            radioModalConfirmButton.addEventListener('click', toggleIsExamTakenFunction);
+            radioModalConfirmButton.addEventListener('click', toggleIsExamMadeOrTakenFunction);
             break;
         case "addStudentButton":
             codeModalInput.value = "S1"
             codeModalInputLabel.textContent = "Code of the student to add"
-            codeModalConfirmButton.addEventListener('click', addStudentFunction);
+            codeModalConfirmButton.addEventListener('click', addOrRemoveStudentFunction);
             break;
         case "removeStudentButton":
             codeModalInput.value = "S1"
             codeModalInputLabel.textContent = "Code of the student to remove"
-            codeModalConfirmButton.addEventListener('click', removeStudentFunction);
+            codeModalConfirmButton.addEventListener('click', addOrRemoveStudentFunction);
             break;
         case "addCourseButton":
             codeModalInput.value = "C1"
             codeModalInputLabel.textContent = "Code of the course to add"
-            codeModalConfirmButton.addEventListener('click', addCourseFunction);
+            codeModalConfirmButton.addEventListener('click', addOrRemoveCourseFunction);
             break;
         case "removeCourseButton":
             codeModalInput.value = "C1"
             codeModalInputLabel.textContent = "Code of the course to remove"
-            codeModalConfirmButton.addEventListener('click', removeCourseFunction);
+            codeModalConfirmButton.addEventListener('click', addOrRemoveCourseFunction);
             break;
         case "newEntryPersonButton":
             if (document.URL.endsWith("lookup_students.html")) {
@@ -194,112 +191,112 @@ function customizeToast() {
     console.log(buttonClickedId)
     switch (buttonClickedId) {
         case "giveDiplomaButton":
-            operationHeader = "Give diploma"
+            operationHeader = "Give diploma";
             operationBody = "diploma given";
             break;
         case "giveCreditsButton":
-            operationHeader = "Give credits"
+            operationHeader = "Give credits";
             operationBody = "credits given";
             break;
         case "giveWarningPersonButton":
-            operationHeader = "Give warning"
+            operationHeader = "Give warning";
             operationBody = "warning given";
             break;
         case "kickOutPersonButton":
-            operationHeader = "Kick out"
+            operationHeader = "Kick out";
             operationBody = "person kicked out";
             break;
         case "demotePersonButton":
             if (document.URL.endsWith("lookup_students.html")) {
-                operationHeader = "Demote student(s)"
+                operationHeader = "Demote student(s)";
                 operationBody = "student(s) demoted";
             } else {
-                operationHeader = "Demote professor(s)"
+                operationHeader = "Demote professor(s)";
                 operationBody = "professor(s) demoted";
             }
             break;
         case "promotePersonButton":
             if (document.URL.endsWith("lookup_students.html")) {
-                operationHeader = "Promote student(s)"
+                operationHeader = "Promote student(s)";
                 operationBody = "student(s) promoted";
             } else {
-                operationHeader = "Promote professor(s)"
+                operationHeader = "Promote professor(s)";
                 operationBody = "professor(s) promoted";
             }
             break;
         case "setNewProfessorButton":
-            operationHeader = "New professor"
+            operationHeader = "New professor";
             operationBody = "professor changed";
             break;
         case "setNewMajorDegreeButton":
-            operationHeader = "New major degree"
+            operationHeader = "New major degree";
             operationBody = "majors changed";
             break;
         case "setNewMinorDegreeButton":
-            operationHeader = "New minor degree"
+            operationHeader = "New minor degree";
             operationBody = "minors changed";
             break;
-        case "testButtonABC":
-            operationHeader = "Button test"
-            operationBody = "button tested";
+        case "setNewDegreeButton":
+            operationHeader = "New degree";
+            operationBody = "degree changed";
             break;
         case "toggleIsExamMadeButton":
-            operationHeader = "Toggle exam made"
+            operationHeader = "Toggle exam made";
             operationBody = "exam made toggled";
             break;
         case "toggleIsExamTakenButton":
-            operationHeader = "Toggle exam taken"
+            operationHeader = "Toggle exam taken";
             operationBody = "exam taken toggled";
             break;
         case "addStudentButton":
-            operationHeader = "Add student"
+            operationHeader = "Add student";
             operationBody = "student added";
             break;
         case "removeStudentButton":
-            operationHeader = "Remove student"
+            operationHeader = "Remove student";
             operationBody = "student removed";
             break;
         case "addCourseButton":
-            operationHeader = "Add course"
+            operationHeader = "Add course";
             operationBody = "course added";
             break;
         case "removeCourseButton":
-            operationHeader = "Remove course"
+            operationHeader = "Remove course";
             operationBody = "course removed";
             break;
         case "newEntryPersonButton":
             if (document.URL.endsWith("lookup_students.html")) {
-                operationHeader = "Add new student"
+                operationHeader = "Add new student";
                 operationBody = "new student added";
             } else {
-                operationHeader = "Add new professor"
+                operationHeader = "Add new professor";
                 operationBody = "new professor added";
             }
             break;
         case "newEntryStudyButton":
             if (document.URL.endsWith("lookup_courses.html")) {
-                operationHeader = "Add new course"
+                operationHeader = "Add new course";
                 operationBody = "new course added";
             } else {
-                operationHeader = "Add new degree"
+                operationHeader = "Add new degree";
                 operationBody = "new degree added";
             }
             break;
         case "editEntryPersonButton":
             if (document.URL.endsWith("detail_student.html")) {
-                operationHeader = "Edit student"
+                operationHeader = "Edit student";
                 operationBody = "student edited";
             } else {
-                operationHeader = "Edit professor"
+                operationHeader = "Edit professor";
                 operationBody = "professor edited";
             }
             break;
         case "editEntryStudyButton":
             if (document.URL.endsWith("detail_course.html")) {
-                operationHeader = "Edit course"
+                operationHeader = "Edit course";
                 operationBody = "course edited";
             } else {
-                operationHeader = "Edit degree"
+                operationHeader = "Edit degree";
                 operationBody = "degree edited";
             }
             break;

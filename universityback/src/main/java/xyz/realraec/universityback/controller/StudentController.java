@@ -138,24 +138,6 @@ public class StudentController {
     }
 
 
-    @GetMapping("/getCourses/{id}")
-    public ResponseEntity<Response> getStudentsForCourses(
-            @PathVariable("id") Long[] studentsIdList
-    ) throws Exception {
-        return ResponseEntity.ok(
-                Response.builder()
-                        // All the information to be passed
-                        .timestamp(LocalDateTime.now())
-                        // Where the service (implementation) method is to be found
-                        .data(Map.of("courses", studentService.getCourses(studentsIdList)))
-                        .message("Courses retrieved for students with id " + Arrays.toString(studentsIdList))
-                        .status(HttpStatus.OK)
-                        .statusCode(HttpStatus.OK.value())
-                        .build()
-        );
-    }
-
-
     @PutMapping("/setNewMinorDegree")
     public ResponseEntity<Response> setNewMinorDegreeForStudents(
             @RequestParam Long[] studentsIdList,
@@ -214,6 +196,39 @@ public class StudentController {
                         .timestamp(LocalDateTime.now())
                         .data(Map.of("diploma", studentService.giveDiploma(studentsIdList, diploma)))
                         .message("Students with id " + Arrays.toString(studentsIdList) + " given " + diploma + " diploma")
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build()
+        );
+    }
+
+
+    @PutMapping("/getCourses")
+    public ResponseEntity<Response> getCoursesEnrolledIn(
+            @RequestParam Long[] personsIdList
+    ) throws Exception {
+        return ResponseEntity.ok(
+                Response.builder()
+                        // All the information to be passed
+                        .timestamp(LocalDateTime.now())
+                        // Where the service (implementation) method is to be found
+                        .data(Map.of("courses", studentService.getCourses(personsIdList)))
+                        .message("Courses retrieved for students with id " + Arrays.toString(personsIdList))
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build()
+        );
+    }
+
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<Response> deleteStudents(@RequestParam Long[] entitiesIdList) throws Exception {
+        return ResponseEntity.ok(
+                Response.builder()
+                        .timestamp(LocalDateTime.now())
+                        // Either true or false key
+                        .data(Map.of("deleted", studentService.deleteStudents(entitiesIdList)))
+                        .message("Entities (students) with id " + Arrays.toString(entitiesIdList) + " deleted")
                         .status(HttpStatus.OK)
                         .statusCode(HttpStatus.OK.value())
                         .build()

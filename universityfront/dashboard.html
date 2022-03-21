@@ -19,7 +19,7 @@
 
     <div id="loading-placeholder">
     </div>
-    
+
     <nav id="nav-placeholder">
     </nav>
 
@@ -53,6 +53,9 @@
                 </div>
             </div>
         </div>
+
+        <div class="text-center"><button id="initDataButton" class="btn btn-secondary mt-3">Initialize data</button>
+        </div>
     </div>
 </body>
 
@@ -67,6 +70,38 @@
 
 <script type="text/javascript" src="js/navbarScript.js"></script>
 <script type="text/javascript" src="js/loadingScript.js"></script>
+<script type="text/javascript" src="js/buttonsScript.js"></script>
+
+<script>
+
+    $(document).ready(function () {
+
+        initDataButton.addEventListener('click', initDataFunction);
+
+    })
+
+
+    async function initDataFunction() {
+
+        const response = await fetch('http://localhost:8080/students/setNewMinorDegree', {
+            method: 'put',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+            },
+            body: new URLSearchParams({
+                "studentsIdList": [1, 3, 6, 7, 8],
+                "degreeCode": "D1"
+            })
+        }).then(response => response.json())
+            .then(data => {
+                console.log(data);
+            })
+
+
+    }
+
+
+</script>
 
 
 </html>

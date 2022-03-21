@@ -80,7 +80,7 @@ public class PersonController {
         return ResponseEntity.ok(
                 Response.builder()
                         .timestamp(LocalDateTime.now())
-                        .data(Map.of("maxWarning", personService.kickOut(personsIdList, personType)))
+                        .data(Map.of("warnings", personService.kickOut(personsIdList, personType)))
                         .message("Persons with id " + Arrays.toString(personsIdList) + " were kicked out")
                         .status(HttpStatus.OK)
                         .statusCode(HttpStatus.OK.value())

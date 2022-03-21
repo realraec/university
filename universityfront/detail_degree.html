@@ -54,29 +54,39 @@
     <form>
       <div class="row gy-2">
 
-        <div class="col-sm-12 col-md-6 col-xl-4">
+        <div class="col-sm-12 col-md-6 col-xl-4" hidden>
           <label for="idInput" class="form-label">ID</label>
-          <input id="idInput" type="text" class="form-control" value="0" disabled></input>
+          <input id="idInput" type="text" class="form-control" value="" disabled></input>
         </div>
 
         <div class="col-sm-12 col-md-6 col-xl-4">
           <label for="codeInput" class="form-label">Code</label>
-          <input id="codeInput" type="text" class="form-control" value="0" disabled></input>
+          <input id="codeInput" type="text" class="form-control" value="" disabled></input>
         </div>
 
         <div class="col-sm-12 col-md-6 col-xl-4">
           <label for="headingInput" class="form-label">Heading</label>
-          <input id="headingInput" type="text" class="form-control" value="Degree 100" disabled></input>
+          <input id="headingInput" type="text" class="form-control" value="" disabled></input>
         </div>
 
         <div class="col-sm-12 col-md-6 col-xl-4">
           <label for="departmentInput" class="form-label">Department</label>
-          <input id="departmentInput" type="text" class="form-control" value="Department" disabled></input>
+          <input id="departmentInput" type="text" class="form-control" value="" disabled></input>
         </div>
 
-        <div class="col-8">
-          <label for="coursesInput" class="form-label">Courses included</label>
+        <div class="col-6">
+          <label for="coursesInput" class="form-label">Courses associated</label>
           <textarea id="coursesInput" class="form-control" rows="1" value="" disabled></textarea>
+        </div>
+
+        <div class="col-6">
+          <label for="professorsInput" class="form-label">Professors teaching</label>
+          <textarea id="professorsInput" class="form-control" rows="1" value="" disabled></textarea>
+        </div>
+
+        <div class="col-12">
+          <label for="studentsInput" class="form-label">Students enrolled</label>
+          <textarea id="studentsInput" class="form-control" rows="1" value="" disabled></textarea>
         </div>
 
       </div>
@@ -145,7 +155,7 @@
     // Buttons and listeners
     $(document).ready(function () {
 
-      degreesButtons.remove();
+      /* degreesButtons.remove();
       levelButtons.remove();
       sanctionButtons.remove();
       rewardButtons.remove();
@@ -163,6 +173,14 @@
 
       editEntryStudyButton.addEventListener('click', getDepartments)
       editEntryStudyButton.addEventListener('click', editEntryStudyPreparation)
+      deleteButton.addEventListener('click', deleteEntryFunction);
+      refreshEntryButton.addEventListener('click', refreshEntryFunction);
+
+      loadExtraInfoButton.addEventListener('click', loadStudentsForDegreesFunction);
+      loadExtraInfoButton.addEventListener('click', loadProfessorsForDegreesFunction);
+      loadExtraInfoButton.addEventListener('click', changeFormatterCoursesForDegree);
+
+      sendEmailButton.addEventListener('click', emailPersons); */
 
     })
 
@@ -172,9 +190,19 @@
       document.getElementById("codeInput").value = sourceData[0].code;
       document.getElementById("headingInput").value = sourceData[0].heading;
       document.getElementById("departmentInput").value = departmentFormatter(sourceData[0].department);
-      document.getElementById("coursesInput").value = (sourceData[0].courses.length == 0 ? null : coursesFormatter(sourceData[0].courses).replaceAll("<br/>", " — "));
+      document.getElementById("coursesInput").value = (sourceData[0].courses.length == 0 ? null : threeStudiesPerLineFormatter(sourceData[0].courses).replaceAll("<br/>", " — "));
+      document.getElementById("professorsInput").value = (sourceData[0].professors == null ? null : onePersonPerColumnFormatter(sourceData[0].professors).replace("<br/>", " "));
+      document.getElementById("studentsInput").value = (sourceData[0].students == null ? null : onePersonPerColumnFormatter(sourceData[0].students).replace("<br/>", " "));
+
     }
 
+    function wipeOutDetailDegree() {
+      document.getElementById("idInput").value = "";
+      document.getElementById("codeInput").value = "";
+      document.getElementById("headingInput").value = "";
+      document.getElementById("departmentInput").value = "";
+      document.getElementById("coursesInput").value = "";
+    }
 
   </script>
 

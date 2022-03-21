@@ -3,8 +3,6 @@ package xyz.realraec.universityback.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 import xyz.realraec.universityback.enumeration.Diploma;
 import xyz.realraec.universityback.enumeration.Gender;
 
@@ -178,10 +176,6 @@ public class Student extends Person {
     public void setLevel(int level) throws Exception {
         if ((level >= 1) && (level <= 7)) {
             this.level = level;
-            /*calculateCredits();
-            calculateTotalTuition();
-        } else if (level == 0) {
-            this.level = level;*/
         } else {
             throw new Exception("Invalid level for a student.");
         }
@@ -220,7 +214,6 @@ public class Student extends Person {
     @JsonIgnore
     //@JsonIgnoreProperties(
     //        {"department", "isExamMadeByProfessor", "isExamTakenByStudents", "professor", "students"})
-    @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToMany(
             //fetch = FetchType.EAGER,
             mappedBy = "students"
@@ -245,11 +238,24 @@ public class Student extends Person {
 
     @Transactional
     public void setMajorDegree(Degree majorDegree) {
+        if (this.majorDegree != null) {
+            try {
+                for (Course course : this.majorDegree.getCourses()) {
+                    course.removeStudent(this);
+                    //xxxxx
+                    this.getCourses().remove(course);
+                }
+            } catch (NullPointerException ignored) {
+                //ignored.printStackTrace();
+            }
+        }
         this.majorDegree = majorDegree;
         /*if (majorDegree != null) {*/
         try {
             for (Course course : this.majorDegree.getCourses()) {
                 course.addStudent(this);
+                //xxxxx
+                this.getCourses().add(course);
             }
         } catch (NullPointerException ignored) {
         }
@@ -269,13 +275,27 @@ public class Student extends Person {
 
     @Transactional
     public void setMinorDegree(Degree minorDegree) {
+        if (this.minorDegree != null) {
+            try {
+                for (Course course : this.minorDegree.getCourses()) {
+                    course.removeStudent(this);
+                    //xxxxxx
+                    this.getCourses().remove(course);
+                }
+            } catch (NullPointerException ignored) {
+                //ignored.printStackTrace();
+            }
+        }
         this.minorDegree = minorDegree;
         /*if (minorDegree != null) {*/
         try {
             for (Course course : this.minorDegree.getCourses()) {
                 course.addStudent(this);
+                //xxxxxx
+                this.getCourses().add(course);
             }
         } catch (NullPointerException ignored) {
+            //ignored.printStackTrace();
         }
         /*} else {
             throw new Exception("The degree mustn't be null.");

@@ -1,10 +1,13 @@
 package xyz.realraec.universityback.service;
 
+import net.minidev.json.JSONObject;
 import org.springframework.stereotype.Service;
 import xyz.realraec.universityback.enumeration.Gender;
+import xyz.realraec.universityback.model.Course;
 import xyz.realraec.universityback.model.Professor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
 
 @Service
@@ -21,6 +24,14 @@ public interface ProfessorService {
     Boolean replace(Long id, Professor professor);
 
     Boolean delete(Long id);
+
+    ArrayList<ArrayList<Course>> getCoursesTaughtByProfessor(Long[] professorsIdList) throws Exception;
+
+    //ArrayList<Object> findCoursesTaughtByProfessor(Long professorId) throws Exception;
+
+    Boolean deleteProfessors(Long[] entitiesIdList) throws Exception;
+
+
 
 }
 

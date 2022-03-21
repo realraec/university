@@ -6,9 +6,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import xyz.realraec.universityback.enumeration.Department;
 import xyz.realraec.universityback.model.Course;
+import xyz.realraec.universityback.model.Degree;
 import xyz.realraec.universityback.model.Professor;
 import xyz.realraec.universityback.model.Student;
 import xyz.realraec.universityback.repository.CourseRepository;
+import xyz.realraec.universityback.repository.DegreeRepository;
 import xyz.realraec.universityback.repository.ProfessorRepository;
 import xyz.realraec.universityback.repository.StudentRepository;
 import xyz.realraec.universityback.service.CourseService;
@@ -28,6 +30,7 @@ public class CourseServiceImplementation implements CourseService {
     private final CourseRepository courseRepository;
     private final ProfessorRepository professorRepository;
     private final StudentRepository studentRepository;
+    private final DegreeRepository degreeRepository;
 
 
     @Override
@@ -191,8 +194,6 @@ public class CourseServiceImplementation implements CourseService {
             throw new Exception("No course was provided to perform this action on.");
         }
 
-        //Thread.sleep(2000);
-
         Professor professor = professorRepository.findByCode(professorCode);
         if (professor == null) {
             throw new Exception("No professor could be found with this code.");
@@ -214,28 +215,46 @@ public class CourseServiceImplementation implements CourseService {
         return professor;
     }
 
-    /*public Set<Student> getStudents(Long courseId) throws Exception {
-        log.info("Getting students for course with id: {}", courseId);
-        Course course = get(courseId);
-        return course.getStudents();
-    }*/
 
     @Override
-    public ArrayList<Set> getStudents(Long[] coursesIdList) throws Exception {
-        log.info("Getting students for courses with id: {}", Arrays.toString(coursesIdList));
+    @Transactional
+    public Degree setNewDegree(Long[] coursesIdList, String degreeCode) throws Exception {
+        log.info("Setting new professor for courses with id: {}", Arrays.toString(coursesIdList));
 
         if (coursesIdList.length == 0) {
             throw new Exception("No course was provided to perform this action on.");
         }
 
-        ArrayList<Set> coursesStudentsList = new ArrayList<>();
+        Degree degree = degreeRepository.findByCode(degreeCode);
+        if (degree == null) {
+            throw new Exception("No degree could be found with this code.");
+        }
+
+        ArrayList<Course> coursesList = new ArrayList<>();
+        ArrayList<Degree> oldDegreesList = new ArrayList<>();
 
         for (int i = 0; i < coursesIdList.length; i++) {
             Course course = get(coursesIdList[i]);
-            coursesStudentsList.add(course.getStudents());
+            Degree oldDegree = degreeRepository.findByCourseId(coursesIdList[i]);
+
+            if (course == null) {
+                throw new Exception("The code is wrong for" + (coursesIdList.length == 1 ? " the course" : " at least one of the courses") + ".");
+            } else if (degree.equals(oldDegree)) {
+                throw new Exception("The code for the new degree is the same as the old one" + (coursesIdList.length == 1 ? "" : " for at least one of the courses") + ".");
+            } else {
+                coursesList.add(course);
+                oldDegreesList.add(oldDegree);
+            }
         }
 
-        return coursesStudentsList;
+        for (int i = 0; i < coursesList.size(); i++) {
+            if (oldDegreesList.get(i) != null) {
+                oldDegreesList.get(i).removeCourse(coursesList.get(i));
+            }
+            degree.addCourse(coursesList.get(i));
+        }
+
+        return degree;
     }
 
 
@@ -273,6 +292,7 @@ public class CourseServiceImplementation implements CourseService {
         return student;
     }
 
+
     @Override
     @Transactional
     public Student removeStudent(Long[] coursesIdList, String studentCode) throws Exception {
@@ -293,6 +313,12 @@ public class CourseServiceImplementation implements CourseService {
             Course course = get(coursesIdList[i]);
             coursesList.add(course);
 
+            if ((student.getMinorDegree() != null && student.getMinorDegree().getCourses().contains(course))
+                    || (student.getMajorDegree() != null && student.getMajorDegree().getCourses().contains(course))) {
+                throw new Exception("This student is enrolled in a degree in which"
+                        + (coursesIdList.length == 1 ? " this course " : " at least one of theses courses ") + "is mandatory.");
+            }
+
             Set<Student> studentsSet = course.getStudents();
             boolean studentPresent = false;
             for (Student value : studentsSet) {
@@ -307,6 +333,7 @@ public class CourseServiceImplementation implements CourseService {
 
         for (int i = 0; i < coursesList.size(); i++) {
             coursesList.get(i).removeStudent(student);
+            studentRepository.findByCode(studentCode).getCourses().remove(coursesList.get(i));
         }
         return student;
     }
@@ -370,6 +397,62 @@ public class CourseServiceImplementation implements CourseService {
         return isExamTakenByStudents;
     }
 
+
+    @Override
+    public ArrayList<Degree> getDegreeTheCourseIsPartOf(Long[] coursesIdList) throws Exception {
+        log.info("Getting degree in which are the courses with id: {}", Arrays.toString(coursesIdList));
+
+        if (coursesIdList.length == 0) {
+            throw new Exception("No student was provided to perform this action on.");
+        }
+
+        ArrayList<Degree> degreesList = new ArrayList<>();
+        for (int i = 0; i < coursesIdList.length; i++) {
+            degreesList.add(degreeRepository.findByCourseId(coursesIdList[i]));
+        }
+
+        return degreesList;
+    }
+
+
+    @Override
+    @Transactional
+    public Boolean deleteCourses(Long[] entitiesIdList) throws Exception {
+        log.info("Deleting entities (courses) with id: {}", Arrays.toString(entitiesIdList));
+
+        if (entitiesIdList.length == 0) {
+            throw new Exception("No entity (course) was provided to perform this action on.");
+        }
+
+        ArrayList<Course> coursesList = new ArrayList<>();
+
+        for (int i = 0; i < entitiesIdList.length; i++) {
+
+            Course course;
+            try {
+                course = courseRepository.findById(entitiesIdList[i]).get();
+            } catch (Exception e) {
+                throw new Exception("The ID is incorrect" + (entitiesIdList.length == 1 ? "" : " for at least one of the entities") + ".");
+            }
+
+            coursesList.add(course);
+        }
+
+
+        ArrayList<Degree> degreeTheCourseIsPartOf = getDegreeTheCourseIsPartOf(entitiesIdList);
+
+        for (int i = 0; i < coursesList.size(); i++) {
+            Course course = coursesList.get(i);
+            course.setProfessor(null);
+            /*Set<Student> studentsSet = course.getStudents();
+            studentsSet.forEach(student -> student.getCourses().remove(course));*/
+            course.setStudents(null);
+            degreeTheCourseIsPartOf.get(i).removeCourse(course);
+            courseRepository.deleteById(entitiesIdList[i]);
+        }
+
+        return Boolean.TRUE;
+    }
 
 }
 

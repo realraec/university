@@ -3,6 +3,7 @@ package xyz.realraec.universityback.service;
 import org.springframework.stereotype.Service;
 import xyz.realraec.universityback.enumeration.Department;
 import xyz.realraec.universityback.model.Course;
+import xyz.realraec.universityback.model.Degree;
 import xyz.realraec.universityback.model.Professor;
 import xyz.realraec.universityback.model.Student;
 
@@ -27,7 +28,7 @@ public interface CourseService {
 
     Professor setNewProfessor(Long[] coursesIdList, String professorCode) throws Exception;
 
-    ArrayList<Set> getStudents(Long[] coursesIdList) throws Exception;
+    Degree setNewDegree(Long[] coursesIdList, String degreeCode) throws Exception;
 
     Student addStudent(Long[] coursesIdList, String studentCode) throws Exception;
 
@@ -36,6 +37,10 @@ public interface CourseService {
     Boolean setIsExamMadeByProfessor(Long[] coursesIdList, Boolean isExamMadeByProfessor) throws Exception;
 
     Boolean setIsExamTakenByStudents(Long[] coursesIdList, Boolean isExamTakenByStudents) throws Exception;
+
+    ArrayList<Degree> getDegreeTheCourseIsPartOf (Long[] coursesIdList) throws Exception;
+
+    Boolean deleteCourses(Long[] entitiesIdList) throws Exception;
 
 }
 

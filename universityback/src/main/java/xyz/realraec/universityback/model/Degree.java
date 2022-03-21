@@ -5,7 +5,6 @@ import lombok.NoArgsConstructor;
 import xyz.realraec.universityback.enumeration.Department;
 
 import javax.persistence.*;
-import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -32,11 +31,6 @@ public class Degree extends Study {
         this.code = "D" + generateCodeAndDpt();
     }
 
-    public Degree(String heading, HashSet<Course> courses) {
-        this.heading = heading;
-        this.code = "D" + generateCodeAndDpt();
-        this.courses = courses;
-    }
 
     @Id
     @SequenceGenerator(
@@ -63,17 +57,17 @@ public class Degree extends Study {
     // Shared attributes
     @Override
     public String getHeading() {
-        return heading;
+        return super.getHeading();
     }
 
     @Override
     public String getCode() {
-        return code;
+        return super.getCode();
     }
 
     @Override
     public Department getDepartment() {
-        return department;
+        return super.getDepartment();
     }
 
 
@@ -93,16 +87,13 @@ public class Degree extends Study {
         this.courses = courses;
     }
 
-    @Transactional
     public void addCourse(Course course) {
         this.courses.add(course);
     }
 
-    @Transactional
     public void removeCourse(Course course) {
         this.courses.remove(course);
     }
-
 
 
     /**

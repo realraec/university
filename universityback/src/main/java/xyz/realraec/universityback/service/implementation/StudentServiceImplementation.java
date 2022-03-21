@@ -6,6 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import xyz.realraec.universityback.enumeration.Diploma;
 import xyz.realraec.universityback.enumeration.Gender;
+import xyz.realraec.universityback.model.Course;
 import xyz.realraec.universityback.model.Degree;
 import xyz.realraec.universityback.model.Student;
 import xyz.realraec.universityback.repository.DegreeRepository;
@@ -256,6 +257,7 @@ public class StudentServiceImplementation implements StudentService {
         return studentsCoursesList;
     }
 
+
     @Override
     @Transactional
     public Degree setNewMinorDegree(Long[] studentsIdList, String degreeCode) throws Exception {
@@ -275,9 +277,9 @@ public class StudentServiceImplementation implements StudentService {
         for (int i = 0; i < studentsIdList.length; i++) {
             Student student = get(studentsIdList[i]);
             studentsList.add(student);
-            if (student.getMinorDegree().getId() == degree.getId()) {
+            if (student.getMinorDegree() != null && student.getMinorDegree().getId() == degree.getId()) {
                 throw new Exception("The code of the new minor degree is the same as the old one" + (studentsIdList.length == 1 ? "" : " for at least one of the students") + ".");
-            } else if (student.getMajorDegree().getId() == degree.getId()) {
+            } else if (student.getMajorDegree() != null && student.getMajorDegree().getId() == degree.getId()) {
                 throw new Exception("The code of the new minor degree is the same as the code of the current major degree" + (studentsIdList.length == 1 ? "" : " for at least one of the students") + ".");
             }
         }
@@ -308,9 +310,9 @@ public class StudentServiceImplementation implements StudentService {
         for (int i = 0; i < studentsIdList.length; i++) {
             Student student = get(studentsIdList[i]);
             studentsList.add(student);
-            if (student.getMajorDegree().getId() == degree.getId()) {
+            if (student.getMinorDegree() != null && student.getMajorDegree().getId() == degree.getId()) {
                 throw new Exception("The code of the new major degree is the same as the old one" + (studentsIdList.length == 1 ? "" : " for at least one of the students") + ".");
-            } else if (student.getMinorDegree().getId() == degree.getId()) {
+            } else if (student.getMajorDegree() != null && student.getMinorDegree().getId() == degree.getId()) {
                 throw new Exception("The code of the new major degree is the same as the code of the current minor degree" + (studentsIdList.length == 1 ? "" : " for at least one of the students") + ".");
             }
         }
@@ -401,6 +403,43 @@ public class StudentServiceImplementation implements StudentService {
         }
 
         return diploma;
+    }
+
+
+    @Override
+    @Transactional
+    public Boolean deleteStudents(Long[] entitiesIdList) throws Exception {
+        log.info("Deleting entities (students) with id: {}", Arrays.toString(entitiesIdList));
+
+        if (entitiesIdList.length == 0) {
+            throw new Exception("No entity (student) was provided to perform this action on.");
+        }
+
+        ArrayList<Student> studentsList = new ArrayList<>();
+
+        for (int i = 0; i < entitiesIdList.length; i++) {
+
+            Student student;
+            try {
+                student = studentRepository.findById(entitiesIdList[i]).get();
+            } catch (Exception e) {
+                throw new Exception("The ID is incorrect" + (entitiesIdList.length == 1 ? "" : " for at least one of the entities") + ".");
+            }
+
+            studentsList.add(student);
+        }
+
+        for (int i = 0; i < studentsList.size(); i++) {
+            Student student = studentsList.get(i);
+            student.setMinorDegree(null);
+            student.setMajorDegree(null);
+            Set<Course> coursesSet = student.getCourses();
+            coursesSet.forEach(course -> course.getStudents().remove(student));
+            student.setCourses(null);
+            studentRepository.deleteById(entitiesIdList[i]);
+        }
+
+        return Boolean.TRUE;
     }
 
 }

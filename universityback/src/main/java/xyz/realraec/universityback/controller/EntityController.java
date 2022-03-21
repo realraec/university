@@ -13,7 +13,6 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/entities")
-// For the dependency injection to be done properly
 @CrossOrigin
 @RequiredArgsConstructor
 public class EntityController {
@@ -36,6 +35,7 @@ public class EntityController {
         );
     }
 
+
     @DeleteMapping("/delete")
     public ResponseEntity<Response> deleteEntities(
             @RequestParam Long[] entitiesIdList,
@@ -51,4 +51,22 @@ public class EntityController {
                         .build()
         );
     }
+
+
+    @PutMapping("/contact")
+    public ResponseEntity<Response> contactPersonsRelatedToEntities(
+            @RequestParam Long[] entitiesIdList,
+            @RequestParam String entityType) throws Exception {
+        return ResponseEntity.ok(
+                Response.builder()
+                        .timestamp(LocalDateTime.now())
+                        // Either true or false key
+                        .data(Map.of("emails", entityService.contactPersonsRelatedToEntities(entitiesIdList, entityType)))
+                        .message("Emails for persons associated with entities with id " + Arrays.toString(entitiesIdList) + " fetched")
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build()
+        );
+    }
+
 }

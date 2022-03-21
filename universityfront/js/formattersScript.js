@@ -2,16 +2,20 @@ function applyFormatter(modelColumns, i) {
     let temp = modelColumns[i].field
     if (temp == 'lastName') {
         modelColumns[i].formatter = function (value) { return value.toUpperCase() }
-    } else if (temp == 'minorDegree' || temp == 'majorDegree') {
-        modelColumns[i].formatter = degreeFormatter;
+    } else if (temp == 'minorDegree' || temp == 'majorDegree' || temp == 'degree') {
+        modelColumns[i].formatter = oneStudyPerColumnFormatter;
     } else if (temp == 'courses') {
-        modelColumns[i].formatter = coursesFormatter;
+        modelColumns[i].formatter = threeStudiesPerLineFormatter;
         modelColumns[i].class = 'text-nowrap';
         modelColumns[i].sortable = false;
     } else if (temp == 'professor') {
-        modelColumns[i].formatter = professorFormatter;
+        modelColumns[i].formatter = onePersonPerColumnFormatter;
     } else if (temp == 'students') {
-        modelColumns[i].formatter = studentsFormatter;
+        modelColumns[i].formatter = threePersonsPerLineFormatter;
+        modelColumns[i].class = 'text-nowrap';
+        modelColumns[i].sortable = false;
+    } else if (temp == 'professors') {
+        modelColumns[i].formatter = onePersonPerLineFormatter;
         modelColumns[i].class = 'text-nowrap';
         modelColumns[i].sortable = false;
     } else if (temp == 'gender') {
@@ -26,12 +30,12 @@ function applyFormatter(modelColumns, i) {
 }
 
 // Nested arrays or JSON objects
-function degreeFormatter(value, row, index, field) {
+function oneStudyPerColumnFormatter(value, row, index, field) {
     let temp = { ...value }
     return temp.id == null ? null : (temp.heading + " (" + temp.code + ")");
 }
 
-function coursesFormatter(value, row, index, field) {
+function threeStudiesPerLineFormatter(value, row, index, field) {
     // Sorting alphabteically by last name
     if (value == null) return;
     value.sort((fieldA, fieldB) => (fieldA.heading > fieldB.heading) ? 1 : ((fieldB.heading > fieldA.heading) ? -1 : 0))
@@ -52,13 +56,29 @@ function coursesFormatter(value, row, index, field) {
     return finalStringToReturn == "" ? null : finalStringToReturn;
 }
 
-function professorFormatter(value, row, index, field) {
+function oneStudyPerLineFormatter(value, row, index, field) {
+    // Sorting alphabteically by last name
+    if (value == null) return;
+    value.sort((fieldA, fieldB) => (fieldA.heading > fieldB.heading) ? 1 : ((fieldB.heading > fieldA.heading) ? -1 : 0))
+
+    let finalStringToReturn = "";
+    for (let i = 0; i < value.length; i++) {
+        let temp = { ...value[i] }
+        finalStringToReturn += temp.heading + " (" + temp.code + ")"
+        if (i < value.length - 1) {
+            finalStringToReturn += "<br/>"
+        }
+    }
+    return finalStringToReturn == "" ? null : finalStringToReturn;
+}
+
+function onePersonPerColumnFormatter(value, row, index, field) {
     let temp = { ...value }
     return temp.id == null ? null : (temp.lastName.toUpperCase() + " " + temp.firstName + "<br/>(" + temp.code + ")");
 }
 
-function studentsFormatter(value, row, index, field) {
-    // Sorting alphabteically by last name
+function twoPersonsPerLineFormatter(value, row, index, field) {
+    // Sorting alphabetically by last name
     if (value == null) return;
     value.sort((fieldA, fieldB) => (fieldA.lastName > fieldB.lastName) ? 1 : ((fieldB.lastName > fieldA.lastName) ? -1 : 0))
 
@@ -68,6 +88,42 @@ function studentsFormatter(value, row, index, field) {
         finalStringToReturn += temp.lastName.toUpperCase() + " " + temp.firstName + " (" + temp.code + ")"
         if (i < value.length - 1) {
             if (i % 2 == 0) {
+                finalStringToReturn += " — "
+            } else {
+                finalStringToReturn += "<br/>"
+            }
+        }
+    }
+    return finalStringToReturn == "" ? null : finalStringToReturn;
+}
+
+function onePersonPerLineFormatter(value, row, index, field) {
+    // Sorting alphabetically by last name
+    if (value == null) return;
+    value.sort((fieldA, fieldB) => (fieldA.lastName > fieldB.lastName) ? 1 : ((fieldB.lastName > fieldA.lastName) ? -1 : 0))
+
+    let finalStringToReturn = "";
+    for (let i = 0; i < value.length; i++) {
+        let temp = { ...value[i] }
+        finalStringToReturn += temp.lastName.toUpperCase() + " " + temp.firstName + " (" + temp.code + ")"
+        if (i < value.length - 1) {
+            finalStringToReturn += "<br/>"
+        }
+    }
+    return finalStringToReturn == "" ? null : finalStringToReturn;
+}
+
+function threePersonsPerLineFormatter(value, row, index, field) {
+    // Sorting alphabetically by last name
+    if (value == null) return;
+    value.sort((fieldA, fieldB) => (fieldA.lastName > fieldB.lastName) ? 1 : ((fieldB.lastName > fieldA.lastName) ? -1 : 0))
+
+    let finalStringToReturn = "";
+    for (let i = 0; i < value.length; i++) {
+        let temp = { ...value[i] }
+        finalStringToReturn += temp.lastName.toUpperCase() + " " + temp.firstName + " (" + temp.code + ")"
+        if (i < value.length - 1) {
+            if ((i + 1) % 3 != 0) {
                 finalStringToReturn += " — "
             } else {
                 finalStringToReturn += "<br/>"
