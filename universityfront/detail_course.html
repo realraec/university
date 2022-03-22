@@ -130,15 +130,13 @@
   <script type="text/javascript" src="js/navbarScript.js"></script>
   <script type="text/javascript" src="js/loadingScript.js"></script>
   <script type="text/javascript" src="js/formattersScript.js"></script>
+  <script type="text/javascript" src="js/modelColumns.js"></script>
 
 
   <script>
 
     // DOM elements
     var $table = $('#table')
-
-    // Columns
-    var modelColumns = JSON.parse(localStorage["modelColumns"])
 
     // ID
     var detailId = localStorage["detailId"];
@@ -150,44 +148,19 @@
         // Array from JSON Objects
         sourceData = [response.data.course];
         console.log(sourceData)
-        buildTable($table, sourceData, modelColumns, 0);
+        buildTable($table, sourceData, modelColumnsCourse, 0);
 
       }, complete: function () {
         console.log("complete multiple");
 
         updateDetailCourse(sourceData);
 
-        // Students?
+        customContextMenu("td:nth-of-type(6)");
       }
     });
 
 
-    // Buttons and listeners
     $(document).ready(function () {
-
-      /* degreesButtons.remove();
-      levelButtons.remove();
-      sanctionButtons.remove();
-      rewardButtons.remove();
-      TBDButtons.remove();
-      coursesButtons.remove();
-
-      newEntryPersonButton.remove();
-      editEntryPersonButton.remove();
-
-      newEntryStudyButton.disabled = true;
-
-      buttons.classList.remove("invisible");
-
-      editEntryStudyButton.addEventListener('click', getDepartments)
-      editEntryStudyButton.addEventListener('click', editEntryStudyPreparation)
-      deleteButton.addEventListener('click', deleteEntryFunction);
-      refreshEntryButton.addEventListener('click', refreshEntryFunction);
-
-      loadExtraInfoButton.addEventListener('click', loadDegreeForCoursesFunction);
-
-      sendEmailButton.addEventListener('click', emailPersons); */
-
     })
 
 

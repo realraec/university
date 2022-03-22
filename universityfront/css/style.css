@@ -2,11 +2,12 @@
     background-color: #85e9854d !important;
   }
 
-  tr {
-    /* -webkit-touch-callout: none; *//*
-    -webkit-user-select: none; *//* To remove to allow copy and paste on laptop
-    -khtml-user-select: none; *//* 
-    -moz-user-select: none; *//* 
-    -ms-user-select: none; */
-    user-select: none;
+tr {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none; /* To remove to allow copy and paste on laptop */
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none; 
+    user-select: none; /* To remove to allow copy and paste on laptop */
   }
+  

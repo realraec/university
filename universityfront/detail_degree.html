@@ -120,6 +120,7 @@
   <script type="text/javascript" src="js/navbarScript.js"></script>
   <script type="text/javascript" src="js/loadingScript.js"></script>
   <script type="text/javascript" src="js/formattersScript.js"></script>
+  <script type="text/javascript" src="js/modelColumns.js"></script>
 
 
   <script>
@@ -127,8 +128,6 @@
     // DOM elements
     var $table = $('#table')
 
-    // Columns
-    var modelColumns = JSON.parse(localStorage["modelColumns"])
 
     // ID
     var detailId = localStorage["detailId"];
@@ -140,48 +139,19 @@
         // Array from JSON Objects
         sourceData = [response.data.degree];
         console.log(sourceData)
-        buildTable($table, sourceData, modelColumns, 0);
+        buildTable($table, sourceData, modelColumnsDegree, 0);
 
       }, complete: function () {
         console.log("complete multiple");
 
         updateDetailDegree(sourceData)
 
-        // Students?
+        //customContextMenu();
       }
     });
 
 
-    // Buttons and listeners
     $(document).ready(function () {
-
-      /* degreesButtons.remove();
-      levelButtons.remove();
-      sanctionButtons.remove();
-      rewardButtons.remove();
-      TBDButtons.remove();
-      extraButtons.remove();
-      examsButtons.remove();
-      studentsButtons.remove();
-
-      newEntryPersonButton.remove();
-      editEntryPersonButton.remove();
-
-      newEntryStudyButton.disabled = true;
-
-      buttons.classList.remove("invisible");
-
-      editEntryStudyButton.addEventListener('click', getDepartments)
-      editEntryStudyButton.addEventListener('click', editEntryStudyPreparation)
-      deleteButton.addEventListener('click', deleteEntryFunction);
-      refreshEntryButton.addEventListener('click', refreshEntryFunction);
-
-      loadExtraInfoButton.addEventListener('click', loadStudentsForDegreesFunction);
-      loadExtraInfoButton.addEventListener('click', loadProfessorsForDegreesFunction);
-      loadExtraInfoButton.addEventListener('click', changeFormatterCoursesForDegree);
-
-      sendEmailButton.addEventListener('click', emailPersons); */
-
     })
 
 

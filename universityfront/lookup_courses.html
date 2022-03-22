@@ -52,9 +52,6 @@
   <div id="loading-placeholder">
   </div>
 
-
-
-
   <div class="container">
 
     <h3 class="h3 mt-4">Courses list<br />
@@ -65,11 +62,9 @@
       <table id="table"></table>
     </div>
 
-
     <h4 class="h4 mt-5">Actions</h4>
     <div id="buttons-placeholder">
     </div>
-
 
   </div>
 
@@ -124,69 +119,20 @@
   <script type="text/javascript" src="js/navbarScript.js"></script>
   <script type="text/javascript" src="js/loadingScript.js"></script>
   <script type="text/javascript" src="js/formattersScript.js"></script>
+  <script type="text/javascript" src="js/modelColumns.js"></script>
 
 
   <script>
 
     // DOM elements
     var $table = $('#table')
-    var undoChain = 1;
-    var lastDoAction = 'undo';
-    let history = [];
-
-    // Columns
-    var modelColumns =
-      [
-        {
-          field: 'id',
-          title: 'ID',
-          //visible: false,
-          switchable: false,
-          filterControl: 'input'
-        }, {
-          field: 'code',
-          title: 'Code',
-          filterControl: 'input'
-        }, {
-          field: 'heading',
-          title: 'Heading',
-          filterControl: 'input'
-        }, {
-          field: 'department',
-          title: 'Department',
-          filterControl: 'select'
-        }, {
-          field: 'isExamMadeByProfessor',
-          title: 'Exam made',
-          filterControl: 'select'
-        }, {
-          field: 'isExamTakenByStudents',
-          title: 'Exam taken',
-          filterControl: 'select'
-        }, {
-          field: 'professor',
-          title: 'Professor',
-          filterControl: 'select'
-        }, {
-          field: 'degree',
-          title: 'Part of degree',
-          visible: false,
-          filterControl: 'input'
-        }, {
-          field: 'students',
-          title: 'Students enrolled',
-          filterControl: 'input'
-        }
-      ]
-
 
     // Array from JSON Objects
     var sourceData;
     $.ajax("http://localhost:8080/courses/list", {
       success: function (response) {
         sourceData = response.data.courses;
-        history.push(sourceData);
-        buildTable($table, sourceData, modelColumns, history, undoChain, lastDoAction, 0);
+        buildTable($table, sourceData, modelColumnsCourse, 0);
 
       }, complete: function () {
         console.log("complete multiple");
@@ -195,33 +141,9 @@
 
 
     // Buttons and listeners
-    $(document).ready(function () {
-
-      /* degreesButtons.remove();
-      levelButtons.remove();
-      sanctionButtons.remove();
-      rewardButtons.remove();
-      TBDButtons.remove();
-      coursesButtons.remove();
-      newEntryPersonButton.remove();
-      editEntryPersonButton.remove();
-
-      editEntryStudyButton.disabled = true;
-
-      buttons.classList.remove("invisible");
-
-      newEntryStudyButton.addEventListener('click', getDepartments)
-      deleteButton.addEventListener('click', deleteEntryFunction);
-      refreshEntryButton.addEventListener('click', refreshEntryFunction);
-
-      loadExtraInfoButton.addEventListener('click', loadDegreeForCoursesFunction);
-
-      sendEmailButton.addEventListener('click', emailPersons); */
-      
+    $(document).ready(function () {      
     });
 
-
-    
 
   </script>
 

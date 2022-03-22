@@ -34,7 +34,7 @@ $('#nav-placeholder').load('navbar.html', function () {
       } else if (documentURL.endsWith("account.html") && targetAttribute.includes("account.html")) {
         links[i].classList.add('active');
         return;
-      } else if (documentURL.endsWith("settings.html") && targetAttribute.includes("settings.html")) {
+      } else if (documentURL.endsWith("logs.html") && targetAttribute.includes("logs.html")) {
         links[i].classList.add('active');
         return;
       }

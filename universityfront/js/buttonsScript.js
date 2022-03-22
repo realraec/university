@@ -7,6 +7,8 @@ $('#buttons-placeholder').load('buttons.html', function () {
     console.log("xxx\n" + document.URL)
     let documentURL = document.URL;
 
+    let checkoutEntitySelectQuery = "";
+
     if (documentURL.includes("student")) {
 
       extraButtons.remove();
@@ -22,6 +24,9 @@ $('#buttons-placeholder').load('buttons.html', function () {
         newEntryPersonButton.disabled = true;
         editEntryPersonButton.addEventListener('click', getGenders);
         editEntryPersonButton.addEventListener('click', editEntryPersonPreparation);
+
+        checkoutEntityButton.addEventListener('click', checkoutDegreeFunction);
+        detailPagesVisibilityFunction();
       } else {
         // Lookup-specfic
         editEntryPersonButton.disabled = true;
@@ -58,6 +63,8 @@ $('#buttons-placeholder').load('buttons.html', function () {
         newEntryPersonButton.disabled = true;
         editEntryPersonButton.addEventListener('click', getGenders)
         editEntryPersonButton.addEventListener('click', editEntryPersonPreparation);
+
+        detailPagesVisibilityFunction();
       } else {
         // Lookup-specfic
         editEntryPersonButton.disabled = true;
@@ -91,6 +98,10 @@ $('#buttons-placeholder').load('buttons.html', function () {
         newEntryStudyButton.disabled = true;
         editEntryStudyButton.addEventListener('click', getDepartments)
         editEntryStudyButton.addEventListener('click', editEntryStudyPreparation)
+
+        checkoutEntityButton.addEventListener('click', checkoutProfessorFunction);
+
+        detailPagesVisibilityFunction();
       } else {
         // Lookup-specfic
         editEntryStudyButton.disabled = true;
@@ -122,6 +133,8 @@ $('#buttons-placeholder').load('buttons.html', function () {
         newEntryStudyButton.disabled = true;
         editEntryStudyButton.addEventListener('click', getDepartments)
         editEntryStudyButton.addEventListener('click', editEntryStudyPreparation)
+
+        detailPagesVisibilityFunction();
       } else {
         // Lookup-specfic
         editEntryStudyButton.disabled = true;
@@ -242,6 +255,7 @@ async function addOrRemoveStudentFunction() {
       if (document.URL.includes('detail_')) {
         let data = $table.bootstrapTable('getData')[0].students;
         document.getElementById("studentsInput").value = (data[0] == null ? null : twoPersonsPerLineFormatter(data).replaceAll("<br/>", " — "));
+        //customContextMenu();
       } else {
         // Update history with the changes made
         updateHistoryWithChanges($table)
@@ -318,6 +332,7 @@ async function addOrRemoveCourseFunction() {
       if (document.URL.includes('detail_')) {
         let data = $table.bootstrapTable('getData')[0].courses;
         document.getElementById("coursesInput").value = (data[0] == null ? null : threeStudiesPerLineFormatter(data).replaceAll("<br/>", " — "));
+        //customContextMenu();
       } else {
         // Update history with the changes made
         updateHistoryWithChanges($table)
@@ -393,6 +408,7 @@ async function setNewProfessorOrDegreeFunction() {
       if (document.URL.includes('detail_')) {
         if (professorOrDegree == "Professor") {
           document.getElementById(field + "Input").value = onePersonPerColumnFormatter(temp).replaceAll("<br/>", " ");
+          //customContextMenu();
         } else {
           $table.bootstrapTable('showColumn', 'degree');
           document.getElementById(field + "Input").value = oneStudyPerColumnFormatter(temp).replaceAll("<br/>", " ");
@@ -464,6 +480,7 @@ async function setNewMajorOrMinorDegreeFunction() {
       // Updating detail part
       if (document.URL.includes('detail_')) {
         document.getElementById(field + "Input").value = oneStudyPerColumnFormatter(temp);
+        //customContextMenu();
       } else {
         // Update history with the changes made
         updateHistoryWithChanges($table)
@@ -912,6 +929,7 @@ async function refreshEntryFunction() {
         } else {
           updateDetailDegree(data);
         }
+        //customContextMenu();
       }
 
     });
@@ -1071,6 +1089,7 @@ async function promoteOrDemotePersonFunction(e) {
       // Updating detail part
       if (document.URL.includes('detail_')) {
         document.getElementById("levelInput").value = temp[0];
+        //customContextMenu();
       } else {
         // Update history with the changes made
         updateHistoryWithChanges($table)
@@ -1144,6 +1163,7 @@ async function giveWarningOrKickOutPersonFunction(e) {
       // Updating detail part
       if (document.URL.includes('detail_')) {
         document.getElementById("warningsInput").value = temp[0];
+        //customContextMenu();
       } else {
         // Update history with the changes made
         updateHistoryWithChanges($table)
@@ -1199,9 +1219,11 @@ async function giveCreditsFunction() {
         })
       }
 
+
       // Updating detail part
       if (document.URL.includes('detail_')) {
         document.getElementById("creditsInput").value = temp[0];
+        //customContextMenu();
       } else {
         // Update history with the changes made
         updateHistoryWithChanges($table)
@@ -1260,6 +1282,7 @@ async function giveDiplomaFunction() {
       // Updating detail part
       if (document.URL.includes('detail_')) {
         document.getElementById("diplomaInput").value = diplomaFormatter(temp);
+        //customContextMenu();
       } else {
         // Update history with the changes made
         updateHistoryWithChanges($table)
@@ -1329,6 +1352,7 @@ async function toggleIsExamMadeOrTakenFunction() {
         } else {
           document.getElementById("examTakenInput").value = booleanFormatter(temp).replace(/<\/?[^>]+(>|$)/g, "");;
         }
+        //customContextMenu();
       } else {
         // Update history with the changes made
         updateHistoryWithChanges($table)
@@ -1344,7 +1368,7 @@ async function loadCoursesForPersonsFunction() {
 
   let entityType = "";
   let documentURL = document.URL;
-  if (documentURL.endsWith("lookup_students.html") || documentURL.endsWith("detail_student.html")) {
+  if (documentURL.includes("student")) {
     entityType = "student";
   } else {
     entityType = "professor";
@@ -1396,10 +1420,14 @@ async function loadCoursesForPersonsFunction() {
       // Updating detail part
       if (documentURL.includes('detail_')) {
         document.getElementById("coursesInput").value = (temp[0] == null ? null : threeStudiesPerLineFormatter(temp[0]).replaceAll("<br/>", " — "));
+        if (entityType == "student") {
+          customContextMenu("td:nth-of-type(6), td:nth-of-type(7)");
+        }
       } else {
         // Update history with the changes made
         updateHistoryWithChanges($table)
       }
+
     })
 
 }
@@ -1455,6 +1483,7 @@ async function loadDegreeForCoursesFunction() {
       // Updating detail part
       if (document.URL.includes('detail_')) {
         document.getElementById("degreeInput").value = (temp[0] == null ? null : oneStudyPerColumnFormatter(temp[0]));
+        customContextMenu("td:nth-of-type(6), td:nth-of-type(7)");
       } else {
         // Update history with the changes made
         updateHistoryWithChanges($table)
@@ -1514,6 +1543,7 @@ async function loadStudentsForDegreesFunction() {
       // Updating detail part
       if (document.URL.includes('detail_')) {
         document.getElementById("studentsInput").value = (temp[0] == null ? null : twoPersonsPerLineFormatter(temp[0]).replaceAll("<br/>", " — "));
+        //customContextMenu();
       } else {
         // Update history with the changes made
         updateHistoryWithChanges($table)
@@ -1573,6 +1603,7 @@ async function loadProfessorsForDegreesFunction() {
       // Updating detail part
       if (document.URL.includes('detail_')) {
         document.getElementById("professorsInput").value = (temp[0] == null ? null : twoPersonsPerLineFormatter(temp[0]).replaceAll("<br/>", " — "));
+        //customContextMenu();
       } else {
         // Update history with the changes made
         updateHistoryWithChanges($table)
@@ -1644,7 +1675,6 @@ async function emailPersons() {
 }
 
 
-
 function changeFormatterCoursesForDegree() {
   let temp = { ...$table.bootstrapTable('getOptions').columns };
   console.log(temp)
@@ -1654,4 +1684,37 @@ function changeFormatterCoursesForDegree() {
     temp[0][7].formatter = oneStudyPerLineFormatter;
   }
   $table.bootstrapTable('refreshOptions', { columns: temp });
+}
+
+
+function detailPagesVisibilityFunction() {
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) {
+      console.log("Browser tab is visible")
+      localStorage["detailId"] = JSON.stringify($table.bootstrapTable('getData')[0].id);
+    }
+  });
+}
+
+
+function checkoutDegreeFunction() {
+  let cellIndex = localStorage["cellIndex"];
+  if (document.URL.includes("course")) {
+      localStorage["detailId"] = $table.bootstrapTable('getData')[0].degree.id;
+  } else {
+      if (cellIndex == 6) {
+          localStorage["detailId"] = $table.bootstrapTable('getData')[0].minorDegree.id;
+      } else {
+          localStorage["detailId"] = $table.bootstrapTable('getData')[0].majorDegree.id;
+      }
+  }
+
+  checkoutEntityButton.setAttribute('href', "detail_degree.html");
+}
+
+
+function checkoutProfessorFunction() {
+  checkoutEntityButton.setAttribute('href', "detail_professor.html")
+  console.log($table.bootstrapTable('getData')[0].professor.id);
+  localStorage["detailId"] = $table.bootstrapTable('getData')[0].professor.id;
 }

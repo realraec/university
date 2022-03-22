@@ -123,64 +123,20 @@
   <script type="text/javascript" src="js/navbarScript.js"></script>
   <script type="text/javascript" src="js/loadingScript.js"></script>
   <script type="text/javascript" src="js/formattersScript.js"></script>
+  <script type="text/javascript" src="js/modelColumns.js"></script>
 
 
   <script>
 
     // DOM elements
     var $table = $('#table')
-    var undoChain = 1;
-    var lastDoAction = 'undo';
-    let history = [];
-
-    // Columns
-    var modelColumns =
-      [
-        {
-          field: 'id',
-          title: 'ID',
-          //visible: false,
-          switchable: false,
-          filterControl: 'input'
-        }, {
-          field: 'code',
-          title: 'Code',
-          filterControl: 'input'
-        }, {
-          field: 'heading',
-          title: 'Heading',
-          filterControl: 'input'
-        }, {
-          field: 'department',
-          title: 'Department',
-          filterControl: 'select'
-        }, {
-          field: 'professors',
-          title: 'Professors teaching',
-          visible: false,
-          class: 'text-nowrap',
-          filterControl: 'input',
-        }, {
-          field: 'students',
-          title: 'Students enrolled',
-          visible: false,
-          filterControl: 'input'
-        }, {
-          field: 'courses',
-          title: 'Courses associated',
-          class: 'text-nowrap',
-          filterControl: 'input'
-        }
-      ]
-
-
+    
     // Array from JSON Objects
     var sourceData;
     $.ajax("http://localhost:8080/degrees/list", {
       success: function (response) {
         sourceData = response.data.degrees;
-        history.push(sourceData);
-        buildTable($table, sourceData, modelColumns, history, undoChain, lastDoAction, 0);
+        buildTable($table, sourceData, modelColumnsDegree, 0);
 
       }, complete: function () {
         console.log("complete multiple");
@@ -190,35 +146,6 @@
 
     // Buttons and listeners
     $(document).ready(function () {
-
-      /* degreesButtons.remove();
-      levelButtons.remove();
-      sanctionButtons.remove();
-      rewardButtons.remove();
-      TBDButtons.remove();
-      extraButtons.remove();
-      examsButtons.remove();
-      studentsButtons.remove();
-      newEntryPersonButton.remove();
-      editEntryPersonButton.remove();
-
-      editEntryStudyButton.disabled = true;
-      addCourseButton.disabled = true;
-      removeCourseButton.disabled = true;
-
-      buttons.classList.remove("invisible");
-
-      newEntryStudyButton.addEventListener('click', getDepartments)
-      deleteButton.addEventListener('click', deleteEntryFunction);
-      refreshEntryButton.addEventListener('click', refreshEntryFunction);
-
-      loadExtraInfoButton.addEventListener('click', loadStudentsForDegreesFunction);
-      loadExtraInfoButton.addEventListener('click', loadProfessorsForDegreesFunction);
-
-      loadExtraInfoButton.addEventListener('click', changeFormatterCoursesForDegree);
-      
-      sendEmailButton.addEventListener('click', emailPersons); */
-
     });
 
 

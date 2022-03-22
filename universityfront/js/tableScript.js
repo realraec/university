@@ -29,8 +29,7 @@ function buildTable($table, sourceData, modelColumns, windowScrollPosition) {
             classes: [
                 "table",
                 "table-bordered",
-                "table-striped",
-                "table-hover"
+                "table-striped"
             ]
         });
 
@@ -147,8 +146,6 @@ function buildTable($table, sourceData, modelColumns, windowScrollPosition) {
                     if (numberCheckedElements == numberElements) {
                         disableBundleButtonFunction();
                     }
-
-                    windowScrollPosition = 0;
                 }
             },
             onUncheck: function (row, $element) {
@@ -162,8 +159,6 @@ function buildTable($table, sourceData, modelColumns, windowScrollPosition) {
                     if (numberCheckedElements != numberElements) {
                         enableBundleButtonFunction();
                     }
-
-                    windowScrollPosition = 0;
                 }
             },
             onCheckAll: function () {
@@ -189,7 +184,13 @@ function buildTable($table, sourceData, modelColumns, windowScrollPosition) {
             onRefreshOptions: updateScrollPosition,
             onPostBody: function () {
                 // Fix to the "scrolling back to top" issue, check GitHub for updates
-                $(window).scrollTop(windowScrollPosition)
+                //$(window).scrollTop(windowScrollPosition);
+                //$('html,body').animate({ scrollTop: windowScrollPosition }, 1);
+                window.scrollTo({
+                    top: windowScrollPosition,
+                    //left: 0,
+                    behavior: 'instant',
+                });
             },
 
 
@@ -226,8 +227,13 @@ function buildTable($table, sourceData, modelColumns, windowScrollPosition) {
         }
     });
 
-}
 
+    function updateScrollPosition() {
+        windowScrollPosition = $(window).scrollTop();
+        //var tableScrollPosition = $table.bootstrapTable('getScrollPosition')
+        //$table.bootstrapTable('scrollTo', tableScrollPosition)
+    }
+}
 
 
 function nestedObjectStudySorter(fieldA, fieldB) {
@@ -248,14 +254,6 @@ function nestedObjectPersonSorter(fieldA, fieldB) {
         return 1;
     }
     return 0;
-}
-
-
-function updateScrollPosition() {
-    windowScrollPosition = $(window).scrollTop()
-
-    //var tableScrollPosition = $table.bootstrapTable('getScrollPosition')
-    //$table.bootstrapTable('scrollTo', tableScrollPosition)
 }
 
 
@@ -311,7 +309,6 @@ function bundleFunction() {
 
     // Opens up a new tab if only one row selected
     else if (tempCustomSourceData.length == 1) {
-        localStorage["modelColumns"] = JSON.stringify(modelColumns);
         localStorage["detailId"] = JSON.stringify(tempCustomSourceData[0].id);
 
         /* let temp = tempCustomSourceData[0].lastName.toUpperCase() + " " + tempCustomSourceData[0].firstName;
@@ -435,4 +432,50 @@ function redoFunction() {
     localStorage["history"] = JSON.stringify(history);
     localStorage["undoChain"] = undoChain;
     localStorage["lastDoAction"] = lastDoAction;
+}
+
+
+function customContextMenu(selectQuery) {
+
+    $(selectQuery)
+        //$("td:nth-of-type(6), td:nth-of-type(7)")
+        //$("td").eq(6)
+        .on('contextmenu', function (e) {
+            $('td').css({ 'box-shadow': 'none', 'background-color': '#f2f2f2' });
+            var top = e.pageY - 10;
+            var left = e.pageX - 120;
+            $(this).css('box-shadow', 'inset 1px 1px 0px 0px red, inset -1px -1px 0px 0px red');
+            $("#customContextMenu").css({
+                display: "block",
+                top: top,
+                left: left
+            });
+
+            var cell = e.target
+            //alert(cell.cellIndex + ' : ' + cell.parentNode.rowIndex);
+            localStorage["cellIndex"] = cell.cellIndex;
+
+            if (document.URL.includes("course")) {
+                if (cell.cellIndex == 5) {
+                    checkoutEntityButton.addEventListener('click', checkoutProfessorFunction);
+                    checkoutEntityButton.removeEventListener('click', checkoutDegreeFunction, false)
+                } else {
+                    checkoutEntityButton.addEventListener('click', checkoutDegreeFunction);
+                    checkoutEntityButton.removeEventListener('click', checkoutProfessorFunction, false)
+                }
+            }
+
+            return false; //blocks default Webbrowser right click menu
+        });
+
+    $("body").on("click", function () {
+        if ($("#customContextMenu").css('display') == 'block') {
+            $("#customContextMenu").hide();
+        }
+        $('td').css({ 'box-shadow': 'none', 'background-color': '#f2f2f2' });
+    });
+
+    $("#customContextMenu a").on("click", function () {
+        $(this).parent().hide();
+    });
 }

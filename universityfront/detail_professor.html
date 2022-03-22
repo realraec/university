@@ -49,7 +49,7 @@
     <div class="my-3">
       <table id="table"></table>
     </div>
-
+    
     <h4 class="h4 mt-5">Detail</h4>
     <form>
       <div class="row gy-2">
@@ -150,15 +150,13 @@
   <script type="text/javascript" src="js/navbarScript.js"></script>
   <script type="text/javascript" src="js/loadingScript.js"></script>
   <script type="text/javascript" src="js/formattersScript.js"></script>
+  <script type="text/javascript" src="js/modelColumns.js"></script>
 
 
   <script>
 
     // DOM elements
     var $table = $('#table')
-
-    // Columns
-    var modelColumns = JSON.parse(localStorage["modelColumns"])
 
     // ID
     var detailId = localStorage["detailId"];
@@ -170,51 +168,19 @@
         // Array from JSON Objects
         sourceData = [response.data.professor];
         console.log(sourceData)
-        buildTable($table, sourceData, modelColumns, 0);
+        buildTable($table, sourceData, modelColumnsProfessor, 0);
 
       }, complete: function () {
         console.log("complete multiple");
 
-
         updateDetailProfessor(sourceData);
 
-        // Courses?
+        //customContextMenu();
       }
     });
 
 
-    // Buttons and listeners
     $(document).ready(function () {
-
-      /* rewardButtons.remove();
-      extraButtons.remove();
-      examsButtons.remove();
-      studentsButtons.remove();
-      coursesButtons.remove();
-      degreesButtons.remove();
-      TBDButtons.remove();
-
-      newEntryStudyButton.remove();
-      editEntryStudyButton.remove();
-
-      newEntryPersonButton.disabled = true;
-
-      buttons.classList.remove("invisible");
-
-      promotePersonButton.addEventListener('click', promoteOrDemotePersonFunction);
-      demotePersonButton.addEventListener('click', promoteOrDemotePersonFunction);
-      giveWarningPersonButton.addEventListener('click', giveWarningOrKickOutPersonFunction);
-      kickOutPersonButton.addEventListener('click', giveWarningOrKickOutPersonFunction);
-      
-      editEntryPersonButton.addEventListener('click', getGenders)
-      editEntryPersonButton.addEventListener('click', editEntryPersonPreparation);
-      deleteButton.addEventListener('click', deleteEntryFunction);
-      refreshEntryButton.addEventListener('click', refreshEntryFunction);
-
-      loadExtraInfoButton.addEventListener('click', loadCoursesForPersonsFunction);
-
-      sendEmailButton.addEventListener('click', emailPersons); */
-
     })
 
 

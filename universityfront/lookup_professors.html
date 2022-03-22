@@ -120,6 +120,7 @@
   <script type="text/javascript" src="js/navbarScript.js"></script>
   <script type="text/javascript" src="js/loadingScript.js"></script>
   <script type="text/javascript" src="js/formattersScript.js"></script>
+  <script type="text/javascript" src="js/modelColumns.js"></script>
 
 
   <script>
@@ -127,85 +128,12 @@
     // DOM elements
     var $table = $('#table')
 
-    var undoChain = 1;
-    var lastDoAction = 'undo';
-    let history = [];
-
-    // Columns
-    var modelColumns =
-      [
-        {
-          field: 'id',
-          title: 'ID',
-          //visible: false,
-          switchable: false,
-          filterControl: 'input'
-        }, {
-          field: 'code',
-          title: 'Uni-ID&trade;',
-          switchable: false,
-          filterControl: 'input'
-        }, {
-          field: 'lastName',
-          title: 'Last name',
-          filterControl: 'input',
-          class: 'text-nowrap',
-        }, {
-          field: 'firstName',
-          title: 'First name',
-          class: 'text-nowrap',
-          filterControl: 'input'
-        }, {
-          field: 'gender',
-          title: 'Gender',
-          class: 'text-nowrap',
-          filterControl: 'select'
-        }, {
-          field: 'level',
-          title: 'Level',
-          filterControl: 'select'
-        }, {
-          field: 'courses',
-          title: 'Teaching courses',
-          visible: false,
-          filterControl: 'input'
-        }, {
-          field: 'birthdate',
-          title: 'Birthdate',
-          class: 'text-nowrap',
-          filterControl: 'input'
-        }, {
-          field: 'email',
-          title: 'E-mail',
-          class: 'text-nowrap',
-          filterControl: 'input'
-        }, {
-          field: 'phone',
-          title: 'Phone',
-          filterControl: 'input'
-        }, {
-          field: 'salary',
-          title: 'Salary',
-          filterControl: 'select'
-        }, {
-          field: 'balance',
-          title: 'Balance',
-          filterControl: 'input'
-        }, {
-          field: 'warnings',
-          title: '<i class="bi bi-exclamation-triangle-fill"></i>',
-          filterControl: 'select'
-        }
-      ]
-
-
     // Array from JSON Objects
     var sourceData;
     $.ajax("http://localhost:8080/professors/list", {
       success: function (response) {
         sourceData = response.data.professors;
-        history.push(sourceData);
-        buildTable($table, sourceData, modelColumns, history, undoChain, lastDoAction, 0);
+        buildTable($table, sourceData, modelColumnsProfessor, 0);
 
       }, complete: function () {
         console.log("complete multiple");
@@ -215,35 +143,8 @@
 
     // Buttons and listeners
     $(document).ready(function () {
-
-      /* rewardButtons.remove();
-      extraButtons.remove();
-      examsButtons.remove();
-      studentsButtons.remove();
-      coursesButtons.remove();
-      degreesButtons.remove();
-      TBDButtons.remove();
-      newEntryStudyButton.remove();
-      editEntryStudyButton.remove();
-
-      editEntryPersonButton.disabled = true;
-
-      buttons.classList.remove("invisible");
-
-      promotePersonButton.addEventListener('click', promoteOrDemotePersonFunction);
-      demotePersonButton.addEventListener('click', promoteOrDemotePersonFunction);
-      giveWarningPersonButton.addEventListener('click', giveWarningOrKickOutPersonFunction);
-      kickOutPersonButton.addEventListener('click', giveWarningOrKickOutPersonFunction);
-
-      newEntryPersonButton.addEventListener('click', getGenders)
-      deleteButton.addEventListener('click', deleteEntryFunction);
-      refreshEntryButton.addEventListener('click', refreshEntryFunction);
-
-      loadExtraInfoButton.addEventListener('click', loadCoursesForPersonsFunction);
-
-      sendEmailButton.addEventListener('click', emailPersons); */
-
     });
+
 
   </script>
 
