@@ -1,10 +1,10 @@
 // Function to build the table
 function buildTable($table, sourceData, modelColumns, windowScrollPosition) {
 
-    // Resetting all the local storage items
-    localStorage['history'] = JSON.stringify([sourceData]);
-    localStorage['undoChain'] = 1;
-    localStorage['lastDoAction'] = 'undo';
+    // Resetting all the session storage items
+    sessionStorage.setItem('history', JSON.stringify([sourceData]));
+    sessionStorage.setItem('undoChain', 1)
+    sessionStorage.setItem('lastDoAction', 'undo');
 
 
     // One-line table
@@ -47,7 +47,7 @@ function buildTable($table, sourceData, modelColumns, windowScrollPosition) {
             // Making the columns sortable (except for the first one)
             modelColumns[i].sortable = true;
 
-            if (modelColumns[i].field.endsWith("Degree")) {
+            if (modelColumns[i].field.endsWith("egree")) {
                 modelColumns[i].sorter = nestedObjectStudySorter;
             } else if (modelColumns[i].field == "professor") {
                 modelColumns[i].sorter = nestedObjectPersonSorter;
@@ -237,6 +237,14 @@ function buildTable($table, sourceData, modelColumns, windowScrollPosition) {
 
 
 function nestedObjectStudySorter(fieldA, fieldB) {
+    if (fieldA == null || fieldB == null) {
+        if (fieldA == null) {
+            return 1
+        } else {
+            return -1
+        }
+    }
+    
     if (fieldA.heading < fieldB.heading) {
         return -1;
     }
@@ -247,6 +255,14 @@ function nestedObjectStudySorter(fieldA, fieldB) {
 }
 
 function nestedObjectPersonSorter(fieldA, fieldB) {
+    if (fieldA == null || fieldB == null) {
+        if (fieldA == null) {
+            return 1
+        } else {
+            return -1
+        }
+    }
+
     if (fieldA.lastName < fieldB.lastName) {
         return -1;
     }
@@ -295,10 +311,9 @@ function disableRedoButtonFunction() {
 
 
 function bundleFunction() {
-    // Fetching data from local storage
-    var history = JSON.parse(localStorage["history"]);
-    let undoChain = localStorage["undoChain"];
-
+    // Fetching data from session storage
+    var history = JSON.parse(sessionStorage.getItem('history'))
+    let undoChain = sessionStorage.getItem('undoChain')
 
     let tempCustomSourceData = $table.bootstrapTable('getSelections').slice();
 
@@ -337,11 +352,6 @@ function bundleFunction() {
         }
     }
 
-    // Reset of the local storage units that keep track of changes
-    // Because the new table should not show these
-    localStorage.removeItem("lastEditedRows");
-    localStorage.removeItem("lastAddedRows");
-
     // Loading new data into the table
     history.push(tempCustomSourceData);
     $table.bootstrapTable('load', tempCustomSourceData);
@@ -353,17 +363,17 @@ function bundleFunction() {
     disableRedoButtonFunction();
 
 
-    // Updating data in local storage
-    localStorage["history"] = JSON.stringify(history);
-    localStorage["undoChain"] = undoChain;
+    // Updating data in session storage
+    sessionStorage.setItem('history', JSON.stringify(history));
+    sessionStorage.setItem('undoChain', undoChain);
 }
 
 
 function undoFunction() {
-    // Fetching data from local storage
-    var history = JSON.parse(localStorage["history"]);
-    let undoChain = localStorage["undoChain"];
-    let lastDoAction = localStorage["lastDoAction"];
+    // Fetching data from session storage
+    var history = JSON.parse(sessionStorage.getItem('history'))
+    let undoChain = sessionStorage.getItem('undoChain')
+    var lastDoAction = sessionStorage.getItem('lastDoAction')
 
 
     // Inert if nothing to undo
@@ -392,19 +402,18 @@ function undoFunction() {
     $table.bootstrapTable('uncheckAll');
 
 
-    // Updating data in local storage
-    localStorage["history"] = JSON.stringify(history);
-    localStorage["undoChain"] = undoChain;
-    localStorage["lastDoAction"] = lastDoAction;
+    // Updating data in session storage
+    sessionStorage.setItem('history', JSON.stringify(history));
+    sessionStorage.setItem('undoChain', undoChain);
+    sessionStorage.setItem('lastDoAction', lastDoAction);
 }
 
 
 function redoFunction() {
-    // Fetching data from local storage
-    var history = JSON.parse(localStorage["history"]);
-    let undoChain = localStorage["undoChain"];
-    let lastDoAction = localStorage["lastDoAction"];
-
+    // Fetching data from session storage
+    var history = JSON.parse(sessionStorage.getItem('history'))
+    let undoChain = sessionStorage.getItem('undoChain')
+    var lastDoAction = sessionStorage.getItem('lastDoAction')
 
     // Inert if nothing to redo
     if (undoChain == 0 || (undoChain == 1 && lastDoAction == 'undo')) {
@@ -428,20 +437,28 @@ function redoFunction() {
     }
 
 
-    // Updating data in local storage
-    localStorage["history"] = JSON.stringify(history);
-    localStorage["undoChain"] = undoChain;
-    localStorage["lastDoAction"] = lastDoAction;
+    // Updating data in session storage
+    sessionStorage.setItem('history', JSON.stringify(history));
+    sessionStorage.setItem('undoChain', undoChain);
+    sessionStorage.setItem('lastDoAction', lastDoAction);
 }
 
 
 function customContextMenu(selectQuery) {
 
     $(selectQuery)
-        //$("td:nth-of-type(6), td:nth-of-type(7)")
+        //$("td:nth-of-type(6)")
         //$("td").eq(6)
         .on('contextmenu', function (e) {
-            $('td').css({ 'box-shadow': 'none', 'background-color': '#f2f2f2' });
+            console.log(e.currentTarget)
+
+            // Use the default context menu if the input/td is empty
+            if (e.target.innerText == "-" || e.currentTarget.value == "") {
+                return true;
+            }
+
+            console.log($('#professorInput'))
+            $('td, input, textarea').css({ 'box-shadow': 'none', 'background-color': '#f2f2f2' });
             var top = e.pageY - 10;
             var left = e.pageX - 120;
             $(this).css('box-shadow', 'inset 1px 1px 0px 0px red, inset -1px -1px 0px 0px red');
@@ -451,16 +468,64 @@ function customContextMenu(selectQuery) {
                 left: left
             });
 
-            var cell = e.target
+            var cellIndex = e.target.cellIndex
+            var inputId = e.currentTarget.id;
             //alert(cell.cellIndex + ' : ' + cell.parentNode.rowIndex);
-            localStorage["cellIndex"] = cell.cellIndex;
+            //sessionStorage.setItem('cellIndex', cellIndex)
+            //console.log(cellIndex)
+            console.log(e.currentTarget.value)
 
-            if (document.URL.includes("course")) {
-                if (cell.cellIndex == 5) {
-                    checkoutEntityButton.addEventListener('click', checkoutProfessorFunction);
+            let documentURL = document.URL;
+
+            if (documentURL.includes("student")) {
+                if (cellIndex == 7 || inputId == "coursesInput") {
+                    checkoutEntitySelect.removeAttribute("hidden");
+                    fillSelectOptionsCustomContextMenu("courses");
+                    checkoutEntityButton.addEventListener('click', checkoutCourseFunction);
                     checkoutEntityButton.removeEventListener('click', checkoutDegreeFunction, false)
                 } else {
-                    checkoutEntityButton.addEventListener('click', checkoutDegreeFunction);
+                    checkoutEntitySelect.setAttribute("hidden", "");
+                    checkoutEntityButton.addEventListener('click', checkoutDegreeFunction(e));
+                    checkoutEntityButton.removeEventListener('click', checkoutCourseFunction, false)
+                }
+            } else if (documentURL.includes("professor")) {
+                checkoutEntitySelect.removeAttribute("hidden");
+                fillSelectOptionsCustomContextMenu("courses");
+                checkoutEntityButton.addEventListener('click', checkoutCourseFunction);
+            } else if (documentURL.includes("course")) {
+                if (cellIndex == 5 || inputId == "professorInput") {
+                    checkoutEntitySelect.setAttribute("hidden", "");
+                    checkoutEntityButton.addEventListener('click', checkoutProfessorFunction);
+                    checkoutEntityButton.removeEventListener('click', checkoutDegreeFunction, false)
+                    checkoutEntityButton.removeEventListener('click', checkoutStudentFunction, false)
+                } else if (cellIndex == 6 || inputId == "studentsInput") {
+                    checkoutEntitySelect.removeAttribute("hidden");
+                    fillSelectOptionsCustomContextMenu("students");
+                    checkoutEntityButton.addEventListener('click', checkoutStudentFunction);
+                    checkoutEntityButton.removeEventListener('click', checkoutProfessorFunction, false)
+                    checkoutEntityButton.removeEventListener('click', checkoutDegreeFunction, false)
+                } else {
+                    checkoutEntitySelect.setAttribute("hidden", "");
+                    checkoutEntityButton.addEventListener('click', checkoutDegreeFunction(e));
+                    checkoutEntityButton.removeEventListener('click', checkoutProfessorFunction, false)
+                    checkoutEntityButton.removeEventListener('click', checkoutStudentFunction, false)
+                }
+            } else if (documentURL.includes("degree")) {
+                checkoutEntitySelect.removeAttribute("hidden");
+                if (cellIndex == 3 || inputId == "coursesInput") {
+                    fillSelectOptionsCustomContextMenu("courses");
+                    checkoutEntityButton.addEventListener('click', checkoutCourseFunction);
+                    checkoutEntityButton.removeEventListener('click', checkoutProfessorFunction, false)
+                    checkoutEntityButton.removeEventListener('click', checkoutStudentFunction, false)
+                } else if (cellIndex == 4 || inputId == "professorsInput") {
+                    fillSelectOptionsCustomContextMenu("professors");
+                    checkoutEntityButton.addEventListener('click', checkoutProfessorFunction);
+                    checkoutEntityButton.removeEventListener('click', checkoutCourseFunction, false)
+                    checkoutEntityButton.removeEventListener('click', checkoutStudentFunction, false)
+                } else {
+                    fillSelectOptionsCustomContextMenu("students");
+                    checkoutEntityButton.addEventListener('click', checkoutStudentFunction);
+                    checkoutEntityButton.removeEventListener('click', checkoutCourseFunction, false)
                     checkoutEntityButton.removeEventListener('click', checkoutProfessorFunction, false)
                 }
             }
@@ -468,11 +533,12 @@ function customContextMenu(selectQuery) {
             return false; //blocks default Webbrowser right click menu
         });
 
-    $("body").on("click", function () {
-        if ($("#customContextMenu").css('display') == 'block') {
+    $("body").on("click", function (e) {
+        if ($("#customContextMenu").css('display') == 'block' && e.target.tagName != "SELECT") {
+            console.log(e.target.tagName)
             $("#customContextMenu").hide();
         }
-        $('td').css({ 'box-shadow': 'none', 'background-color': '#f2f2f2' });
+        $('td, input, textarea').css({ 'box-shadow': 'none', 'background-color': '#f2f2f2' });
     });
 
     $("#customContextMenu a").on("click", function () {

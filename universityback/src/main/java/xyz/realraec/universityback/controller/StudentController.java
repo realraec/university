@@ -17,22 +17,21 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Map;
 
+
 @RestController
 @RequestMapping("/students")
-// For the dependency injection to be done properly
 @CrossOrigin
 @RequiredArgsConstructor
 public class StudentController {
 
     private final StudentServiceImplementation studentService;
 
+
     @GetMapping("/list")
     public ResponseEntity<Response> getStudents() {
         return ResponseEntity.ok(
                 Response.builder()
-                        // All the information to be passed
                         .timestamp(LocalDateTime.now())
-                        // Where the service (implementation) method is to be found
                         .data(Map.of("students", studentService.list(100)))
                         .message("Students retrieved")
                         .status(HttpStatus.OK)
@@ -40,6 +39,7 @@ public class StudentController {
                         .build()
         );
     }
+
 
     @GetMapping("/get/{id}")
     public ResponseEntity<Response> getStudent(@PathVariable("id") Long id) {
@@ -54,12 +54,11 @@ public class StudentController {
         );
     }
 
+
     @PostMapping("/create")
-    // A body is needed since you can't save an empty object as a student
     public ResponseEntity<Response> createStudent(@RequestBody @Valid Student student) throws Exception {
         student = new Student(student.getLastName(), student.getFirstName(), student.getGender(),
                 student.getBirthdate(), student.getEmail(), student.getPhone());
-        // The .created() method also exists but returns a URI, and we want the message as well
         return ResponseEntity.ok(
                 Response.builder()
                         .timestamp(LocalDateTime.now())
@@ -72,7 +71,6 @@ public class StudentController {
     }
 
 
-    // Not included
     @PutMapping("/update/{id}")
     public ResponseEntity<Response> updateStudent(
             @PathVariable("id") Long id,
@@ -91,8 +89,6 @@ public class StudentController {
             @RequestParam(required = false) Integer credits,
             @RequestParam(required = false) Diploma diploma,
             @RequestParam(required = false) Integer warnings
-            //Long id, String code, String lastName, String firstName, Gender gender, LocalDate birthdate, Integer level, Degree majorDegree,
-            // Degree minorDegree, String email, String phone, Double tuition, Double balance, Integer credits, Diploma diploma, Integer warnings
     ) throws Exception {
         return ResponseEntity.ok(
                 Response.builder()
@@ -104,6 +100,7 @@ public class StudentController {
                         .build()
         );
     }
+
 
     @PutMapping("/replace/{id}")
     public ResponseEntity<?> replaceStudent(
@@ -154,6 +151,7 @@ public class StudentController {
         );
     }
 
+
     @PutMapping("/setNewMajorDegree")
     public ResponseEntity<Response> setNewMajorDegreeForStudents(
             @RequestParam Long[] studentsIdList,
@@ -170,6 +168,7 @@ public class StudentController {
         );
     }
 
+
     @PutMapping("/giveCredits")
     public ResponseEntity<Response> giveCreditsToStudents(
             @RequestParam Long[] studentsIdList,
@@ -185,6 +184,7 @@ public class StudentController {
                         .build()
         );
     }
+
 
     @PutMapping("/giveDiploma")
     public ResponseEntity<Response> giveCreditsToStudents(
@@ -209,9 +209,7 @@ public class StudentController {
     ) throws Exception {
         return ResponseEntity.ok(
                 Response.builder()
-                        // All the information to be passed
                         .timestamp(LocalDateTime.now())
-                        // Where the service (implementation) method is to be found
                         .data(Map.of("courses", studentService.getCourses(personsIdList)))
                         .message("Courses retrieved for students with id " + Arrays.toString(personsIdList))
                         .status(HttpStatus.OK)
@@ -229,6 +227,76 @@ public class StudentController {
                         // Either true or false key
                         .data(Map.of("deleted", studentService.deleteStudents(entitiesIdList)))
                         .message("Entities (students) with id " + Arrays.toString(entitiesIdList) + " deleted")
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build()
+        );
+    }
+
+
+    @GetMapping("/number")
+    public ResponseEntity<Response> getNumberStudents() {
+        return ResponseEntity.ok(
+                Response.builder()
+                        .timestamp(LocalDateTime.now())
+                        .data(Map.of("number", studentService.getNumberStudents()))
+                        .message("Number of students retrieved")
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build()
+        );
+    }
+
+
+    @GetMapping("/numberPerLevel")
+    public ResponseEntity<Response> getNumberStudentsPerLevel() {
+        return ResponseEntity.ok(
+                Response.builder()
+                        .timestamp(LocalDateTime.now())
+                        .data(Map.of("number", studentService.getNumberStudentsPerLevel()))
+                        .message("Number of students per level retrieved")
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build()
+        );
+    }
+
+
+    @GetMapping("/numberPerGender")
+    public ResponseEntity<Response> getNumberStudentsPerGender() {
+        return ResponseEntity.ok(
+                Response.builder()
+                        .timestamp(LocalDateTime.now())
+                        .data(studentService.getNumberStudentsPerGender())
+                        .message("Number of students per gender retrieved")
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build()
+        );
+    }
+
+
+    @GetMapping("/mostCourses")
+    public ResponseEntity<Response> getMostCoursesTaken() {
+        return ResponseEntity.ok(
+                Response.builder()
+                        .timestamp(LocalDateTime.now())
+                        .data(studentService.getMostOrLeastCoursesTaken(true))
+                        .message("Maximum number of courses taken retrieved")
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build()
+        );
+    }
+
+
+    @GetMapping("/leastCourses")
+    public ResponseEntity<Response> getLeastCoursesTaken() {
+        return ResponseEntity.ok(
+                Response.builder()
+                        .timestamp(LocalDateTime.now())
+                        .data(studentService.getMostOrLeastCoursesTaken(false))
+                        .message("Minimum number of courses taken retrieved")
                         .status(HttpStatus.OK)
                         .statusCode(HttpStatus.OK.value())
                         .build()

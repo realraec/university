@@ -24,37 +24,190 @@
     </nav>
 
     <div class="container">
+
         <div class="row mt-4 mb-3">
-            <div class="col-3">
-                <div class="card bg-light text-center pt-3" style="height: 325px;">
-                    Overview of the students
+
+            <div class="col-12 col-lg-6 mb-3">
+                <div class="card bg-light text-center p-3">
+                    <h4 class="mb-3">Overview of the students</h4>
+                    <div id="overviewStudents" hidden>
+                        <div class="row">
+                            <div class="col-4 mt-4">
+                                <label class="label text-start ">Total number of students currently studying in the
+                                    university:</label>
+                                <h1 id="numberStudents" class="mt-2">0</h1>
+                            </div>
+                            <div class="col-8">
+                                <div>
+                                    <canvas id="studentsPerGenderChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                        <div>
+                            <canvas id="studentsPerLevelChart"></canvas>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-3 mt-2">
+                                <label class="label text-start "><strong>Most dedicated</strong><br />(enrolled in the
+                                    highest number of courses):</label>
+                                <h3 id="highestNumberCoursesStudentNumber" class="mt-2">0</h3>
+                                <label id="highestNumberCoursesStudent">Xxxxxx xxxxxx (xxxxx)</label>
+                            </div>
+                            <div class="col-3 mt-2">
+                                <label class="label text-start "><strong>Least dedicated</strong><br />(enrolled in the
+                                    lowest number of courses):</label>
+                                <h3 id="lowestNumberCoursesStudentNumber" class="mt-2">0</h3>
+                                <label id="lowestNumberCoursesStudent">Xxxxxx xxxxxx (xxxxx)</label>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="col-6">
-                <div class="card bg-light text-center pt-3" style="height: 325px;">
-                    Overview of the university
+
+            <div class="col-12 col-lg-6 mb-3">
+                <div class="card bg-light text-center p-3">
+                    <h4 class="mb-3">Overview of the professors</h4>
+                    <div id="overviewProfessors" hidden>
+                        <div class="row">
+                            <div class="col-4 mt-4">
+                                <label class="label text-start ">Total number of professors currently teaching in the
+                                    university:</label>
+                                <h1 id="numberProfessors" class="mt-2">0</h1>
+                            </div>
+                            <div class="col-8">
+                                <div>
+                                    <canvas id="professorsPerGenderChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                        <div>
+                            <canvas id="professorsPerLevelChart"></canvas>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-3 mt-2">
+                                <label class="label text-start "><strong>Most involved</strong><br />(teaching the
+                                    highest number of classes):</label>
+                                <h3 id="highestNumberCoursesProfessorNumber" class="mt-2">0</h3>
+                                <label id="highestNumberCoursesProfessor">Xxxxxx xxxxxx (xxxxx)</label>
+                            </div>
+                            <div class="col-3 mt-2">
+                                <label class="label text-start "><strong>Least involved</strong><br />(teaching the
+                                    lowest number of classes):</label>
+                                <h3 id="lowestNumberCoursesProfessorNumber" class="mt-2">0</h3>
+                                <label id="lowestNumberCoursesProfessor">Xxxxxx xxxxxx (xxxxx)</label>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="col-3">
-                <div class="card bg-light text-center pt-3" style="height: 325px;">
-                    Overview of the professors
-                </div>
-            </div>
+
         </div>
-        <div class="row  mt-4">
-            <div class="col-6">
-                <div class="card bg-light text-center pt-3" style="height: 175px;">
-                    Overview of the degrees
+        <div class="row mb-3">
+
+            <div class="col-12 col-lg-6 mb-3">
+                <div class="card bg-light text-center p-3">
+                    <h4 class="mb-3">Overview of the courses</h4>
+                    <div id="overviewCourses" hidden>
+                        <div class="row">
+                            <div class="col-4 mt-4">
+                                <label class="label text-start ">Total number of courses currently offered by the
+                                    university:</label>
+                                <h1 id="numberCourses" class="mt-2">0</h1>
+                            </div>
+                            <div class="col-8">
+                                <div>
+                                    <canvas id="coursesPerDepartmentChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+
+                        <label>Percentage of exams <strong>made</strong>:</label>
+                        <div class="progress">
+                            <div id="coursesExamMadeProgress" class="progress-bar progress-bar-striped"
+                                role="progressbar" style="width: 50%" aria-valuemin="0" aria-valuemax="100"
+                                aria-valuenow="50"></div>
+                        </div>
+                        <label class="mt-2">Percentage of exams <strong>taken</strong>:</label>
+                        <div class="progress">
+                            <div id="coursesExamTakenProgress" class="progress-bar progress-bar-striped"
+                                role="progressbar" style="width: 50%" aria-valuemin="0" aria-valuemax="100"
+                                aria-valuenow="50"></div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-3 mt-2">
+                                <label class="label text-start "><strong>Most popular</strong><br />(highest number of
+                                    students enrolled):</label>
+                                <h3 id="highestNumberStudentsCourseNumber" class="mt-2">0</h3>
+                                <label id="highestNumberStudentsCourse">Xxxxxxxxxxxx (xxxxx)</label>
+                            </div>
+                            <div class="col-3 mt-2">
+                                <label class="label text-start "><strong>Least popular</strong><br />(lowest number of
+                                    students enrolled):</label>
+                                <h3 id="lowestNumberStudentsCourseNumber" class="mt-2">0</h3>
+                                <label id="lowestNumberStudentsCourse">Xxxxxxxxxxxx (xxxxx)</label>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="col-6">
-                <div class="card bg-light text-center pt-3" style="height: 175px;">
-                    Overview of the courses
+
+            <div class="col-12 col-lg-6 mb-3">
+                <div class="card bg-light text-center p-3">
+                    <h4 class="mb-3">Overview of the degrees</h4>
+                    <div id="overviewDegrees" hidden>
+                        <div class="row">
+                            <div class="col-4 mt-4">
+                                <label class="label text-start ">Total number of degrees currently offered by the
+                                    university:</label>
+                                <h1 id="numberDegrees" class="mt-2">0</h1>
+                            </div>
+                            <div class="col-8">
+                                <div>
+                                    <canvas id="degreesPerDepartmentChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-3 mt-2">
+                                <label class="label text-start "><strong>Most dense</strong><br />(highest number of
+                                    courses associated):</label>
+                                <h3 id="highestNumberCoursesDegreeNumber" class="mt-2">0</h3>
+                                <label id="highestNumberCoursesDegree">Xxxxxxxxxxxx (xxxxx)</label>
+                            </div>
+                            <div class="col-3 mt-2">
+                                <label class="label text-start "><strong>Least dense</strong><br />(lowest number of
+                                    courses associated):</label>
+                                <h3 id="lowestNumberCoursesDegreeNumber" class="mt-2">0</h3>
+                                <label id="lowestNumberCoursesDegree">Xxxxxxxxxxxx (xxxxx)</label>
+                            </div>
+                            <div class="col-3 mt-2">
+                                <label class="label text-start "><strong>Most popular</strong><br />(highest number of
+                                    students enrolled):</label>
+                                <h3 id="highestNumberStudentsDegreeNumber" class="mt-2">0</h3>
+                                <label id="highestNumberStudentsDegree">Xxxxxxxxxxxx (xxxxx)</label>
+                            </div>
+                            <div class="col-3 mt-2">
+                                <label class="label text-start "><strong>Least popular</strong><br />(lowest number of
+                                    students enrolled):</label>
+                                <h3 id="lowestNumberStudentsDegreeNumber" class="mt-2">0</h3>
+                                <label id="lowestNumberStudentsDegree">Xxxxxxxxxxxx (xxxxx)</label>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+            
         </div>
 
-        <div class="text-center"><button id="initDataButton" class="btn btn-secondary mt-3">Initialize data</button>
+        <div class="text-center">
+            <button id="initDataButton" class="btn btn-secondary">Load data</button>
         </div>
     </div>
 </body>
@@ -67,41 +220,304 @@
     integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
     crossorigin="anonymous"></script>
 
-
 <script type="text/javascript" src="js/navbarScript.js"></script>
 <script type="text/javascript" src="js/loadingScript.js"></script>
 <script type="text/javascript" src="js/buttonsScript.js"></script>
+<script type="text/javascript" src="js/formattersScript.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+
 
 <script>
 
     $(document).ready(function () {
-
         initDataButton.addEventListener('click', initDataFunction);
-
     })
 
 
     async function initDataFunction() {
+        getOneKey("http://localhost:8080/students/number", numberStudents);
+        getOneKey("http://localhost:8080/students/numberPerLevel");
+        getTwoKeys("http://localhost:8080/students/mostCourses", "person");
+        getTwoKeys("http://localhost:8080/students/leastCourses", "person");
+        getVariousNumberKeys("http://localhost:8080/students/numberPerGender");
+        overviewStudents.removeAttribute("hidden");
 
-        const response = await fetch('http://localhost:8080/students/setNewMinorDegree', {
-            method: 'put',
+        getOneKey("http://localhost:8080/professors/number", numberProfessors);
+        getOneKey("http://localhost:8080/professors/numberPerLevel");
+        getTwoKeys("http://localhost:8080/professors/mostCourses", "person");
+        getTwoKeys("http://localhost:8080/professors/leastCourses", "person");
+        getVariousNumberKeys("http://localhost:8080/professors/numberPerGender");
+        overviewProfessors.removeAttribute("hidden");
+
+        getOneKey("http://localhost:8080/courses/number", numberCourses);
+        getOneKey("http://localhost:8080/courses/numberExamMade");
+        getOneKey("http://localhost:8080/courses/numberExamTaken");
+        getTwoKeys("http://localhost:8080/courses/mostStudents", "study");
+        getTwoKeys("http://localhost:8080/courses/leastStudents", "study");
+        getVariousNumberKeys("http://localhost:8080/courses/numberPerDepartment");
+        overviewCourses.removeAttribute("hidden");
+
+        getOneKey("http://localhost:8080/degrees/number", numberDegrees);
+        getTwoKeys("http://localhost:8080/degrees/mostCourses", "degree");
+        getTwoKeys("http://localhost:8080/degrees/leastCourses", "degree");
+        getTwoKeys("http://localhost:8080/degrees/mostStudents", "study");
+        getTwoKeys("http://localhost:8080/degrees/leastStudents", "study");
+        getVariousNumberKeys("http://localhost:8080/degrees/numberPerDepartment");
+        overviewDegrees.removeAttribute("hidden");
+    }
+
+
+    async function getOneKey(urlString, labelNumberEntities) {
+
+        const response = await fetch(urlString, {
+            method: 'get',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-            },
-            body: new URLSearchParams({
-                "studentsIdList": [1, 3, 6, 7, 8],
-                "degreeCode": "D1"
-            })
+            }
         }).then(response => response.json())
             .then(data => {
-                console.log(data);
-            })
+                console.log(data)
+                let temp = data.data.number;
+                //console.log(temp);
+
+                if (temp.length != null) {
+                    var arrayValues = temp;
+                    if (urlString.includes("students")) {
+                        levelChartFunction("studentsPerLevelChart", arrayValues, "Students per level");
+                    } else {
+                        levelChartFunction("professorsPerLevelChart", arrayValues, "Professors per level");
+                    }
+                } else {
+                    if (urlString.includes("courses/numberExam")) {
+
+                        let temp2 = temp / numberCourses.innerText * 100;
+                        if (urlString.includes("Made")) {
+                            coursesExamMadeProgress.setAttribute("style", "width: " + temp2 + "%");
+                            coursesExamMadeProgress.setAttribute("aria-valuemax", numberCourses.innerText);
+                            coursesExamMadeProgress.setAttribute("aria-valuenow", temp);
+                        } else {
+                            coursesExamTakenProgress.setAttribute("style", "width: " + temp2 + "%");
+                            coursesExamTakenProgress.setAttribute("aria-valuemax", numberCourses.innerText);
+                            coursesExamTakenProgress.setAttribute("aria-valuenow", temp);
+                        }
+
+                    } else {
+                        labelNumberEntities.innerText = temp;
+                    }
+                }
+            });
+    }
 
 
+    async function getTwoKeys(urlString, customKey) {
+
+        const response = await fetch(urlString, {
+            method: 'get',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+            }
+        }).then(response => response.json())
+            .then(data => {
+                console.log(data)
+                let temp = data.data[customKey];
+                let temp2 = data.data.number;
+                //console.log( (customKey == "study" ? oneStudyPerColumnFormatter(temp) : onePersonPerColumnFormatter(temp)) + "\n" + temp2);
+
+                if (urlString.includes("students")) {
+                    if (urlString.includes("most")) {
+                        highestNumberCoursesStudentNumber.innerText = temp2;
+                        highestNumberCoursesStudent.innerHTML = onePersonPerColumnFormatter(temp);
+                    } else {
+                        lowestNumberCoursesStudentNumber.innerText = temp2;
+                        lowestNumberCoursesStudent.innerHTML = onePersonPerColumnFormatter(temp);
+                    }
+                } else if (urlString.includes("professors")) {
+                    if (urlString.includes("most")) {
+                        highestNumberCoursesProfessorNumber.innerText = temp2;
+                        highestNumberCoursesProfessor.innerHTML = onePersonPerColumnFormatter(temp);
+                    } else {
+                        lowestNumberCoursesProfessorNumber.innerText = temp2;
+                        lowestNumberCoursesProfessor.innerHTML = onePersonPerColumnFormatter(temp);
+                    }
+                } else if (urlString.includes("courses")) {
+                    if (urlString.includes("most")) {
+                        highestNumberStudentsCourseNumber.innerText = temp2;
+                        highestNumberStudentsCourse.innerHTML = oneStudyPerColumnFormatter(temp);
+                    } else {
+                        lowestNumberStudentsCourseNumber.innerText = temp2;
+                        lowestNumberStudentsCourse.innerHTML = oneStudyPerColumnFormatter(temp);
+                    }
+                } else {
+                    if (urlString.includes("Courses")) {
+                        console.log("xxxx")
+                        if (urlString.includes("most")) {
+                            highestNumberCoursesDegreeNumber.innerText = temp2;
+                            highestNumberCoursesDegree.innerHTML = oneStudyPerColumnFormatter(temp);
+                        } else {
+                            lowestNumberCoursesDegreeNumber.innerText = temp2;
+                            lowestNumberCoursesDegree.innerHTML = oneStudyPerColumnFormatter(temp);
+                        }
+                    } else {
+                        if (urlString.includes("most")) {
+                            highestNumberStudentsDegreeNumber.innerText = temp2;
+                            highestNumberStudentsDegree.innerHTML = oneStudyPerColumnFormatter(temp);
+                        } else {
+                            lowestNumberStudentsDegreeNumber.innerText = temp2;
+                            lowestNumberStudentsDegree.innerHTML = oneStudyPerColumnFormatter(temp);
+                        }
+                    }
+                }
+            });
+    }
+
+
+    async function getVariousNumberKeys(urlString) {
+
+        const response = await fetch(urlString, {
+            method: 'get',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+            }
+        }).then(response => response.json())
+            .then(data => {
+                console.log(data)
+                let temp = data.data
+                //console.log(JSON.stringify(temp) + "\n" + Object.keys(temp).length);
+
+                var arrayKeys = Object.keys(temp);
+                console.log(arrayKeys)
+
+                var arrayValues = [];
+                for (let i = 0; i < arrayKeys.length; i++) {
+                    arrayValues.push(temp[arrayKeys[i]]);
+
+                    arrayKeys[i] = (urlString.includes("students") || urlString.includes("professors")) ?
+                        genderFormatter(arrayKeys[i]).replace(/<\/?[^>]+(>|$)/g, "") : departmentFormatter(arrayKeys[i]);
+                }
+                //console.log(arrayValues)
+
+                if (urlString.includes("students")) {
+                    genderChartFunction("studentsPerGenderChart", arrayKeys, arrayValues, "Students per gender");
+                } else if (urlString.includes("professors")) {
+                    genderChartFunction("professorsPerGenderChart", arrayKeys, arrayValues, "Professors per gender");
+                } else if (urlString.includes("courses")) {
+                    departmentChartFunction("coursesPerDepartmentChart", arrayKeys, arrayValues, "Courses per department");
+                } else {
+                    departmentChartFunction("degreesPerDepartmentChart", arrayKeys, arrayValues, "Degrees per department");
+                }
+            });
+    }
+
+
+    function genderChartFunction(chartId, xValues, yValues, chartTitle) {
+
+        var genderColors = [
+            "#9969C7",
+            "#73b092",
+            "#f0e2a5"
+        ];
+
+        new Chart(chartId, {
+            type: "pie",
+            data: {
+                labels: xValues,
+                datasets: [{
+                    backgroundColor: genderColors,
+                    data: yValues
+                }]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: chartTitle
+                }
+            }
+        });
+    }
+
+
+    function departmentChartFunction(chartId, xValues, yValues, chartTitle) {
+
+        var departmentColors = [
+            "#dfe4ec",
+            "#e5efc1",
+            "#a2d5ab",
+            "#39aea9",
+            "#557b83",
+            "#d0f7d9",
+            "#aed3e1",
+            "#d7c5ed",
+            "#f5f4c9",
+            "#ffbdb9"
+        ];
+
+        new Chart(chartId, {
+            type: "pie",
+            data: {
+                labels: xValues,
+                datasets: [{
+                    backgroundColor: departmentColors,
+                    data: yValues
+                }]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: chartTitle
+                }
+            }
+        });
+    }
+
+
+    function levelChartFunction(chartId, yValues, chartTitle) {
+
+        var xValues = [];
+        for (let i = 0; i < yValues.length; i++) {
+            xValues[i] = "Year " + (i + 1);
+        }
+
+        var levelColors = [
+            "#fafa6e",
+            "#c4ec74",
+            "#92dc7e",
+            "#64c987",
+            "#39b48e",
+            "#089f8f",
+            "#00898a",
+            "#08737f",
+            "#215d6e",
+            "#2a4858"
+        ];
+
+        new Chart(chartId, {
+            type: "bar",
+            data: {
+                labels: xValues,
+                datasets: [{
+                    backgroundColor: levelColors,
+                    data: yValues
+                }]
+            },
+            options: {
+                legend: { display: false },
+                title: {
+                    display: true,
+                    text: chartTitle
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            precision: 0
+                        }
+                    }]
+                }
+            }
+        });
     }
 
 
 </script>
-
 
 </html>

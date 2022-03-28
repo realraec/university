@@ -4,81 +4,64 @@ var modelColumnsStudent =
         {
             field: 'id',
             title: 'ID',
-            //visible: false,
-            switchable: false,
-            filterControl: 'input'
+            visible: false,
+            switchable: false
         }, {
             field: 'code',
-            title: 'Uni-ID&trade;',
-            switchable: false,
-            filterControl: 'input'
+            title: 'Code',
+            switchable: false
         }, {
             field: 'lastName',
             title: 'Last name',
-            filterControl: 'input',
-            class: 'text-nowrap',
+            class: 'text-nowrap'
         }, {
             field: 'firstName',
             title: 'First name',
-            filterControl: 'input',
             class: 'text-nowrap'
         }, {
             field: 'gender',
             title: 'Gender',
-            filterControl: 'select',
             class: 'text-nowrap'
         }, {
             field: 'level',
-            title: 'Level',
-            filterControl: 'select'
+            title: 'Level'
         }, {
             field: 'majorDegree',
-            title: 'Major degree',
-            filterControl: 'select'
+            title: 'Major degree'
         }, {
             field: 'minorDegree',
-            title: 'Minor degree',
-            filterControl: 'select'
+            title: 'Minor degree'
         }, {
             field: 'courses',
             title: 'Enrolled in courses',
-            visible: false,
-            filterControl: 'input'
+            visible: false
         }, {
             field: 'birthdate',
             title: 'Birthdate',
-            class: 'text-nowrap',
-            filterControl: 'input'
+            class: 'text-nowrap'
         }, {
             field: 'email',
             title: 'E-mail',
-            class: 'text-nowrap',
-            filterControl: 'input'
+            class: 'text-nowrap'
         }, {
             field: 'phone',
-            title: 'Phone',
-            filterControl: 'input'
+            title: 'Phone'
         }, {
             field: 'totalTuition',
-            title: 'Tuition',
-            filterControl: 'input'
+            title: 'Tuition'
         }, {
             field: 'balance',
-            title: 'Balance',
-            filterControl: 'input'
+            title: 'Balance'
         }, {
             field: 'credits',
-            title: 'Credits',
-            filterControl: 'select'
+            title: 'Credits'
         }, {
             field: 'diploma',
             title: 'Last diploma',
-            class: 'text-nowrap',
-            filterControl: 'select'
+            class: 'text-nowrap'
         }, {
             field: 'warnings',
-            title: '<i class="bi bi-exclamation-triangle-fill"></i>',
-            filterControl: 'select'
+            title: '<i class="bi bi-exclamation-triangle-fill"></i>'
         }
     ]
 
@@ -88,64 +71,51 @@ var modelColumnsProfessor =
         {
             field: 'id',
             title: 'ID',
-            //visible: false,
-            switchable: false,
-            filterControl: 'input'
+            visible: false,
+            switchable: false
         }, {
             field: 'code',
-            title: 'Uni-ID&trade;',
-            switchable: false,
-            filterControl: 'input'
+            title: 'Code',
+            switchable: false
         }, {
             field: 'lastName',
             title: 'Last name',
-            filterControl: 'input',
-            class: 'text-nowrap',
+            class: 'text-nowrap'
         }, {
             field: 'firstName',
             title: 'First name',
-            class: 'text-nowrap',
-            filterControl: 'input'
+            class: 'text-nowrap'
         }, {
             field: 'gender',
             title: 'Gender',
-            class: 'text-nowrap',
-            filterControl: 'select'
+            class: 'text-nowrap'
         }, {
             field: 'level',
-            title: 'Level',
-            filterControl: 'select'
+            title: 'Level'
         }, {
             field: 'courses',
             title: 'Teaching courses',
-            visible: false,
-            filterControl: 'input'
+            visible: false
         }, {
             field: 'birthdate',
             title: 'Birthdate',
-            class: 'text-nowrap',
-            filterControl: 'input'
+            class: 'text-nowrap'
         }, {
             field: 'email',
             title: 'E-mail',
-            class: 'text-nowrap',
-            filterControl: 'input'
+            class: 'text-nowrap'
         }, {
             field: 'phone',
-            title: 'Phone',
-            filterControl: 'input'
+            title: 'Phone'
         }, {
             field: 'salary',
-            title: 'Salary',
-            filterControl: 'select'
+            title: 'Salary'
         }, {
             field: 'balance',
-            title: 'Balance',
-            filterControl: 'input'
+            title: 'Balance'
         }, {
             field: 'warnings',
-            title: '<i class="bi bi-exclamation-triangle-fill"></i>',
-            filterControl: 'select'
+            title: '<i class="bi bi-exclamation-triangle-fill"></i>'
         }
     ]
 
@@ -155,42 +125,34 @@ var modelColumnsCourse =
         {
             field: 'id',
             title: 'ID',
-            //visible: false,
-            switchable: false,
-            filterControl: 'input'
+            visible: false,
+            switchable: false
         }, {
             field: 'code',
             title: 'Code',
-            filterControl: 'input'
+            switchable: false
         }, {
             field: 'heading',
-            title: 'Heading',
-            filterControl: 'input'
+            title: 'Heading'
         }, {
             field: 'department',
-            title: 'Department',
-            filterControl: 'select'
+            title: 'Department'
         }, {
             field: 'isExamMadeByProfessor',
-            title: 'Exam made',
-            filterControl: 'select'
+            title: 'Exam made'
         }, {
             field: 'isExamTakenByStudents',
-            title: 'Exam taken',
-            filterControl: 'select'
+            title: 'Exam taken'
         }, {
             field: 'professor',
-            title: 'Professor',
-            filterControl: 'select'
+            title: 'Professor'
+        }, {
+            field: 'students',
+            title: 'Students enrolled'
         }, {
             field: 'degree',
             title: 'Part of degree',
-            visible: false,
-            filterControl: 'input'
-        }, {
-            field: 'students',
-            title: 'Students enrolled',
-            filterControl: 'input'
+            visible: false
         }
     ]
 
@@ -200,36 +162,30 @@ var modelColumnsDegree =
         {
             field: 'id',
             title: 'ID',
-            //visible: false,
-            switchable: false,
-            filterControl: 'input'
+            visible: false,
+            switchable: false
         }, {
             field: 'code',
             title: 'Code',
-            filterControl: 'input'
+            switchable: false
         }, {
             field: 'heading',
-            title: 'Heading',
-            filterControl: 'input'
+            title: 'Heading'
         }, {
             field: 'department',
-            title: 'Department',
-            filterControl: 'select'
+            title: 'Department'
+        }, {
+            field: 'courses',
+            title: 'Courses associated',
+            class: 'text-nowrap'
         }, {
             field: 'professors',
             title: 'Professors teaching',
             visible: false,
-            class: 'text-nowrap',
-            filterControl: 'input',
+            class: 'text-nowrap'
         }, {
             field: 'students',
             title: 'Students enrolled',
-            visible: false,
-            filterControl: 'input'
-        }, {
-            field: 'courses',
-            title: 'Courses associated',
-            class: 'text-nowrap',
-            filterControl: 'input'
+            visible: false
         }
     ]

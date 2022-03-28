@@ -86,17 +86,17 @@
 
         <div class="col-sm-12 col-md-6 col-xl-4">
           <label for="professorInput" class="form-label">Professor</label>
-          <input id="professorInput" type="text" class="form-control" value="" disabled></input>
+          <input id="professorInput" type="text" class="form-control" value="" readonly></input>
         </div>
 
         <div class="col-12">
           <label for="studentsInput" class="form-label">Students enrolled</label>
-          <textarea id="studentsInput" class="form-control" rows="1" value="" disabled></textarea>
+          <textarea id="studentsInput" class="form-control" rows="1" value="" readonly></textarea>
         </div>
 
         <div class="col-sm-12 col-md-6 col-xl-4">
           <label for="degreeInput" class="form-label">Part of degree</label>
-          <input id="degreeInput" type="text" class="form-control" value="" disabled></input>
+          <input id="degreeInput" type="text" class="form-control" value="" readonly></input>
         </div>
 
       </div>
@@ -149,16 +149,14 @@
         sourceData = [response.data.course];
         console.log(sourceData)
         buildTable($table, sourceData, modelColumnsCourse, 0);
-
-      }, complete: function () {
-        console.log("complete multiple");
-
+        initButtonsAndMisc();
         updateDetailCourse(sourceData);
-
-        customContextMenu("td:nth-of-type(6)");
+        customContextMenu(checkoutEntitySelectQuery);
+      }, complete: function () {
       }
     });
 
+    let checkoutEntitySelectQuery = "";
 
     $(document).ready(function () {
     })
@@ -185,6 +183,7 @@
       document.getElementById("examTakenInput").value = "";
       document.getElementById("professorInput").value = "";
       document.getElementById("studentsInput").value = "";
+      document.getElementById("degreeInput").value = "";
     }
 
 

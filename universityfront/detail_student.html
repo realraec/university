@@ -86,12 +86,12 @@
 
         <div class="col-sm-12 col-md-6 col-xl-4">
           <label for="majorDegreeInput" class="form-label">Major degree</label>
-          <input id="majorDegreeInput" type="text" class="form-control" value="" disabled></input>
+          <input id="majorDegreeInput" type="text" class="form-control" value="" readonly></input>
         </div>
 
         <div class="col-sm-12 col-md-6 col-xl-4">
           <label for="minorDegreeInput" class="form-label">Minor degree</label>
-          <input id="minorDegreeInput" type="text" class="form-control" value="" disabled></input>
+          <input id="minorDegreeInput" type="text" class="form-control" value="" readonly></input>
         </div>
 
         <div class="col-sm-12 col-md-6 col-xl-4">
@@ -136,7 +136,7 @@
 
         <div class="col-12">
           <label for="coursesInput" class="form-label">Enrolled in courses</label>
-          <textarea id="coursesInput" class="form-control" rows="1" value="" disabled></textarea>
+          <textarea id="coursesInput" class="form-control" rows="1" value="" readonly></textarea>
         </div>
 
       </div>
@@ -185,9 +185,6 @@
   </div> -->
 
 
-
-
-
   <!-- JQuery script -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
@@ -220,7 +217,6 @@
 
     // ID
     var detailId = localStorage["detailId"];
-    console.log(detailId)
 
     // Table init
     var sourceData = []
@@ -230,16 +226,14 @@
         sourceData = [response.data.student];
         console.log(sourceData)
         buildTable($table, sourceData, modelColumnsStudent, 0);
-
-      }, complete: function () {
-        console.log("complete multiple");
-
+        initButtonsAndMisc();
         updateDetailStudent(sourceData);
-
-        customContextMenu("td:nth-of-type(6), td:nth-of-type(7)");
+        customContextMenu(checkoutEntitySelectQuery);
+      }, complete: function () {
       }
     })
 
+    let checkoutEntitySelectQuery = "";
 
     $(document).ready(function () {
     })
@@ -282,6 +276,7 @@
       document.getElementById("creditsInput").value = "";
       document.getElementById("diplomaInput").value = "";
       document.getElementById("warningsInput").value = "";
+      document.getElementById("coursesInput").value = "";
     }
 
   </script>

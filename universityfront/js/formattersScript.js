@@ -36,7 +36,7 @@ function oneStudyPerColumnFormatter(value, row, index, field) {
 }
 
 function threeStudiesPerLineFormatter(value, row, index, field) {
-    // Sorting alphabteically by last name
+    // Sorting alphabetically by heading
     if (value == null) return;
     value.sort((fieldA, fieldB) => (fieldA.heading > fieldB.heading) ? 1 : ((fieldB.heading > fieldA.heading) ? -1 : 0))
 
@@ -57,7 +57,7 @@ function threeStudiesPerLineFormatter(value, row, index, field) {
 }
 
 function oneStudyPerLineFormatter(value, row, index, field) {
-    // Sorting alphabteically by last name
+    // Sorting alphabetically by heading
     if (value == null) return;
     value.sort((fieldA, fieldB) => (fieldA.heading > fieldB.heading) ? 1 : ((fieldB.heading > fieldA.heading) ? -1 : 0))
 

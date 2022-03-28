@@ -76,17 +76,17 @@
 
         <div class="col-6">
           <label for="coursesInput" class="form-label">Courses associated</label>
-          <textarea id="coursesInput" class="form-control" rows="1" value="" disabled></textarea>
+          <textarea id="coursesInput" class="form-control" rows="1" value="" readonly></textarea>
         </div>
 
         <div class="col-6">
           <label for="professorsInput" class="form-label">Professors teaching</label>
-          <textarea id="professorsInput" class="form-control" rows="1" value="" disabled></textarea>
+          <textarea id="professorsInput" class="form-control" rows="1" value="" readonly></textarea>
         </div>
 
         <div class="col-12">
           <label for="studentsInput" class="form-label">Students enrolled</label>
-          <textarea id="studentsInput" class="form-control" rows="1" value="" disabled></textarea>
+          <textarea id="studentsInput" class="form-control" rows="1" value="" readonly></textarea>
         </div>
 
       </div>
@@ -128,7 +128,6 @@
     // DOM elements
     var $table = $('#table')
 
-
     // ID
     var detailId = localStorage["detailId"];
 
@@ -140,16 +139,14 @@
         sourceData = [response.data.degree];
         console.log(sourceData)
         buildTable($table, sourceData, modelColumnsDegree, 0);
-
+        initButtonsAndMisc();
+        updateDetailDegree(sourceData);
+        customContextMenu(checkoutEntitySelectQuery);
       }, complete: function () {
-        console.log("complete multiple");
-
-        updateDetailDegree(sourceData)
-
-        //customContextMenu();
       }
     });
 
+    let checkoutEntitySelectQuery = "";
 
     $(document).ready(function () {
     })
@@ -163,7 +160,6 @@
       document.getElementById("coursesInput").value = (sourceData[0].courses.length == 0 ? null : threeStudiesPerLineFormatter(sourceData[0].courses).replaceAll("<br/>", " — "));
       document.getElementById("professorsInput").value = (sourceData[0].professors == null ? null : onePersonPerColumnFormatter(sourceData[0].professors).replace("<br/>", " "));
       document.getElementById("studentsInput").value = (sourceData[0].students == null ? null : onePersonPerColumnFormatter(sourceData[0].students).replace("<br/>", " "));
-
     }
 
     function wipeOutDetailDegree() {
@@ -172,6 +168,8 @@
       document.getElementById("headingInput").value = "";
       document.getElementById("departmentInput").value = "";
       document.getElementById("coursesInput").value = "";
+      document.getElementById("professorsInput").value = "";
+      document.getElementById("studentsInput").value = "";
     }
 
   </script>

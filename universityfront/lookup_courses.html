@@ -133,15 +133,13 @@
       success: function (response) {
         sourceData = response.data.courses;
         buildTable($table, sourceData, modelColumnsCourse, 0);
-
+        initButtonsAndMisc();
       }, complete: function () {
-        console.log("complete multiple");
       }
     })
 
 
-    // Buttons and listeners
-    $(document).ready(function () {      
+    $(document).ready(function () {
     });
 
 

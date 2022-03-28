@@ -9,6 +9,7 @@ import xyz.realraec.universityback.model.Student;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 import java.util.Set;
 
 @Service
@@ -36,6 +37,13 @@ public interface DegreeService {
 
     Boolean deleteDegrees(Long[] entitiesIdList) throws Exception;
 
+    Integer getNumberEntries();
+
+    Map<Department, Integer> getNumberEntriesPerDepartment();
+
+    Map<String, Object> getMostOrLeastCoursesAssociated(boolean mostOrLeast);
+
+    Map<String, Object> getMostOrLeastStudentsEnrolled(boolean mostOrLeast);
 
 }
 

@@ -15,22 +15,21 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Map;
 
+
 @RestController
 @RequestMapping("/professors")
-// For the dependency injection to be done properly
 @CrossOrigin
 @RequiredArgsConstructor
 public class ProfessorController {
 
     private final ProfessorServiceImplementation professorService;
 
+
     @GetMapping("/list")
     public ResponseEntity<Response> getProfessors() {
         return ResponseEntity.ok(
                 Response.builder()
-                        // All the information to be passed
                         .timestamp(LocalDateTime.now())
-                        // Where the service (implementation) method is to be found
                         .data(Map.of("professors", professorService.list(50)))
                         .message("Professors retrieved")
                         .status(HttpStatus.OK)
@@ -38,6 +37,7 @@ public class ProfessorController {
                         .build()
         );
     }
+
 
     @GetMapping("/get/{id}")
     public ResponseEntity<Response> getProfessor(@PathVariable("id") Long id) {
@@ -54,11 +54,9 @@ public class ProfessorController {
 
 
     @PostMapping("/create")
-    // A body is needed since you can't save an empty object as a professor
     public ResponseEntity<Response> createProfessor(@RequestBody @Valid Professor professor) throws Exception {
         professor = new Professor(professor.getLastName(), professor.getFirstName(), professor.getGender(),
                 professor.getBirthdate(), professor.getEmail(), professor.getPhone());
-        // The .created() method also exists but returns a URI, and we want the message as well
         return ResponseEntity.ok(
                 Response.builder()
                         .timestamp(LocalDateTime.now())
@@ -70,7 +68,7 @@ public class ProfessorController {
         );
     }
 
-    // Not included
+
     @PutMapping("/update/{id}")
     public ResponseEntity<Response> updateProfessor(
             @PathVariable("id") Long id,
@@ -96,6 +94,7 @@ public class ProfessorController {
                         .build()
         );
     }
+
 
     @PutMapping("/replace/{id}")
     public ResponseEntity<?> replaceProfessor(
@@ -136,9 +135,7 @@ public class ProfessorController {
     ) throws Exception {
         return ResponseEntity.ok(
                 Response.builder()
-                        // All the information to be passed
                         .timestamp(LocalDateTime.now())
-                        // Where the service (implementation) method is to be found
                         .data(Map.of("courses", professorService.getCoursesTaughtByProfessor(personsIdList)))
                         .message("Courses retrieved for professors with id " + Arrays.toString(personsIdList))
                         .status(HttpStatus.OK)
@@ -156,6 +153,76 @@ public class ProfessorController {
                         // Either true or false key
                         .data(Map.of("deleted", professorService.deleteProfessors(entitiesIdList)))
                         .message("Entities (professors) with id " + Arrays.toString(entitiesIdList) + " deleted")
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build()
+        );
+    }
+
+
+    @GetMapping("/number")
+    public ResponseEntity<Response> getNumberProfessors() {
+        return ResponseEntity.ok(
+                Response.builder()
+                        .timestamp(LocalDateTime.now())
+                        .data(Map.of("number", professorService.getNumberProfessors()))
+                        .message("Number of professors retrieved")
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build()
+        );
+    }
+
+
+    @GetMapping("/numberPerLevel")
+    public ResponseEntity<Response> getNumberProfessorsPerLevel() {
+        return ResponseEntity.ok(
+                Response.builder()
+                        .timestamp(LocalDateTime.now())
+                        .data(Map.of("number", professorService.getNumberProfessorsPerLevel()))
+                        .message("Number of professors per level retrieved")
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build()
+        );
+    }
+
+
+    @GetMapping("/numberPerGender")
+    public ResponseEntity<Response> getNumberProfessorsPerGender() {
+        return ResponseEntity.ok(
+                Response.builder()
+                        .timestamp(LocalDateTime.now())
+                        .data(professorService.getNumberProfessorsPerGender())
+                        .message("Number of professors per gender retrieved")
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build()
+        );
+    }
+
+
+    @GetMapping("/mostCourses")
+    public ResponseEntity<Response> getMostCoursesTaught() {
+        return ResponseEntity.ok(
+                Response.builder()
+                        .timestamp(LocalDateTime.now())
+                        .data(professorService.getMostOrLeastCoursesTaught(true))
+                        .message("Maximum number of courses taught retrieved")
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build()
+        );
+    }
+
+
+    @GetMapping("/leastCourses")
+    public ResponseEntity<Response> getLeastCoursesTaught() {
+        return ResponseEntity.ok(
+                Response.builder()
+                        .timestamp(LocalDateTime.now())
+                        .data(professorService.getMostOrLeastCoursesTaught(false))
+                        .message("Minimum number of courses taught retrieved")
                         .status(HttpStatus.OK)
                         .statusCode(HttpStatus.OK.value())
                         .build()

@@ -4,11 +4,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import xyz.realraec.universityback.enumeration.Department;
 import xyz.realraec.universityback.enumeration.Gender;
 import xyz.realraec.universityback.model.Course;
-import xyz.realraec.universityback.model.Degree;
 import xyz.realraec.universityback.model.Professor;
-import xyz.realraec.universityback.model.Student;
 import xyz.realraec.universityback.repository.CourseRepository;
 import xyz.realraec.universityback.repository.ProfessorRepository;
 import xyz.realraec.universityback.service.ProfessorService;
@@ -18,11 +17,9 @@ import java.time.LocalDate;
 import java.util.*;
 
 
-// Creates a constructor using the one attribute as argument
 @RequiredArgsConstructor
 @Service
 @Transactional
-// Prints out information to the console as it goes
 @Slf4j
 public class ProfessorServiceImplementation implements ProfessorService {
 
@@ -37,6 +34,7 @@ public class ProfessorServiceImplementation implements ProfessorService {
         return professorRepository.save(professor);
     }
 
+
     @Override
     public Collection<Professor> list(int limit) {
         log.info("Fetching all professors");
@@ -44,24 +42,13 @@ public class ProfessorServiceImplementation implements ProfessorService {
         return professorRepository.findAll(PageRequest.of(0, limit)).toList();
     }
 
+
     @Override
     public Professor get(Long id) {
         log.info("Fetching professor with id: {}", id);
         // The get() method returns the actual server found by id
         return professorRepository.findById(id).get();
     }
-
-        /*@Override
-        public Server ping(String ipAddress) throws IOException {
-            log.info("Pinging server IP: {}", ipAddress);
-            Server server = serverRepository.findByIpAddress(ipAddress);
-            // First get an internet address for the server
-            InetAddress address = InetAddress.getByName(ipAddress);
-            // Then check if it is reachable, and set status accordingly
-            server.setStatus(address.isReachable(2000) ? Status.SERVER_UP : Status.SERVER_DOWN);
-            serverRepository.save(server);
-            return server;
-        }*/
 
 
     @Override
@@ -89,7 +76,6 @@ public class ProfessorServiceImplementation implements ProfessorService {
             professor.setBirthdate(birthdate);
         }
 
-
         if (level != null && professor.getLevel() != level) {
             try {
                 professor.setLevel(level);
@@ -97,7 +83,6 @@ public class ProfessorServiceImplementation implements ProfessorService {
                 e.printStackTrace();
             }
         }
-
 
         if (email != null && email.length() > 0 && !Objects.equals(professor.getEmail(), email)) {
             professor.setEmail(email);
@@ -122,6 +107,7 @@ public class ProfessorServiceImplementation implements ProfessorService {
         log.info("Updating professor with id: {}", professor.getId());
         return Boolean.TRUE;
     }
+
 
     @Override
     @Transactional
@@ -198,6 +184,7 @@ public class ProfessorServiceImplementation implements ProfessorService {
         return Boolean.TRUE;
     }
 
+
     @Override
     public Boolean delete(Long id) {
         log.info("Deleting professor with id: {}", id);
@@ -207,14 +194,14 @@ public class ProfessorServiceImplementation implements ProfessorService {
 
 
     @Override
-    public ArrayList<ArrayList<Course>> getCoursesTaughtByProfessor(Long[] professorsIdList) throws Exception {
+    public ArrayList<Set<Course>> getCoursesTaughtByProfessor(Long[] professorsIdList) throws Exception {
         log.info("Getting courses taught by professor with id: {}", Arrays.toString(professorsIdList));
 
         if (professorsIdList.length == 0) {
             throw new Exception("No student was provided to perform this action on.");
         }
 
-        ArrayList<ArrayList<Course>> coursesList = new ArrayList<>();
+        ArrayList<Set<Course>> coursesList = new ArrayList<>();
         for (int i = 0; i < professorsIdList.length; i++) {
             coursesList.add(courseRepository.findByProfessorId(professorsIdList[i]));
         }
@@ -235,28 +222,21 @@ public class ProfessorServiceImplementation implements ProfessorService {
         //ArrayList<Professor> professorsList = new ArrayList<>();
 
         for (int i = 0; i < entitiesIdList.length; i++) {
-
-            /*Professor professor;
-            try {
-                professor = professorRepository.findById(entitiesIdList[i]).get();
-            } catch (Exception e) {
-                throw new Exception("The ID is incorrect" + (entitiesIdList.length == 1 ? "" : " for at least one of the entities") + ".");
-            }*/
-
             if (!professorRepository.existsById(entitiesIdList[i])) {
                 throw new Exception("The ID is incorrect" + (entitiesIdList.length == 1 ? "" : " for at least one of the entities") + ".");
             }
-
-            //professorsList.add(professor);
         }
 
-
-        ArrayList<ArrayList<Course>> coursesTaughtByProfessorsList = getCoursesTaughtByProfessor(entitiesIdList);
+        ArrayList<Set<Course>> coursesTaughtByProfessorsList = getCoursesTaughtByProfessor(entitiesIdList);
 
         for (int i = 0; i < coursesTaughtByProfessorsList.size(); i++) {
-            for (int j = 0; j < coursesTaughtByProfessorsList.get(i).size(); j++) {
-                coursesTaughtByProfessorsList.get(i).get(j).setProfessor(null);
+            Set<Course> temp = coursesTaughtByProfessorsList.get(i);
+            for (Course course : temp) {
+                course.setProfessor(null);
             }
+            /*for (int j = 0; j < coursesTaughtByProfessorsList.get(i).size(); j++) {
+                coursesTaughtByProfessorsList.get(i).get(j).setProfessor(null);
+            }*/
         }
 
         for (int i = 0; i < entitiesIdList.length; i++) { //professorsList.size()
@@ -266,5 +246,68 @@ public class ProfessorServiceImplementation implements ProfessorService {
 
         return Boolean.TRUE;
     }
+
+
+    @Override
+    public Integer getNumberProfessors() {
+        log.info("Getting the number of professors");
+        return professorRepository.queryNumberEntries();
+    }
+
+
+    @Override
+    public ArrayList<Integer> getNumberProfessorsPerLevel() {
+        log.info("Getting the number of professors per level");
+
+        ArrayList<Integer> numberProfessorsPerLevel = new ArrayList<>();
+        for (int i = 1; i < 7; i++) {
+            numberProfessorsPerLevel.add(professorRepository.queryNumberEntriesPerLevel(i));
+        }
+
+        return numberProfessorsPerLevel;
+    }
+
+
+    @Override
+    public Map<Gender, Integer> getNumberProfessorsPerGender() {
+        log.info("Getting the number of professors per gender");
+
+        Map<Gender, Integer> numberProfessorsPerGenderMap = new HashMap<>();
+        Gender[] genders = Gender.class.getEnumConstants();
+        for (int i = 0; i < genders.length; i++) {
+            Gender temp = genders[i];
+            numberProfessorsPerGenderMap.put(temp, professorRepository.queryNumberEntriesPerGender(temp));
+        }
+
+        return numberProfessorsPerGenderMap;
+    }
+
+
+    @Override
+    public Map<String, Object> getMostOrLeastCoursesTaught(boolean mostOrLeast) {
+        log.info("Getting the " + (mostOrLeast ? "highest" : "lowest") + " number of courses taught");
+
+        Map<String, Object> numberCoursesAndProfessorMap = new HashMap<>();
+        int numberProfessors = professorRepository.queryNumberEntries();
+        long idProfessor = 1L;
+        while (professorRepository.findById(idProfessor).isEmpty()) {
+            idProfessor++;
+        }
+        int numberCoursesTaught = professorRepository.queryNumberCoursesTaught(idProfessor);
+        for (long i = idProfessor + 1; i <= numberProfessors; i++) {
+            int temp = professorRepository.queryNumberCoursesTaught(i);
+            if ((mostOrLeast && temp > numberCoursesTaught)
+                    || (!mostOrLeast && temp < numberCoursesTaught)) {
+                numberCoursesTaught = temp;
+                idProfessor = i;
+            }
+        }
+
+        numberCoursesAndProfessorMap.put("person", professorRepository.findById(idProfessor).get());
+        numberCoursesAndProfessorMap.put("number", numberCoursesTaught);
+
+        return numberCoursesAndProfessorMap;
+    }
+
 }
 

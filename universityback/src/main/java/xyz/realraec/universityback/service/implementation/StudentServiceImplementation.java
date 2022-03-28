@@ -18,11 +18,9 @@ import java.time.LocalDate;
 import java.util.*;
 
 
-// Creates a constructor using the one attribute as argument
 @RequiredArgsConstructor
 @Service
 @Transactional
-// Prints out information to the console as it goes
 @Slf4j
 public class StudentServiceImplementation implements StudentService {
 
@@ -32,7 +30,6 @@ public class StudentServiceImplementation implements StudentService {
 
     @Override
     public Student create(Student student) {
-        // Prints the following
         log.info("Saving new student: {}", student.getCode());
         return studentRepository.save(student);
     }
@@ -40,14 +37,12 @@ public class StudentServiceImplementation implements StudentService {
     @Override
     public Collection<Student> list(int limit) {
         log.info("Fetching all students");
-        // From the first element up to the limit
         return studentRepository.findAll(PageRequest.of(0, limit)).toList();
     }
 
     @Override
     public Student get(Long id) {
         log.info("Fetching student with id: {}", id);
-        // The get() method returns the actual server found by id
         return studentRepository.findById(id).get();
     }
 
@@ -75,7 +70,6 @@ public class StudentServiceImplementation implements StudentService {
         if (birthdate != null && !Objects.equals(student.getBirthdate(), birthdate)) {
             student.setBirthdate(birthdate);
         }
-
 
         if (level != null && student.getLevel() != level) {
             try {
@@ -240,15 +234,14 @@ public class StudentServiceImplementation implements StudentService {
 
 
     @Override
-    public ArrayList<Set> getCourses(Long[] studentsIdList) throws Exception {
+    public ArrayList<Set<Course>> getCourses(Long[] studentsIdList) throws Exception {
         log.info("Getting courses for students with id: {}", Arrays.toString(studentsIdList));
 
         if (studentsIdList.length == 0) {
             throw new Exception("No student was provided to perform this action on.");
         }
 
-        ArrayList<Set> studentsCoursesList = new ArrayList<>();
-
+        ArrayList<Set<Course>> studentsCoursesList = new ArrayList<>();
         for (int i = 0; i < studentsIdList.length; i++) {
             Student student = get(studentsIdList[i]);
             studentsCoursesList.add(student.getCourses());
@@ -273,7 +266,6 @@ public class StudentServiceImplementation implements StudentService {
         }
 
         ArrayList<Student> studentsList = new ArrayList<>();
-
         for (int i = 0; i < studentsIdList.length; i++) {
             Student student = get(studentsIdList[i]);
             studentsList.add(student);
@@ -306,13 +298,12 @@ public class StudentServiceImplementation implements StudentService {
         }
 
         ArrayList<Student> studentsList = new ArrayList<>();
-
         for (int i = 0; i < studentsIdList.length; i++) {
             Student student = get(studentsIdList[i]);
             studentsList.add(student);
-            if (student.getMinorDegree() != null && student.getMajorDegree().getId() == degree.getId()) {
+            if (student.getMinorDegree() != null && student.getMajorDegree() != null && student.getMajorDegree().getId() == degree.getId()) {
                 throw new Exception("The code of the new major degree is the same as the old one" + (studentsIdList.length == 1 ? "" : " for at least one of the students") + ".");
-            } else if (student.getMajorDegree() != null && student.getMinorDegree().getId() == degree.getId()) {
+            } else if (student.getMajorDegree() != null && student.getMinorDegree() != null && student.getMinorDegree().getId() == degree.getId()) {
                 throw new Exception("The code of the new major degree is the same as the code of the current minor degree" + (studentsIdList.length == 1 ? "" : " for at least one of the students") + ".");
             }
         }
@@ -330,7 +321,6 @@ public class StudentServiceImplementation implements StudentService {
         log.info("Giving credits to students with id: {}", Arrays.toString(studentsIdList));
 
         ArrayList<Integer> creditsList = new ArrayList<>();
-
         if (studentsIdList.length == 0) {
             throw new Exception("No student was provided to perform this action on.");
         } else if (credits == 0) {
@@ -341,38 +331,11 @@ public class StudentServiceImplementation implements StudentService {
             Student student = get(studentsIdList[i]);
             int temp = student.getCredits() + credits;
             student.setCredits(temp);
-
             creditsList.add(temp);
         }
 
         return creditsList;
     }
-
-    /*public ArrayList<Integer> giveCredits(Long[] studentsIdList, Integer credits) throws Exception {
-        log.info("Giving credits to students with id: {}", Arrays.toString(studentsIdList));
-
-        ArrayList<Student> studentsList = new ArrayList<>();
-        ArrayList<Integer> creditsList = new ArrayList<>();
-
-        if (studentsIdList.length == 0) {
-            throw new Exception("No student was provided to perform this action on.");
-        } else if (credits == 0) {
-            throw new Exception("No amount of credits was provided to perform this action with.");
-        }
-
-        for (int i = 0; i < studentsIdList.length; i++) {
-            Student student = get(studentsIdList[i]);
-            studentsList.add(student);
-
-            creditsList.add(student.getCredits() + credits);
-        }
-
-        for (int i = 0; i < studentsList.size(); i++) {
-            studentsList.get(i).setCredits(creditsList.get(i));
-        }
-
-        return creditsList;
-    }*/
 
 
     @Override
@@ -387,7 +350,6 @@ public class StudentServiceImplementation implements StudentService {
         }
 
         ArrayList<Student> studentsList = new ArrayList<>();
-
         for (int i = 0; i < studentsIdList.length; i++) {
             Student student = get(studentsIdList[i]);
             if (student.getDiploma() == diploma) {
@@ -396,7 +358,6 @@ public class StudentServiceImplementation implements StudentService {
                 studentsList.add(student);
             }
         }
-
 
         for (int i = 0; i < studentsList.size(); i++) {
             studentsList.get(i).setDiploma(diploma);
@@ -416,16 +377,13 @@ public class StudentServiceImplementation implements StudentService {
         }
 
         ArrayList<Student> studentsList = new ArrayList<>();
-
         for (int i = 0; i < entitiesIdList.length; i++) {
-
             Student student;
             try {
                 student = studentRepository.findById(entitiesIdList[i]).get();
             } catch (Exception e) {
                 throw new Exception("The ID is incorrect" + (entitiesIdList.length == 1 ? "" : " for at least one of the entities") + ".");
             }
-
             studentsList.add(student);
         }
 
@@ -440,6 +398,68 @@ public class StudentServiceImplementation implements StudentService {
         }
 
         return Boolean.TRUE;
+    }
+
+
+    @Override
+    public Integer getNumberStudents() {
+        log.info("Getting the number of students");
+        return studentRepository.queryNumberEntries();
+    }
+
+
+    @Override
+    public ArrayList<Integer> getNumberStudentsPerLevel() {
+        log.info("Getting the number of students per level");
+
+        ArrayList<Integer> numberStudentsPerLevel = new ArrayList<>();
+        for (int i = 1; i < 8; i++) {
+            numberStudentsPerLevel.add(studentRepository.queryNumberEntriesPerLevel(i));
+        }
+
+        return numberStudentsPerLevel;
+    }
+
+
+    @Override
+    public Map<Gender, Integer> getNumberStudentsPerGender() {
+        log.info("Getting the number of students per gender");
+
+        Map<Gender, Integer> numberStudentsPerGenderMap = new HashMap<>();
+        Gender[] genders = Gender.class.getEnumConstants();
+        for (int i = 0; i < genders.length; i++) {
+            Gender temp = genders[i];
+            numberStudentsPerGenderMap.put(temp, studentRepository.queryNumberEntriesPerGender(genders[i]));
+        }
+
+        return numberStudentsPerGenderMap;
+    }
+
+
+    @Override
+    public Map<String, Object> getMostOrLeastCoursesTaken(boolean mostOrLeast) {
+        log.info("Getting the " + (mostOrLeast ? "highest" : "lowest") + " number of courses enrolled in");
+
+        Map<String, Object> numberCoursesAndStudentMap = new HashMap<>();
+        int numberStudents = studentRepository.queryNumberEntries();
+        long idStudent = 1L;
+        while (studentRepository.findById(idStudent).isEmpty()) {
+            idStudent++;
+        }
+        int numberCoursesTaken = studentRepository.queryNumberCoursesTaken(idStudent);
+        for (long i = idStudent + 1; i <= numberStudents; i++) {
+            int temp = studentRepository.queryNumberCoursesTaken(i);
+            if ((mostOrLeast && temp > numberCoursesTaken)
+                    || (!mostOrLeast && temp < numberCoursesTaken)) {
+                numberCoursesTaken = temp;
+                idStudent = i;
+            }
+        }
+
+        numberCoursesAndStudentMap.put("person", studentRepository.findById(idStudent).get());
+        numberCoursesAndStudentMap.put("number", numberCoursesTaken);
+
+        return numberCoursesAndStudentMap;
     }
 
 }

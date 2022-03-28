@@ -3,7 +3,6 @@ package xyz.realraec.universityback.service.implementation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import xyz.realraec.universityback.enumeration.Department;
 import xyz.realraec.universityback.model.Course;
@@ -20,11 +19,9 @@ import javax.transaction.Transactional;
 import java.util.*;
 
 
-// Creates a constructor using the one attribute as argument
 @RequiredArgsConstructor
 @Service
 @Transactional
-// Prints out information to the console as it goes
 @Slf4j
 public class DegreeServiceImplementation implements DegreeService {
 
@@ -41,12 +38,14 @@ public class DegreeServiceImplementation implements DegreeService {
         return degreeRepository.save(degree);
     }
 
+
     @Override
     public Collection<Degree> list(int limit) {
         log.info("Fetching all degrees");
         // From the first element up to the limit
         return degreeRepository.findAll(PageRequest.of(0, limit)).toList();
     }
+
 
     @Override
     public Degree get(Long id) {
@@ -80,6 +79,7 @@ public class DegreeServiceImplementation implements DegreeService {
         log.info("Updating degree with id: {}", degree.getId());
         return Boolean.TRUE;
     }
+
 
     @Override
     @Transactional
@@ -122,6 +122,7 @@ public class DegreeServiceImplementation implements DegreeService {
         log.info("Replacing degree with id: {}", id);
         return Boolean.TRUE;
     }
+
 
     @Override
     public Boolean delete(Long id) {
@@ -166,6 +167,7 @@ public class DegreeServiceImplementation implements DegreeService {
         }
         return course;
     }
+
 
     @Override
     @Transactional
@@ -287,6 +289,82 @@ public class DegreeServiceImplementation implements DegreeService {
         }
 
         return Boolean.TRUE;
+    }
+
+
+    @Override
+    public Integer getNumberEntries() {
+        log.info("Getting the number of courses");
+        return degreeRepository.queryNumberDegrees();
+    }
+
+
+    @Override
+    public Map<Department, Integer> getNumberEntriesPerDepartment() {
+        log.info("Getting the number of degrees per department");
+
+        HashMap<Department, Integer> numberDegreesPerDepartmentMap = new HashMap<>();
+        Department[] departments = Department.class.getEnumConstants();
+        for (int i = 0; i < departments.length; i++) {
+            Department temp = departments[i];
+            numberDegreesPerDepartmentMap.put(temp, degreeRepository.queryNumberDegreesPerDepartment(temp));
+        }
+
+        return numberDegreesPerDepartmentMap;
+    }
+
+
+    @Override
+    public Map<String, Object> getMostOrLeastCoursesAssociated(boolean mostOrLeast) {
+        log.info("Getting the " + (mostOrLeast ? "highest" : "lowest") + " number of courses associated");
+
+        Map<String, Object> numberCoursesAndDegreeMap = new HashMap<>();
+        int numberDegrees = degreeRepository.queryNumberDegrees();
+        long idDegree = 1L;
+        while (degreeRepository.findById(idDegree).isEmpty()) {
+            idDegree++;
+        }
+        int numberCoursesAssociated = degreeRepository.queryNumberCoursesAssociated(idDegree);
+        for (long i = idDegree + 1; i <= numberDegrees; i++) {
+            int temp = degreeRepository.queryNumberCoursesAssociated(i);
+            if ((mostOrLeast && temp > numberCoursesAssociated)
+                    || (!mostOrLeast && temp < numberCoursesAssociated)) {
+                numberCoursesAssociated = temp;
+                idDegree = i;
+            }
+        }
+
+        numberCoursesAndDegreeMap.put("degree", degreeRepository.findById(idDegree).get());
+        numberCoursesAndDegreeMap.put("number", numberCoursesAssociated);
+
+        return numberCoursesAndDegreeMap;
+    }
+
+
+    @Override
+    public Map<String, Object> getMostOrLeastStudentsEnrolled(boolean mostOrLeast) {
+        log.info("Getting the " + (mostOrLeast ? "highest" : "lowest") + " number of students enrolled");
+
+        Map<String, Object> numberStudentsAndDegreeMap = new HashMap<>();
+        int numberDegrees = degreeRepository.queryNumberDegrees();
+        long idDegree = 1L;
+        while (degreeRepository.findById(idDegree).isEmpty()) {
+            idDegree++;
+        }
+        int numberStudentsEnrolled = degreeRepository.queryNumberStudentsEnrolled(idDegree);
+        for (long i = idDegree + 1; i <= numberDegrees; i++) {
+            int temp = degreeRepository.queryNumberStudentsEnrolled(i);
+            if ((mostOrLeast && temp > numberStudentsEnrolled)
+                    || (!mostOrLeast && temp < numberStudentsEnrolled)) {
+                numberStudentsEnrolled = temp;
+                idDegree = i;
+            }
+        }
+
+        numberStudentsAndDegreeMap.put("study", degreeRepository.findById(idDegree).get());
+        numberStudentsAndDegreeMap.put("number", numberStudentsEnrolled);
+
+        return numberStudentsAndDegreeMap;
     }
 
 }

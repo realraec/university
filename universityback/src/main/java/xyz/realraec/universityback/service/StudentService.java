@@ -3,12 +3,14 @@ package xyz.realraec.universityback.service;
 import org.springframework.stereotype.Service;
 import xyz.realraec.universityback.enumeration.Diploma;
 import xyz.realraec.universityback.enumeration.Gender;
+import xyz.realraec.universityback.model.Course;
 import xyz.realraec.universityback.model.Degree;
 import xyz.realraec.universityback.model.Student;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 import java.util.Set;
 
 @Service
@@ -26,7 +28,7 @@ public interface StudentService {
 
     Boolean delete(Long id);
 
-    ArrayList<Set> getCourses(Long[] studentsIdList) throws Exception;
+    ArrayList<Set<Course>> getCourses(Long[] studentsIdList) throws Exception;
 
     Degree setNewMinorDegree(Long[] studentsIdList, String degreeCode) throws Exception;
 
@@ -37,6 +39,14 @@ public interface StudentService {
     Diploma giveDiploma(Long[] studentsIdList, Diploma diploma) throws Exception;
 
     Boolean deleteStudents(Long[] entitiesIdList) throws Exception;
+
+    Integer getNumberStudents();
+
+    ArrayList<Integer> getNumberStudentsPerLevel();
+
+    Map<Gender, Integer> getNumberStudentsPerGender();
+
+    Map<String, Object> getMostOrLeastCoursesTaken(boolean mostOrLeast);
 
 }
 

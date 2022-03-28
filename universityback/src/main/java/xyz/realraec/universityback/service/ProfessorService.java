@@ -1,6 +1,5 @@
 package xyz.realraec.universityback.service;
 
-import net.minidev.json.JSONObject;
 import org.springframework.stereotype.Service;
 import xyz.realraec.universityback.enumeration.Gender;
 import xyz.realraec.universityback.model.Course;
@@ -9,6 +8,8 @@ import xyz.realraec.universityback.model.Professor;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
 
 @Service
 public interface ProfessorService {
@@ -25,13 +26,17 @@ public interface ProfessorService {
 
     Boolean delete(Long id);
 
-    ArrayList<ArrayList<Course>> getCoursesTaughtByProfessor(Long[] professorsIdList) throws Exception;
-
-    //ArrayList<Object> findCoursesTaughtByProfessor(Long professorId) throws Exception;
+    ArrayList<Set<Course>> getCoursesTaughtByProfessor(Long[] professorsIdList) throws Exception;
 
     Boolean deleteProfessors(Long[] entitiesIdList) throws Exception;
 
+    Integer getNumberProfessors();
 
+    ArrayList<Integer> getNumberProfessorsPerLevel();
+
+    Map<Gender, Integer> getNumberProfessorsPerGender();
+
+    Map<String, Object> getMostOrLeastCoursesTaught(boolean mostOrLeast);
 
 }
 

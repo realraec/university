@@ -7,9 +7,7 @@ import xyz.realraec.universityback.model.Degree;
 import xyz.realraec.universityback.model.Professor;
 import xyz.realraec.universityback.model.Student;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public interface CourseService {
@@ -41,6 +39,16 @@ public interface CourseService {
     ArrayList<Degree> getDegreeTheCourseIsPartOf (Long[] coursesIdList) throws Exception;
 
     Boolean deleteCourses(Long[] entitiesIdList) throws Exception;
+
+    Integer getNumberEntries();
+
+    Map<Department, Integer> getNumberEntriesPerDepartment();
+
+    Integer getNumberEntriesExamMade();
+
+    Integer getNumberEntriesExamTaken();
+
+    Map<String, Object> getMostOrLeastStudentsEnrolled(boolean mostOrLeast);
 
 }
 

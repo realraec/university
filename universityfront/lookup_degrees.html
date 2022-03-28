@@ -137,14 +137,12 @@
       success: function (response) {
         sourceData = response.data.degrees;
         buildTable($table, sourceData, modelColumnsDegree, 0);
-
+        initButtonsAndMisc();
       }, complete: function () {
-        console.log("complete multiple");
       }
     })
 
 
-    // Buttons and listeners
     $(document).ready(function () {
     });
 

@@ -2,161 +2,167 @@ $('#buttons-placeholder').load('buttons.html', function () {
   $(this).children(':first').unwrap();
 
 
-  $(document).ready(function () {
-
-    console.log("xxx\n" + document.URL)
-    let documentURL = document.URL;
-
-    let checkoutEntitySelectQuery = "";
-
-    if (documentURL.includes("student")) {
-
-      extraButtons.remove();
-      examsButtons.remove();
-      studentsButtons.remove();
-      coursesButtons.remove();
-      TBDButtons.remove();
-      newEntryStudyButton.remove();
-      editEntryStudyButton.remove();
-
-      if (documentURL.includes("detail_")) {
-        // Detail-specific
-        newEntryPersonButton.disabled = true;
-        editEntryPersonButton.addEventListener('click', getGenders);
-        editEntryPersonButton.addEventListener('click', editEntryPersonPreparation);
-
-        checkoutEntityButton.addEventListener('click', checkoutDegreeFunction);
-        detailPagesVisibilityFunction();
-      } else {
-        // Lookup-specfic
-        editEntryPersonButton.disabled = true;
-        newEntryPersonButton.addEventListener('click', getGenders);
-      }
-
-      buttons.classList.remove("invisible");
-
-      promotePersonButton.addEventListener('click', promoteOrDemotePersonFunction);
-      demotePersonButton.addEventListener('click', promoteOrDemotePersonFunction);
-      giveWarningPersonButton.addEventListener('click', giveWarningOrKickOutPersonFunction);
-      kickOutPersonButton.addEventListener('click', giveWarningOrKickOutPersonFunction);
-      giveDiplomaButton.addEventListener("click", getDiplomas);
-
-      deleteButton.addEventListener('click', deleteEntryFunction);
-      refreshEntryButton.addEventListener('click', refreshEntryFunction);
-      loadExtraInfoButton.addEventListener('click', loadCoursesForPersonsFunction);
-      sendEmailButton.addEventListener('click', emailPersons);
-
-    } else if (documentURL.includes("professor")) {
-
-      rewardButtons.remove();
-      extraButtons.remove();
-      examsButtons.remove();
-      studentsButtons.remove();
-      coursesButtons.remove();
-      degreesButtons.remove();
-      TBDButtons.remove();
-      newEntryStudyButton.remove();
-      editEntryStudyButton.remove();
-
-      if (documentURL.includes("detail_")) {
-        // Detail-specific
-        newEntryPersonButton.disabled = true;
-        editEntryPersonButton.addEventListener('click', getGenders)
-        editEntryPersonButton.addEventListener('click', editEntryPersonPreparation);
-
-        detailPagesVisibilityFunction();
-      } else {
-        // Lookup-specfic
-        editEntryPersonButton.disabled = true;
-        newEntryPersonButton.addEventListener('click', getGenders)
-      }
-
-      buttons.classList.remove("invisible");
-
-      promotePersonButton.addEventListener('click', promoteOrDemotePersonFunction);
-      demotePersonButton.addEventListener('click', promoteOrDemotePersonFunction);
-      giveWarningPersonButton.addEventListener('click', giveWarningOrKickOutPersonFunction);
-      kickOutPersonButton.addEventListener('click', giveWarningOrKickOutPersonFunction);
-      deleteButton.addEventListener('click', deleteEntryFunction);
-      refreshEntryButton.addEventListener('click', refreshEntryFunction);
-      loadExtraInfoButton.addEventListener('click', loadCoursesForPersonsFunction);
-      sendEmailButton.addEventListener('click', emailPersons);
-
-    } else if (documentURL.includes("course")) {
-
-      degreesButtons.remove();
-      levelButtons.remove();
-      sanctionButtons.remove();
-      rewardButtons.remove();
-      TBDButtons.remove();
-      coursesButtons.remove();
-      newEntryPersonButton.remove();
-      editEntryPersonButton.remove();
-
-      if (documentURL.includes("detail_")) {
-        // Detail-specific
-        newEntryStudyButton.disabled = true;
-        editEntryStudyButton.addEventListener('click', getDepartments)
-        editEntryStudyButton.addEventListener('click', editEntryStudyPreparation)
-
-        checkoutEntityButton.addEventListener('click', checkoutProfessorFunction);
-
-        detailPagesVisibilityFunction();
-      } else {
-        // Lookup-specfic
-        editEntryStudyButton.disabled = true;
-        newEntryStudyButton.addEventListener('click', getDepartments)
-      }
-
-      buttons.classList.remove("invisible");
-
-      deleteButton.addEventListener('click', deleteEntryFunction);
-      refreshEntryButton.addEventListener('click', refreshEntryFunction);
-      loadExtraInfoButton.addEventListener('click', loadDegreeForCoursesFunction);
-      sendEmailButton.addEventListener('click', emailPersons);
-
-    } else if (documentURL.includes("degree")) {
-
-      degreesButtons.remove();
-      levelButtons.remove();
-      sanctionButtons.remove();
-      rewardButtons.remove();
-      TBDButtons.remove();
-      extraButtons.remove();
-      examsButtons.remove();
-      studentsButtons.remove();
-      newEntryPersonButton.remove();
-      editEntryPersonButton.remove();
-
-      if (documentURL.includes("detail_")) {
-        // Detail-specific
-        newEntryStudyButton.disabled = true;
-        editEntryStudyButton.addEventListener('click', getDepartments)
-        editEntryStudyButton.addEventListener('click', editEntryStudyPreparation)
-
-        detailPagesVisibilityFunction();
-      } else {
-        // Lookup-specfic
-        editEntryStudyButton.disabled = true;
-        addCourseButton.disabled = true;
-        removeCourseButton.disabled = true;
-        newEntryStudyButton.addEventListener('click', getDepartments)
-      }
-
-      buttons.classList.remove("invisible");
-
-      deleteButton.addEventListener('click', deleteEntryFunction);
-      refreshEntryButton.addEventListener('click', refreshEntryFunction);
-      loadExtraInfoButton.addEventListener('click', loadStudentsForDegreesFunction);
-      loadExtraInfoButton.addEventListener('click', loadProfessorsForDegreesFunction);
-      loadExtraInfoButton.addEventListener('click', changeFormatterCoursesForDegree);
-      sendEmailButton.addEventListener('click', emailPersons);
-
-    }
-
-  });
+  $(document).ready();
 
 });
+
+
+function initButtonsAndMisc() {
+
+  let documentURL = document.URL;
+  if (documentURL.includes("student")) {
+
+    extraButtons.remove();
+    examsButtons.remove();
+    studentsButtons.remove();
+    coursesButtons.remove();
+    TBDButtons.remove();
+    newEntryStudyButton.remove();
+    editEntryStudyButton.remove();
+
+    if (documentURL.includes("detail_")) {
+      // Detail-specific
+      newEntryPersonButton.disabled = true;
+      editEntryPersonButton.addEventListener('click', getGenders);
+      editEntryPersonButton.addEventListener('click', editEntryPersonPreparation);
+
+      detailPagesVisibilityFunction();
+
+      checkoutEntitySelectQuery = "#minorDegreeInput, #majorDegreeInput, #coursesInput, td:nth-of-type(6), td:nth-of-type(7)";
+
+    } else {
+      // Lookup-specfic
+      editEntryPersonButton.disabled = true;
+      newEntryPersonButton.addEventListener('click', getGenders);
+    }
+
+    buttons.classList.remove("invisible");
+
+    promotePersonButton.addEventListener('click', promoteOrDemotePersonFunction);
+    demotePersonButton.addEventListener('click', promoteOrDemotePersonFunction);
+    giveWarningPersonButton.addEventListener('click', giveWarningOrKickOutPersonFunction);
+    kickOutPersonButton.addEventListener('click', giveWarningOrKickOutPersonFunction);
+    giveDiplomaButton.addEventListener("click", getDiplomas);
+
+    deleteButton.addEventListener('click', deleteEntryFunction);
+    refreshEntryButton.addEventListener('click', refreshEntryFunction);
+    loadExtraInfoButton.addEventListener('click', loadCoursesForPersonsFunction);
+    sendEmailButton.addEventListener('click', emailPersons);
+
+  } else if (documentURL.includes("professor")) {
+
+    rewardButtons.remove();
+    extraButtons.remove();
+    examsButtons.remove();
+    studentsButtons.remove();
+    coursesButtons.remove();
+    degreesButtons.remove();
+    TBDButtons.remove();
+    newEntryStudyButton.remove();
+    editEntryStudyButton.remove();
+
+    if (documentURL.includes("detail_")) {
+      // Detail-specific
+      newEntryPersonButton.disabled = true;
+      editEntryPersonButton.addEventListener('click', getGenders)
+      editEntryPersonButton.addEventListener('click', editEntryPersonPreparation);
+
+      detailPagesVisibilityFunction();
+
+      checkoutEntitySelectQuery = "#coursesInput";
+    } else {
+      // Lookup-specfic
+      editEntryPersonButton.disabled = true;
+      newEntryPersonButton.addEventListener('click', getGenders)
+    }
+
+    buttons.classList.remove("invisible");
+
+    promotePersonButton.addEventListener('click', promoteOrDemotePersonFunction);
+    demotePersonButton.addEventListener('click', promoteOrDemotePersonFunction);
+    giveWarningPersonButton.addEventListener('click', giveWarningOrKickOutPersonFunction);
+    kickOutPersonButton.addEventListener('click', giveWarningOrKickOutPersonFunction);
+    deleteButton.addEventListener('click', deleteEntryFunction);
+    refreshEntryButton.addEventListener('click', refreshEntryFunction);
+    loadExtraInfoButton.addEventListener('click', loadCoursesForPersonsFunction);
+    sendEmailButton.addEventListener('click', emailPersons);
+
+  } else if (documentURL.includes("course")) {
+
+    degreesButtons.remove();
+    levelButtons.remove();
+    sanctionButtons.remove();
+    rewardButtons.remove();
+    TBDButtons.remove();
+    coursesButtons.remove();
+    newEntryPersonButton.remove();
+    editEntryPersonButton.remove();
+
+    if (documentURL.includes("detail_")) {
+      // Detail-specific
+      newEntryStudyButton.disabled = true;
+      editEntryStudyButton.addEventListener('click', getDepartments)
+      editEntryStudyButton.addEventListener('click', editEntryStudyPreparation)
+
+      detailPagesVisibilityFunction();
+
+      checkoutEntitySelectQuery = "#professorInput, #studentsInput, #degreeInput, td:nth-of-type(6), td:nth-of-type(7)";
+
+    } else {
+      // Lookup-specfic
+      editEntryStudyButton.disabled = true;
+      newEntryStudyButton.addEventListener('click', getDepartments)
+    }
+
+    buttons.classList.remove("invisible");
+
+    deleteButton.addEventListener('click', deleteEntryFunction);
+    refreshEntryButton.addEventListener('click', refreshEntryFunction);
+    loadExtraInfoButton.addEventListener('click', loadDegreeForCoursesFunction);
+    sendEmailButton.addEventListener('click', emailPersons);
+
+  } else //if (documentURL.includes("degree"))
+  {
+
+    degreesButtons.remove();
+    levelButtons.remove();
+    sanctionButtons.remove();
+    rewardButtons.remove();
+    TBDButtons.remove();
+    extraButtons.remove();
+    examsButtons.remove();
+    studentsButtons.remove();
+    newEntryPersonButton.remove();
+    editEntryPersonButton.remove();
+
+    if (documentURL.includes("detail_")) {
+      // Detail-specific
+      newEntryStudyButton.disabled = true;
+      editEntryStudyButton.addEventListener('click', getDepartments)
+      editEntryStudyButton.addEventListener('click', editEntryStudyPreparation)
+
+      detailPagesVisibilityFunction();
+
+      checkoutEntitySelectQuery = "#coursesInput, #professorsInput, #studentsInput, td:nth-of-type(4)";
+
+    } else {
+      // Lookup-specfic
+      editEntryStudyButton.disabled = true;
+      addCourseButton.disabled = true;
+      removeCourseButton.disabled = true;
+      newEntryStudyButton.addEventListener('click', getDepartments)
+    }
+
+    buttons.classList.remove("invisible");
+
+    deleteButton.addEventListener('click', deleteEntryFunction);
+    refreshEntryButton.addEventListener('click', refreshEntryFunction);
+    loadExtraInfoButton.addEventListener('click', loadStudentsAndProfessorsForDegreesFunction);
+    loadExtraInfoButton.addEventListener('click', changeFormatterCoursesForDegree);
+    sendEmailButton.addEventListener('click', emailPersons);
+
+  }
+}
 
 
 function updateHistoryWithChanges(table) {
@@ -164,7 +170,7 @@ function updateHistoryWithChanges(table) {
   let newCurrentRows = table.bootstrapTable('getData');
 
   // Fetching saved history
-  var history = JSON.parse(localStorage["history"]);
+  var history = JSON.parse(sessionStorage.getItem('history'))
 
   // Modified rows
   for (let i = 0; i < newCurrentRows.length; i++) {
@@ -184,7 +190,7 @@ function updateHistoryWithChanges(table) {
   }
 
   // Saving the changes
-  localStorage["history"] = JSON.stringify(history);
+  sessionStorage.setItem('history', JSON.stringify(history));
 }
 
 
@@ -255,7 +261,7 @@ async function addOrRemoveStudentFunction() {
       if (document.URL.includes('detail_')) {
         let data = $table.bootstrapTable('getData')[0].students;
         document.getElementById("studentsInput").value = (data[0] == null ? null : twoPersonsPerLineFormatter(data).replaceAll("<br/>", " — "));
-        //customContextMenu();
+        customContextMenu(checkoutEntitySelectQuery);
       } else {
         // Update history with the changes made
         updateHistoryWithChanges($table)
@@ -332,7 +338,7 @@ async function addOrRemoveCourseFunction() {
       if (document.URL.includes('detail_')) {
         let data = $table.bootstrapTable('getData')[0].courses;
         document.getElementById("coursesInput").value = (data[0] == null ? null : threeStudiesPerLineFormatter(data).replaceAll("<br/>", " — "));
-        //customContextMenu();
+        customContextMenu(checkoutEntitySelectQuery);
       } else {
         // Update history with the changes made
         updateHistoryWithChanges($table)
@@ -408,11 +414,16 @@ async function setNewProfessorOrDegreeFunction() {
       if (document.URL.includes('detail_')) {
         if (professorOrDegree == "Professor") {
           document.getElementById(field + "Input").value = onePersonPerColumnFormatter(temp).replaceAll("<br/>", " ");
-          //customContextMenu();
         } else {
           $table.bootstrapTable('showColumn', 'degree');
           document.getElementById(field + "Input").value = oneStudyPerColumnFormatter(temp).replaceAll("<br/>", " ");
+          if (!checkoutEntitySelectQuery.endsWith(", td:nth-of-type(8)")) {
+            checkoutEntitySelectQuery = checkoutEntitySelectQuery + ", td:nth-of-type(8)";
+          }
+
         }
+        customContextMenu(checkoutEntitySelectQuery);
+
       } else {
         // Update history with the changes made
         updateHistoryWithChanges($table)
@@ -480,7 +491,7 @@ async function setNewMajorOrMinorDegreeFunction() {
       // Updating detail part
       if (document.URL.includes('detail_')) {
         document.getElementById(field + "Input").value = oneStudyPerColumnFormatter(temp);
-        //customContextMenu();
+        customContextMenu(checkoutEntitySelectQuery);
       } else {
         // Update history with the changes made
         updateHistoryWithChanges($table)
@@ -649,7 +660,7 @@ async function newEntryPersonFunction() {
     personType = "professor";
   }
 
-  var history = JSON.parse(localStorage["history"]);
+  var history = JSON.parse(sessionStorage.getItem('history'))
 
   // To force the user to wait for the response
   disableButtonsInModal();
@@ -686,7 +697,7 @@ async function newEntryPersonFunction() {
         history[i].push(temp);
       }
 
-      localStorage["history"] = JSON.stringify(history);
+      sessionStorage.setItem('history', JSON.stringify(history));
       console.log(history)
       $table.bootstrapTable('append', temp);
     });
@@ -703,7 +714,7 @@ async function newEntryStudyFunction() {
     studyType = "degree";
   }
 
-  var history = JSON.parse(localStorage["history"]);
+  var history = JSON.parse(sessionStorage.getItem('history'))
 
   // To force the user to wait for the response
   disableButtonsInModal();
@@ -736,7 +747,7 @@ async function newEntryStudyFunction() {
         history[i].push(temp);
       }
 
-      localStorage["history"] = JSON.stringify(history);
+      sessionStorage.setItem('history', JSON.stringify(history));
       $table.bootstrapTable('append', temp);
     });
 };
@@ -929,7 +940,7 @@ async function refreshEntryFunction() {
         } else {
           updateDetailDegree(data);
         }
-        //customContextMenu();
+        customContextMenu(checkoutEntitySelectQuery);
       }
 
     });
@@ -984,7 +995,7 @@ async function deleteEntryFunction() {
 
 
       // Update history with the changes made
-      var history = JSON.parse(localStorage["history"]);
+      var history = JSON.parse(sessionStorage.getItem('history'))
 
       // Rows edited
       for (let i = 0; i < currentRows.length; i++) {
@@ -1005,7 +1016,7 @@ async function deleteEntryFunction() {
         }
       }
 
-      localStorage["history"] = JSON.stringify(history);
+      sessionStorage.setItem('history', JSON.stringify(history));
 
       $table.bootstrapTable('load', [])
 
@@ -1089,7 +1100,7 @@ async function promoteOrDemotePersonFunction(e) {
       // Updating detail part
       if (document.URL.includes('detail_')) {
         document.getElementById("levelInput").value = temp[0];
-        //customContextMenu();
+        customContextMenu(checkoutEntitySelectQuery);
       } else {
         // Update history with the changes made
         updateHistoryWithChanges($table)
@@ -1163,7 +1174,7 @@ async function giveWarningOrKickOutPersonFunction(e) {
       // Updating detail part
       if (document.URL.includes('detail_')) {
         document.getElementById("warningsInput").value = temp[0];
-        //customContextMenu();
+        customContextMenu(checkoutEntitySelectQuery);
       } else {
         // Update history with the changes made
         updateHistoryWithChanges($table)
@@ -1223,7 +1234,7 @@ async function giveCreditsFunction() {
       // Updating detail part
       if (document.URL.includes('detail_')) {
         document.getElementById("creditsInput").value = temp[0];
-        //customContextMenu();
+        customContextMenu(checkoutEntitySelectQuery);
       } else {
         // Update history with the changes made
         updateHistoryWithChanges($table)
@@ -1282,7 +1293,7 @@ async function giveDiplomaFunction() {
       // Updating detail part
       if (document.URL.includes('detail_')) {
         document.getElementById("diplomaInput").value = diplomaFormatter(temp);
-        //customContextMenu();
+        customContextMenu(checkoutEntitySelectQuery);
       } else {
         // Update history with the changes made
         updateHistoryWithChanges($table)
@@ -1352,7 +1363,7 @@ async function toggleIsExamMadeOrTakenFunction() {
         } else {
           document.getElementById("examTakenInput").value = booleanFormatter(temp).replace(/<\/?[^>]+(>|$)/g, "");;
         }
-        //customContextMenu();
+        customContextMenu(checkoutEntitySelectQuery);
       } else {
         // Update history with the changes made
         updateHistoryWithChanges($table)
@@ -1421,8 +1432,16 @@ async function loadCoursesForPersonsFunction() {
       if (documentURL.includes('detail_')) {
         document.getElementById("coursesInput").value = (temp[0] == null ? null : threeStudiesPerLineFormatter(temp[0]).replaceAll("<br/>", " — "));
         if (entityType == "student") {
-          customContextMenu("td:nth-of-type(6), td:nth-of-type(7)");
+          if (!checkoutEntitySelectQuery.endsWith(", td:nth-of-type(8)")) {
+            checkoutEntitySelectQuery = checkoutEntitySelectQuery + ", td:nth-of-type(8)";
+          }
+        } else {
+          if (!checkoutEntitySelectQuery.endsWith(", td:nth-of-type(6)")) {
+            checkoutEntitySelectQuery = checkoutEntitySelectQuery + ", td:nth-of-type(6)";
+          }
         }
+        customContextMenu(checkoutEntitySelectQuery)
+
       } else {
         // Update history with the changes made
         updateHistoryWithChanges($table)
@@ -1483,13 +1502,32 @@ async function loadDegreeForCoursesFunction() {
       // Updating detail part
       if (document.URL.includes('detail_')) {
         document.getElementById("degreeInput").value = (temp[0] == null ? null : oneStudyPerColumnFormatter(temp[0]));
-        customContextMenu("td:nth-of-type(6), td:nth-of-type(7)");
+        if (!checkoutEntitySelectQuery.endsWith(", td:nth-of-type(8)")) {
+          checkoutEntitySelectQuery = checkoutEntitySelectQuery + ", td:nth-of-type(8)";
+        }
+        customContextMenu(checkoutEntitySelectQuery);
       } else {
         // Update history with the changes made
         updateHistoryWithChanges($table)
       }
+
+      // Scroll to the rightmost to show the newly-shown column
+      var left = $('.fixed-table-body').width();
+      $('.fixed-table-body').scrollLeft(left);
     })
 
+}
+
+
+function loadStudentsAndProfessorsForDegreesFunction() {
+  loadStudentsForDegreesFunction();
+  loadProfessorsForDegreesFunction();
+  if (document.URL.includes("detail_")) {
+    if (!checkoutEntitySelectQuery.endsWith(", td:nth-of-type(5), td:nth-of-type(6)")) {
+      checkoutEntitySelectQuery = checkoutEntitySelectQuery + ", td:nth-of-type(5), td:nth-of-type(6)";
+    }
+    customContextMenu(checkoutEntitySelectQuery);
+  }
 }
 
 
@@ -1543,7 +1581,10 @@ async function loadStudentsForDegreesFunction() {
       // Updating detail part
       if (document.URL.includes('detail_')) {
         document.getElementById("studentsInput").value = (temp[0] == null ? null : twoPersonsPerLineFormatter(temp[0]).replaceAll("<br/>", " — "));
-        //customContextMenu();
+        if (!checkoutEntitySelectQuery.endsWith(", td:nth-of-type(5), td:nth-of-type(6)")) {
+          checkoutEntitySelectQuery = checkoutEntitySelectQuery + ", td:nth-of-type(5), td:nth-of-type(6)";
+        }
+        customContextMenu(checkoutEntitySelectQuery);
       } else {
         // Update history with the changes made
         updateHistoryWithChanges($table)
@@ -1603,7 +1644,10 @@ async function loadProfessorsForDegreesFunction() {
       // Updating detail part
       if (document.URL.includes('detail_')) {
         document.getElementById("professorsInput").value = (temp[0] == null ? null : twoPersonsPerLineFormatter(temp[0]).replaceAll("<br/>", " — "));
-        //customContextMenu();
+        if (!checkoutEntitySelectQuery.endsWith(", td:nth-of-type(5), td:nth-of-type(6)")) {
+          checkoutEntitySelectQuery = checkoutEntitySelectQuery + ", td:nth-of-type(5), td:nth-of-type(6)";
+        }
+        customContextMenu(checkoutEntitySelectQuery);
       } else {
         // Update history with the changes made
         updateHistoryWithChanges($table)
@@ -1679,9 +1723,9 @@ function changeFormatterCoursesForDegree() {
   let temp = { ...$table.bootstrapTable('getOptions').columns };
   console.log(temp)
   if (document.URL.includes("detail_")) {
-    temp[0][6].formatter = oneStudyPerLineFormatter;
+    temp[0][3].formatter = oneStudyPerLineFormatter;
   } else {
-    temp[0][7].formatter = oneStudyPerLineFormatter;
+    temp[0][5].formatter = oneStudyPerLineFormatter;
   }
   $table.bootstrapTable('refreshOptions', { columns: temp });
 }
@@ -1697,24 +1741,53 @@ function detailPagesVisibilityFunction() {
 }
 
 
-function checkoutDegreeFunction() {
-  let cellIndex = localStorage["cellIndex"];
+function checkoutDegreeFunction(e) {
   if (document.URL.includes("course")) {
-      localStorage["detailId"] = $table.bootstrapTable('getData')[0].degree.id;
+    localStorage["detailId"] = $table.bootstrapTable('getData')[0].degree.id;
   } else {
-      if (cellIndex == 6) {
-          localStorage["detailId"] = $table.bootstrapTable('getData')[0].minorDegree.id;
-      } else {
-          localStorage["detailId"] = $table.bootstrapTable('getData')[0].majorDegree.id;
-      }
+    if (e.target.cellIndex == 6 || e.currentTarget.id == "minorDegreeInput") {
+      localStorage["detailId"] = $table.bootstrapTable('getData')[0].minorDegree.id;
+    } else {
+      localStorage["detailId"] = $table.bootstrapTable('getData')[0].majorDegree.id;
+    }
   }
-
   checkoutEntityButton.setAttribute('href', "detail_degree.html");
 }
 
-
 function checkoutProfessorFunction() {
+  if (document.URL.includes("course")) {
+    localStorage["detailId"] = $table.bootstrapTable('getData')[0].professor.id;
+  } else {
+    localStorage["detailId"] = checkoutEntitySelect.value;
+  }
   checkoutEntityButton.setAttribute('href', "detail_professor.html")
-  console.log($table.bootstrapTable('getData')[0].professor.id);
-  localStorage["detailId"] = $table.bootstrapTable('getData')[0].professor.id;
+}
+
+function checkoutStudentFunction() {
+  localStorage["detailId"] = checkoutEntitySelect.value;
+  checkoutEntityButton.setAttribute('href', "detail_student.html")
+}
+
+function checkoutCourseFunction() {
+  localStorage["detailId"] = checkoutEntitySelect.value;
+  checkoutEntityButton.setAttribute('href', "detail_course.html")
+}
+
+
+function fillSelectOptionsCustomContextMenu(list) {
+  $('#checkoutEntitySelect').find('option').remove();
+
+  let temp;
+  temp = $table.bootstrapTable('getData')[0][list];
+  console.log(temp)
+
+  // Adding the newly-fetched values
+  for (let i = 0; i < temp.length; i++) {
+    var option = temp[i];
+    var element = document.createElement("option");
+    element.textContent = temp[i].heading == null ? onePersonPerColumnFormatter(option).replace("<br/>", " ") : oneStudyPerColumnFormatter(option);
+    element.value = option.id;
+    console.log(option.id)
+    checkoutEntitySelect.appendChild(element);
+  }
 }

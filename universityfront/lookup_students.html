@@ -175,14 +175,12 @@ xmlns:th="http://thymeleaf.org">
         // Array from JSON Objects
         var sourceData = response.data.students;
         buildTable($table, sourceData, modelColumnsStudent, 0);
-
+        initButtonsAndMisc();
       }, complete: function () {
-        console.log("complete multiple");
       }
     })
 
 
-    // Buttons and listeners
     $(document).ready(function () {
     });
     

@@ -16,22 +16,21 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
 
+
 @RestController
 @RequestMapping("/degrees")
-// For the dependency injection to be done properly
 @CrossOrigin
 @RequiredArgsConstructor
 public class DegreeController {
 
     private final DegreeServiceImplementation degreeService;
 
+
     @GetMapping("/list")
     public ResponseEntity<Response> getDegrees() {
         return ResponseEntity.ok(
                 Response.builder()
-                        // All the information to be passed
                         .timestamp(LocalDateTime.now())
-                        // Where the service (implementation) method is to be found
                         .data(Map.of("degrees", degreeService.list(30)))
                         .message("Degrees retrieved")
                         .status(HttpStatus.OK)
@@ -39,6 +38,7 @@ public class DegreeController {
                         .build()
         );
     }
+
 
     @GetMapping("/get/{id}")
     public ResponseEntity<Response> getDegree(@PathVariable("id") Long id) {
@@ -54,10 +54,8 @@ public class DegreeController {
     }
 
     @PostMapping("/create")
-    // A body is needed since you can't save an empty object as a server
     public ResponseEntity<Response> createDegree(@RequestBody @Valid Degree degree) {
         degree = new Degree(degree.getHeading(), degree.getDepartment());
-        // The .created() method also exists but returns a URI, and we want the message as well
         return ResponseEntity.ok(
                 Response.builder()
                         .timestamp(LocalDateTime.now())
@@ -69,7 +67,7 @@ public class DegreeController {
         );
     }
 
-    // Not included
+
     @PutMapping("/update/{id}")
     public ResponseEntity<Response> updateDegree(
             @PathVariable("id") Long id,
@@ -88,6 +86,7 @@ public class DegreeController {
                         .build()
         );
     }
+
 
     @PutMapping("/replace/{id}")
     public ResponseEntity<?> replaceDegree(
@@ -161,9 +160,7 @@ public class DegreeController {
     ) throws Exception {
         return ResponseEntity.ok(
                 Response.builder()
-                        // All the information to be passed
                         .timestamp(LocalDateTime.now())
-                        // Where the service (implementation) method is to be found
                         .data(Map.of("students", degreeService.getStudentsEnrolledInDegree(degreesIdList)))
                         .message("Students retrieved for degrees with id " + Arrays.toString(degreesIdList))
                         .status(HttpStatus.OK)
@@ -179,9 +176,7 @@ public class DegreeController {
     ) throws Exception {
         return ResponseEntity.ok(
                 Response.builder()
-                        // All the information to be passed
                         .timestamp(LocalDateTime.now())
-                        // Where the service (implementation) method is to be found
                         .data(Map.of("professors", degreeService.getProfessorsTeachingInDegree(degreesIdList)))
                         .message("Professors retrieved for degrees with id " + Arrays.toString(degreesIdList))
                         .status(HttpStatus.OK)
@@ -199,6 +194,90 @@ public class DegreeController {
                         // Either true or false key
                         .data(Map.of("deleted", degreeService.deleteDegrees(entitiesIdList)))
                         .message("Entities (degrees) with id " + Arrays.toString(entitiesIdList) + " deleted")
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build()
+        );
+    }
+
+
+    @GetMapping("/number")
+    public ResponseEntity<Response> getNumberDegrees() {
+        return ResponseEntity.ok(
+                Response.builder()
+                        .timestamp(LocalDateTime.now())
+                        .data(Map.of("number", degreeService.getNumberEntries()))
+                        .message("Number of degrees retrieved")
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build()
+        );
+    }
+
+
+    @GetMapping("/numberPerDepartment")
+    public ResponseEntity<Response> getNumberDegreesPerDepartment() {
+        return ResponseEntity.ok(
+                Response.builder()
+                        .timestamp(LocalDateTime.now())
+                        .data(degreeService.getNumberEntriesPerDepartment())
+                        .message("Number of degrees per department retrieved")
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build()
+        );
+    }
+
+
+    @GetMapping("/mostCourses")
+    public ResponseEntity<Response> getMostCoursesAssociated() {
+        return ResponseEntity.ok(
+                Response.builder()
+                        .timestamp(LocalDateTime.now())
+                        .data(degreeService.getMostOrLeastCoursesAssociated(true))
+                        .message("Maximum number of courses associated retrieved")
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build()
+        );
+    }
+
+
+    @GetMapping("/leastCourses")
+    public ResponseEntity<Response> getLeastCoursesAssociated() {
+        return ResponseEntity.ok(
+                Response.builder()
+                        .timestamp(LocalDateTime.now())
+                        .data(degreeService.getMostOrLeastCoursesAssociated(false))
+                        .message("Minimum number of courses associated retrieved")
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build()
+        );
+    }
+
+
+    @GetMapping("/mostStudents")
+    public ResponseEntity<Response> getMostStudentsEnrolled() {
+        return ResponseEntity.ok(
+                Response.builder()
+                        .timestamp(LocalDateTime.now())
+                        .data(degreeService.getMostOrLeastStudentsEnrolled(true))
+                        .message("Maximum number of students enrolled retrieved")
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build()
+        );
+    }
+
+
+    @GetMapping("/leastStudents")
+    public ResponseEntity<Response> getLeastStudentsEnrolled() {
+        return ResponseEntity.ok(
+                Response.builder()
+                        .timestamp(LocalDateTime.now())
+                        .data(degreeService.getMostOrLeastStudentsEnrolled(false))
+                        .message("Minimum number of students enrolled retrieved")
                         .status(HttpStatus.OK)
                         .statusCode(HttpStatus.OK.value())
                         .build()

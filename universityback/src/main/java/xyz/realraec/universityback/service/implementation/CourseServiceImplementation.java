@@ -19,11 +19,9 @@ import javax.transaction.Transactional;
 import java.util.*;
 
 
-// Creates a constructor using the one attribute as argument
 @RequiredArgsConstructor
 @Service
 @Transactional
-// Prints out information to the console as it goes
 @Slf4j
 public class CourseServiceImplementation implements CourseService {
 
@@ -40,6 +38,7 @@ public class CourseServiceImplementation implements CourseService {
         return courseRepository.save(course);
     }
 
+
     @Override
     public Collection<Course> list(int limit) {
         log.info("Fetching all courses");
@@ -47,12 +46,14 @@ public class CourseServiceImplementation implements CourseService {
         return courseRepository.findAll(PageRequest.of(0, limit)).toList();
     }
 
+
     @Override
     public Course get(Long id) {
         log.info("Fetching course with id: {}", id);
         // The get() method returns the actual server found by id
         return courseRepository.findById(id).get();
     }
+
 
     @Override
     @Transactional
@@ -90,6 +91,7 @@ public class CourseServiceImplementation implements CourseService {
         log.info("Updating course with id: {}", course.getId());
         return Boolean.TRUE;
     }
+
 
     @Override
     @Transactional
@@ -153,36 +155,13 @@ public class CourseServiceImplementation implements CourseService {
         return Boolean.TRUE;
     }
 
+
     @Override
     public Boolean delete(Long id) {
         log.info("Deleting course with id: {}", id);
         courseRepository.deleteById(id);
         return Boolean.TRUE;
     }
-
-
-    /*@Override
-    @Transactional
-    public Professor setNewProfessor(Long id, String professorCode) throws Exception {
-        log.info("Setting new professor for course with id: {}", id);
-        Course course = get(id);
-        Professor professor = professorRepository.findByCode(professorCode);
-        //System.out.println(professor.getId());
-        *//*if (professor != null) {
-            course.setProfessor(professor);
-            return professor;
-        } else {
-            throw new Exception("The professor could not be found.");
-        }*//*
-        if (professor == null) {
-            throw new Exception("No professor could be found with this code.");
-        } else if (professor.getId() == course.getProfessor().getId()) {
-            throw new Exception("The code of the new professor is the same as the old one.");
-        } else {
-            course.setProfessor(professor);
-            return professor;
-        }
-    }*/
 
 
     @Override
@@ -368,6 +347,7 @@ public class CourseServiceImplementation implements CourseService {
         return isExamMadeByProfessor;
     }
 
+
     @Override
     @Transactional
     public Boolean setIsExamTakenByStudents(Long[] coursesIdList, Boolean isExamTakenByStudents) throws Exception {
@@ -438,7 +418,6 @@ public class CourseServiceImplementation implements CourseService {
             coursesList.add(course);
         }
 
-
         ArrayList<Degree> degreeTheCourseIsPartOf = getDegreeTheCourseIsPartOf(entitiesIdList);
 
         for (int i = 0; i < coursesList.size(); i++) {
@@ -452,6 +431,69 @@ public class CourseServiceImplementation implements CourseService {
         }
 
         return Boolean.TRUE;
+    }
+
+
+    @Override
+    public Integer getNumberEntries() {
+        log.info("Getting the number of courses");
+        return courseRepository.queryNumberCourses();
+    }
+
+
+    @Override
+    public Map<Department, Integer> getNumberEntriesPerDepartment() {
+        log.info("Getting the number of courses per department");
+
+        HashMap<Department, Integer> numberCoursesPerDepartmentMap = new HashMap<>();
+        Department[] departments = Department.class.getEnumConstants();
+        for (int i = 0; i < departments.length; i++) {
+            Department temp = departments[i];
+            numberCoursesPerDepartmentMap.put(temp, courseRepository.queryNumberCoursesPerDepartment(temp));
+        }
+
+        return numberCoursesPerDepartmentMap;
+    }
+
+
+    @Override
+    public Integer getNumberEntriesExamMade() {
+        log.info("Getting the number of courses for which the exam is made");
+        return courseRepository.queryNumberCoursesExamMade();
+    }
+
+
+    @Override
+    public Integer getNumberEntriesExamTaken() {
+        log.info("Getting the number of courses for which the exam is made");
+        return courseRepository.queryNumberCoursesExamTaken();
+    }
+
+
+    @Override
+    public Map<String, Object> getMostOrLeastStudentsEnrolled(boolean mostOrLeast) {
+        log.info("Getting the " + (mostOrLeast ? "highest" : "lowest") + " number of students enrolled");
+
+        Map<String, Object> numberStudentsAndCourseMap = new HashMap<>();
+        int numberCourses = courseRepository.queryNumberCourses();
+        long idCourse = 1L;
+        while (courseRepository.findById(idCourse).isEmpty()) {
+            idCourse++;
+        }
+        int numberStudentsEnrolled = courseRepository.queryNumberStudentsEnrolled(idCourse);
+        for (long i = idCourse + 1; i <= numberCourses; i++) {
+            int temp = courseRepository.queryNumberStudentsEnrolled(i);
+            if ((mostOrLeast && temp > numberStudentsEnrolled)
+                    || (!mostOrLeast && temp < numberStudentsEnrolled)) {
+                numberStudentsEnrolled = temp;
+                idCourse = i;
+            }
+        }
+
+        numberStudentsAndCourseMap.put("study", courseRepository.findById(idCourse).get());
+        numberStudentsAndCourseMap.put("number", numberStudentsEnrolled);
+
+        return numberStudentsAndCourseMap;
     }
 
 }

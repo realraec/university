@@ -134,14 +134,12 @@
       success: function (response) {
         sourceData = response.data.professors;
         buildTable($table, sourceData, modelColumnsProfessor, 0);
-
+        initButtonsAndMisc();
       }, complete: function () {
-        console.log("complete multiple");
       }
     })
 
 
-    // Buttons and listeners
     $(document).ready(function () {
     });
 
