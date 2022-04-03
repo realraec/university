@@ -73,7 +73,7 @@ function buildTable($table, sourceData, modelColumns, windowScrollPosition) {
             sortName: 'id',
             sortOrder: 'asc',
             maintainMetaData: true,
-            showPaginationSwitch: true,
+            //showPaginationSwitch: true,
             clickToSelect: true,
             multipleSelectRow: true,
 
@@ -112,7 +112,7 @@ function buildTable($table, sourceData, modelColumns, windowScrollPosition) {
                     }
                 }
             },
-            buttonsOrder: ['filterControlSwitch', 'paginationSwitch', 'print', 'export', 'buttonUndo', 'buttonRedo', 'buttonBundle', 'columns'],
+            buttonsOrder: ['filterControlSwitch', /*'paginationSwitch',*/ 'print', 'export', 'buttonUndo', 'buttonRedo', 'buttonBundle', 'columns'],
             icons: {
                 columns: 'bi-list-ul',
                 print: 'bi-printer',
@@ -120,8 +120,8 @@ function buildTable($table, sourceData, modelColumns, windowScrollPosition) {
                 filterControlSwitchHide: 'bi-search',
                 clearSearch: 'bi-trash',
                 export: 'bi-download',
-                paginationSwitchDown: 'bi-caret-down-square',
-                paginationSwitchUp: 'bi-caret-up-square'
+                //paginationSwitchDown: 'bi-caret-down-square',
+                //paginationSwitchUp: 'bi-caret-up-square'
             },
 
 
